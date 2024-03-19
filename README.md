@@ -85,6 +85,5 @@ langLogでは、ユーザーが登録した単語をフラッシュカード形�
 
 ## 書影API
 <img src="https://ndlsearch.ndl.go.jp/thumbnail/9784876153961.jpg"/>  
-
 国立国会図書館サーチより
 https://ndlsearch.ndl.go.jp/help/api/thumbnail
