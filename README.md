@@ -94,4 +94,5 @@ http://linguardia.com
 ## 画面遷移
 https://www.figma.com/file/AkuP1xU2fpiiZX6FebbsEo/langLog?type=design&node-id=0%3A1&mode=design&t=cHvINarqMNxJkVAC-1
 
-
+## ER図
+![table](https://github.com/TaikiSakai/langLog/assets/135448782/9c692b53-91f9-4e5e-9aad-123bd0bba231)
