@@ -1,0 +1,269 @@
+Started GET "/" for 192.168.65.1 at 2024-04-03 14:31:50 +0000
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.8ms | Allocations: 638)
+Completed 200 OK in 54ms (Views: 25.4ms | ActiveRecord: 0.0ms | Allocations: 6857)
+
+
+Started GET "/" for 192.168.65.1 at 2024-04-03 14:34:54 +0000
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.5ms | Allocations: 529)
+Completed 200 OK in 14ms (Views: 5.2ms | ActiveRecord: 0.0ms | Allocations: 4298)
+
+
+Started GET "/" for 192.168.65.1 at 2024-04-03 14:35:08 +0000
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /usr/local/bundle/gems/railties-7.0.8.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.0ms | Allocations: 296)
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.0ms | Allocations: 1038)
+
+
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:07 +0000
+  
+SyntaxError (/app/config/routes.rb:4: syntax error, unexpected ':', expecting `end'
+    namespace : v1 do
+              ^
+/app/config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+      get "health_check", to "health_check#index"
+                             ^
+/app/config/routes.rb:8: syntax error, unexpected `end', expecting end-of-input):
+  
+config/routes.rb:4: syntax error, unexpected ':', expecting `end'
+config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+config/routes.rb:8: syntax error, unexpected `end', expecting end-of-input
+config/routes.rb:4: syntax error, unexpected ':', expecting `end'
+config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+config/routes.rb:8: syntax error, unexpected `end', expecting end-of-input
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:22 +0000
+  
+SyntaxError (/app/config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+      get "health_check", to "health_check#index"
+                             ^
+):
+  
+config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+config/routes.rb:5: syntax error, unexpected string literal, expecting `do' or '{' or '('
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:33 +0000
+  
+Zeitwerk::NameError (wrong constant name HealthCheck.rbController
+
+      CNAME_VALIDATOR.const_defined?(cname, false)
+                     ^^^^^^^^^^^^^^^ inferred by Module from file
+
+  /app/app/controllers/api/v1/health_check.rb_controller.rb
+
+Possible ways to address this:
+
+  * Tell Zeitwerk to ignore this particular file.
+  * Tell Zeitwerk to ignore one of its parent directories.
+  * Rename the file to comply with the naming conventions.
+  * Modify the inflector to handle this case.
+
+
+      raise Zeitwerk::NameError.new(<<~MESSAGE, error.name)
+      ^^^^^):
+  
+zeitwerk (2.6.13) lib/zeitwerk/loader/helpers.rb:171:in `rescue in cname_for'
+zeitwerk (2.6.13) lib/zeitwerk/loader/helpers.rb:166:in `cname_for'
+zeitwerk (2.6.13) lib/zeitwerk/loader.rb:414:in `block in define_autoloads_for_dir'
+zeitwerk (2.6.13) lib/zeitwerk/loader/helpers.rb:40:in `block in ls'
+zeitwerk (2.6.13) lib/zeitwerk/loader/helpers.rb:25:in `each'
+zeitwerk (2.6.13) lib/zeitwerk/loader/helpers.rb:25:in `ls'
+zeitwerk (2.6.13) lib/zeitwerk/loader.rb:411:in `define_autoloads_for_dir'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:84:in `block in on_namespace_loaded'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:83:in `each'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:83:in `on_namespace_loaded'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:68:in `block in on_dir_autoloaded'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:54:in `synchronize'
+zeitwerk (2.6.13) lib/zeitwerk/loader/callbacks.rb:54:in `on_dir_autoloaded'
+zeitwerk (2.6.13) lib/zeitwerk/kernel.rb:30:in `require'
+activesupport (7.0.8.1) lib/active_support/inflector/methods.rb:278:in `const_get'
+activesupport (7.0.8.1) lib/active_support/inflector/methods.rb:278:in `constantize'
+activesupport (7.0.8.1) lib/active_support/core_ext/string/inflections.rb:74:in `constantize'
+actionpack (7.0.8.1) lib/action_dispatch/http/request.rb:90:in `controller_class_for'
+actionpack (7.0.8.1) lib/action_dispatch/request/utils.rb:95:in `action_encoding_template'
+actionpack (7.0.8.1) lib/action_dispatch/request/utils.rb:83:in `encode'
+actionpack (7.0.8.1) lib/action_dispatch/request/utils.rb:45:in `set_binary_encoding'
+actionpack (7.0.8.1) lib/action_dispatch/http/parameters.rb:68:in `path_parameters='
+actionpack (7.0.8.1) lib/action_dispatch/journey/router.rb:48:in `block in serve'
+actionpack (7.0.8.1) lib/action_dispatch/journey/router.rb:32:in `each'
+actionpack (7.0.8.1) lib/action_dispatch/journey/router.rb:32:in `serve'
+actionpack (7.0.8.1) lib/action_dispatch/routing/route_set.rb:852:in `call'
+rack (2.2.9) lib/rack/etag.rb:27:in `call'
+rack (2.2.9) lib/rack/conditional_get.rb:27:in `call'
+rack (2.2.9) lib/rack/head.rb:12:in `call'
+activerecord (7.0.8.1) lib/active_record/migration.rb:638:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.8.1) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.8.1) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.8.1) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.8.1) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.8.1) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.8.1) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.8.1) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.9) lib/rack/runtime.rb:22:in `call'
+activesupport (7.0.8.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.9) lib/rack/sendfile.rb:110:in `call'
+actionpack (7.0.8.1) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.8.1) lib/rails/engine.rb:530:in `call'
+puma (5.6.8) lib/puma/configuration.rb:252:in `call'
+puma (5.6.8) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.8) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.8) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.8) lib/puma/server.rb:443:in `process_client'
+puma (5.6.8) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:34 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:38 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:42:59 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:00 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:01 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:01 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:01 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:01 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:02 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:43:02 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:44:59 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:44:59 +0000
+  
+ActionController::RoutingError (uninitialized constant Api::V1::HealthCheckController
+
+      Object.const_get(camel_cased_word)
+            ^^^^^^^^^^
+
+            raise MissingController.new(error.message, error.name)
+            ^^^^^):
+  
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:45:23 +0000
+Processing by Api::V1::HealthCheckController#index as HTML
+Completed 200 OK in 0ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 317)
+
+
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:46:10 +0000
+Processing by Api::V1::HealthCheckController#index as HTML
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 228)
+
+
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:46:23 +0000
+Processing by Api::V1::HealthCheckController#index as HTML
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 229)
+
+
+Started GET "/api/v1/health_check" for 192.168.65.1 at 2024-04-03 14:46:24 +0000
+Processing by Api::V1::HealthCheckController#index as HTML
+Completed 200 OK in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 91)
+
+
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE DATABASE `app_development` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (8.2ms)[0m  [1m[35mCREATE DATABASE `app_test` DEFAULT CHARACTER SET `utf8mb4`[0m

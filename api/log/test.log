@@ -1,0 +1,7 @@
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/v1/health_check" for 127.0.0.1 at 2024-04-03 14:58:43 +0000
+Processing by Api::V1::HealthCheckController#index as HTML
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 2815)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
