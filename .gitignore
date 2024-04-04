@@ -1,0 +1,8 @@
+#ignore node modules
+# /next/node_modules/
+# /next/.next/
+# /next/.DS_Store
+
+/api/.DS_Store
+/.DS_Store
+/api/tmp/cache/
