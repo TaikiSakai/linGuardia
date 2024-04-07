@@ -1,4 +1,4 @@
-ignore node modules
+#ignore node modules
 /front/node_modules/
 /front/.next/
 /front/.DS_Store
