@@ -23,5 +23,14 @@ services:
       - db
     tty: true
     stdin_open: true
+  front:
+    build: 
+      dockerfile: ./front/Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./front:/app
+    ports:
+      - "8000:3000"
 volumes:
   mysql_data:
