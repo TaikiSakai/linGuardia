@@ -8,6 +8,7 @@ langLogはスペイン語学習者のための学習記録アプリです。
 langLogでは、ユーザーが登録した単語をフラッシュカード形式で表示し、通常の単語学習はもちろん、動詞の自動活用機能により様々な活用形を効率的に学習することができます。
 日々の学習記録は目標に対する達成率で記録をすることができます。(学習時間も記録できます)
 
+
 ▼サービスURL
 http://linguardia.com  
 
@@ -94,4 +95,5 @@ http://linguardia.com
 ## 画面遷移
 https://www.figma.com/file/AkuP1xU2fpiiZX6FebbsEo/langLog?type=design&node-id=0%3A1&mode=design&t=cHvINarqMNxJkVAC-1
 
-
+## ER図
+![table](https://github.com/TaikiSakai/langLog/assets/135448782/9c692b53-91f9-4e5e-9aad-123bd0bba231)
