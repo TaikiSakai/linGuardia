@@ -1,7 +1,7 @@
 #ignore node modules
-# /next/node_modules/
-# /next/.next/
-# /next/.DS_Store
+/front/node_modules/
+/front/.next/
+/front/.DS_Store
 
 /api/.DS_Store
 /.DS_Store
