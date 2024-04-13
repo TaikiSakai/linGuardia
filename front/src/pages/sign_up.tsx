@@ -31,7 +31,7 @@ const SignUp: NextPage = () => {
       pattern: {
         value:
           /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
-        message: '正しい形式のメールアドレスを入力して下さい',
+        message: 'メールアドレスに誤りがあります',
       },
     },
     password: {
