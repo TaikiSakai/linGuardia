@@ -55,7 +55,7 @@ group :development, :test do
   gem "rubocop-faker"
   gem "rubocop-rails"
   gem "rubocop-rspec"
-  
+
   # メール認証テスト
   gem "letter_opener_web"
 

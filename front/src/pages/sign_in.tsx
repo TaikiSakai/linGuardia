@@ -1,12 +1,11 @@
 import {
   Grid,
   Card,
-  Box,
   Button,
-  Container,
   TextField,
   Typography,
   Stack,
+  Box,
 } from '@mui/material'
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import type { NextPage } from 'next'
@@ -42,53 +41,67 @@ const SignIn: NextPage = () => {
   }
 
   return (
-    <Grid container columns={10}>
-			<Grid item xs={5} md={8} sx={{ margin: 'auto', pt: 20 }} 
-      style={{ maxWidth: '550px'}}>
-				<Card sx={{ p: 2 }}>
-          <Typography
-            component="h2"
-            sx={{ fontSize: 32, color: 'black', fontWeight: 'bold' }}
-          >
-            ログイン
-          </Typography>
-          <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="メールアドレス"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="password"
-                  label="パスワード"
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ fontWeight: 'bold', color: 'white' }}
+    <Box sx={{ backgroundColor: '#e6f2ff', minHeight: '100vh' }}>
+      <Grid container columns={18}>
+        <Grid
+          item
+          xs={12}
+          md={18}
+          sx={{ margin: 'auto', pt: 20 }}
+          style={{ maxWidth: '800px' }}
+        >
+          <Card sx={{ p: 2 }}>
+            <Typography
+              component="h2"
+              sx={{ fontSize: 28, color: 'black', fontWeight: 'bold' }}
             >
               ログイン
-            </Button>
-          </Stack>
-      	</Card>
-			</Grid>
-      
-    </Grid>
+            </Typography>
+            <Stack
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+              spacing={4}
+            >
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    label="メールアドレス"
+                    sx={{ backgroundColor: 'white' }}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="password"
+                    label="パスワード"
+                    sx={{ backgroundColor: 'white' }}
+                  />
+                )}
+              />
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                  backgroundColor: 'blue',
+                }}
+              >
+                ログイン
+              </Button>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

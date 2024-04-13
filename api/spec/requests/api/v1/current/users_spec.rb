@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Api::V1::Current::Users", type: :request do
   describe "GET api/v1/current/user" do
     subject { get(api_v1_current_user_path, headers:) }
-    
+
     let(:current_user) { create(:user) }
     let(:headers) { current_user.create_new_auth_token }
 
@@ -18,7 +18,7 @@ RSpec.describe "Api::V1::Current::Users", type: :request do
 
     context "ヘッダーの情報が空のままリクエストされた時" do
       let(:headers) { nil }
-      
+
       it "unauthorizedになる" do
         subject
         res = JSON.parse(response.body)
