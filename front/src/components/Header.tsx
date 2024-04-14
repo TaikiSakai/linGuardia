@@ -1,8 +1,21 @@
-import { AppBar, Box, Button, Container } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import SearchIcon from '@mui/icons-material/Search'
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Typography,
+  Stack,
+} from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useUserState } from '@/hooks/useGlobalState'
 
 const Header = () => {
+  const [user] = useUserState()
+
   return (
     <AppBar
       position="static"
@@ -26,34 +39,67 @@ const Header = () => {
               <Image src="/logo.png" width={133} height={40} alt="logo" />
             </Link>
           </Box>
-          <Box>
-            <Button
-              color="primary"
-              variant="text"
-              sx={{
-                color: 'gray',
-                textTransform: 'none',
-                fontSize: 16,
-                borderRadius: 1,
-                boxShadow: 'none',
-              }}
-            >
-              Sign in
-            </Button>
-            <Button
-              color="primary"
-              variant="text"
-              sx={{
-                textTransform: 'none',
-                fontSize: 16,
-                borderRadius: 1,
-                boxShadow: 'none',
-                ml: 2,
-              }}
-            >
-              Sign up
-            </Button>
-          </Box>
+          {user.isFetched && (
+            <Box>
+              {!user.isSignedIn && (
+                <Box>
+                  <Link href="/sign_in">
+                    <Button
+                      color="primary"
+                      variant="text"
+                      sx={{
+                        color: 'gray',
+                        textTransform: 'none',
+                        fontSize: 16,
+                        borderRadius: 1,
+                        boxShadow: 'none',
+                      }}
+                    >
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/sign_up">
+                    <Button
+                      color="primary"
+                      variant="text"
+                      sx={{
+                        textTransform: 'none',
+                        fontSize: 16,
+                        borderRadius: 1,
+                        boxShadow: 'none',
+                        ml: 2,
+                      }}
+                    >
+                      Sign up
+                    </Button>
+                  </Link>
+                </Box>
+              )}
+              {user.isSignedIn && (
+                <Box>
+                  <Stack direction="row">
+                    <Box sx={{ color: 'gray', px: '10px' }}>
+                      <SearchIcon />
+                      <NotificationsIcon />
+                      <AccountCircleIcon />
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          fontSize: 20,
+                          color: 'gray',
+                          fontWeight: 'solid',
+                        }}
+                      >
+                        {user.name}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+              )}
+            </Box>
+          )}
         </Box>
       </Container>
     </AppBar>
