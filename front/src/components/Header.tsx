@@ -29,12 +29,12 @@ const Header = () => {
           <Box>
             <Button
               color="primary"
-              variant="contained"
+              variant="text"
               sx={{
-                color: 'white',
+                color: 'gray',
                 textTransform: 'none',
                 fontSize: 16,
-                borderRadius: 2,
+                borderRadius: 1,
                 boxShadow: 'none',
               }}
             >
@@ -42,13 +42,12 @@ const Header = () => {
             </Button>
             <Button
               color="primary"
-              variant="outlined"
+              variant="text"
               sx={{
                 textTransform: 'none',
                 fontSize: 16,
-                borderRadius: 2,
+                borderRadius: 1,
                 boxShadow: 'none',
-                border: '1.5px solid #3EA8FF',
                 ml: 2,
               }}
             >
