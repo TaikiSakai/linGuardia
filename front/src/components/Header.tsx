@@ -1,20 +1,33 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import NotificationsIcon from '@mui/icons-material/Notifications'
+import PersonIcon from '@mui/icons-material/Person'
 import SearchIcon from '@mui/icons-material/Search'
 import {
   AppBar,
   Box,
   Button,
   Container,
+  Menu,
+  MenuItem,
+  ListItemIcon,
   Typography,
   Stack,
 } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import React, { useState } from 'react'
 import { useUserState } from '@/hooks/useGlobalState'
 
 const Header = () => {
   const [user] = useUserState()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   return (
     <AppBar
@@ -81,10 +94,11 @@ const Header = () => {
                     <Box sx={{ color: 'gray', px: '10px' }}>
                       <SearchIcon />
                       <NotificationsIcon />
-                      <AccountCircleIcon />
+                      <PersonIcon />
                     </Box>
                     <Box>
                       <Typography
+                        onClick={handleClick}
                         variant="h5"
                         sx={{
                           fontSize: 20,
@@ -96,6 +110,21 @@ const Header = () => {
                       </Typography>
                     </Box>
                   </Stack>
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                  >
+                    <Box sx={{ px: 2, py: 1 }}>
+                      <Link href={'/sign_out'}>
+                        <MenuItem>
+                          <ListItemIcon>サインアウト</ListItemIcon>
+                        </MenuItem>
+                      </Link>
+                    </Box>
+                  </Menu>
                 </Box>
               )}
             </Box>

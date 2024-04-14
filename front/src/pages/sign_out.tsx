@@ -6,6 +6,7 @@ import { useUserState } from '@/hooks/useGlobalState'
 const SignOut: NextPage = () => {
   const router = useRouter()
   const [, setUser] = useUserState()
+  console.log('logout imported')
 
   useEffect(() => {
     localStorage.clear()
