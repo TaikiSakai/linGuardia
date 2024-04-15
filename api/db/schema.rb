@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_07_152008) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
+  create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "status", null: false
+    t.integer "number_of_access"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_cards_on_user_id"
+  end
+
+  create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -36,4 +52,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_07_152008) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  create_table "vocabularies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "word"
+    t.string "meaning"
+    t.bigint "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_vocabularies_on_card_id"
+  end
+
+  create_table "word_roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "vocabulary_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_word_roles_on_role_id"
+    t.index ["vocabulary_id"], name: "index_word_roles_on_vocabulary_id"
+  end
+
+  add_foreign_key "cards", "users"
+  add_foreign_key "vocabularies", "cards"
+  add_foreign_key "word_roles", "roles"
+  add_foreign_key "word_roles", "vocabularies"
 end
