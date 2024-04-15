@@ -12,6 +12,7 @@ const Index: NextPage = () => {
   if (error) return <div>An error has occurred.</div>
   if (!data) return <div>Loading...</div>
   const test: string = 'test'
+  console.log('this is index')
   return (
     <Box
       css={styles.pageMinHeight}

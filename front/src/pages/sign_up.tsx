@@ -15,9 +15,7 @@ type SignUpFormData = {
 
 const SignUp: NextPage = () => {
   const router = useRouter()
-
   const [isLoading, setIsLoading] = useState(false)
-
   const { handleSubmit, control } = useForm<SignUpFormData>({
     defaultValues: { email: '', password: '' },
   })
