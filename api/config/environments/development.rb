@@ -53,6 +53,11 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  # アカウント認証メールに関する設定
+  config.action_mailer.default_options = { from: "no-reply@example.com" }
+  config.action_mailer.default_url_options = { host: "localhost:3000" }
+  config.action_mailer.delivery_method = :letter_opener_web
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
