@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
   end
 
   create_table "vocabularies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "word"
+    t.string "word", null: false
     t.string "meaning"
     t.bigint "card_id", null: false
     t.datetime "created_at", null: false
