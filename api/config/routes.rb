@@ -9,6 +9,10 @@ Rails.application.routes.draw do
       namespace :current do
         resource :user, only: [:show]
       end
+
+      namespace :wordcard do
+        resources :cards, only: [:index, :show, :create, :update, :destroy ]
+      end
     end
   end
 end
