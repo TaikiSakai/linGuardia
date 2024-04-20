@@ -30,6 +30,9 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   end
 
   def destroy
+    card = current_user.cards.find(params[:id])
+    card.destroy!
+    render json: { message: "削除しました" }, status: :ok
   end
 
   private
