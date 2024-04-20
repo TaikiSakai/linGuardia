@@ -1,4 +1,4 @@
 class WordRole < ApplicationRecord
-    belongs_to :vocabulary
-    belongs_to :role
+  belongs_to :vocabulary
+  belongs_to :role
 end
