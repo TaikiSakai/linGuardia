@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       end
 
       namespace :wordcard do
-        resources :cards, only: [:index, :show, :create, :update, :destroy ]
+        resources :cards, only: [:index, :show, :create, :update, :destroy]
       end
     end
   end
