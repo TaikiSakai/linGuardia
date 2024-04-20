@@ -22,11 +22,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
   def update
     card = current_user.cards.find(params[:id])
-
-    card.update(card_params)
-      render json: {message: "アップデートしました", status: :ok}
-    rescue ActiveRecord::RecordInvalid => e
-      render json: {message: e, status: :unprocessable_entity}
+    card.update!(card_params)
   end
 
   def destroy
