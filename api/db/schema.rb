@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["title"], name: "index_cards_on_title", unique: true
+    t.index ["title", "user_id"], name: "index_cards_on_title_and_user_id", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
 

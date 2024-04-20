@@ -15,7 +15,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     card = current_user.cards.new(card_params)
 
     card.save!
-    render json: { title: card.title }, status: :ok
+    render json: { message: card.title }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { message: e, status: :bad_request }, status: :bad_request
   end

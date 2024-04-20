@@ -8,6 +8,6 @@ class CreateCards < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.timestamps
     end
-    add_index :cards, :title, unique: true
+    add_index :cards, [:title, :user_id], unique: true
   end
 end
