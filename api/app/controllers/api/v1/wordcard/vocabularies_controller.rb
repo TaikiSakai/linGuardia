@@ -2,9 +2,11 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    card = current_user.cards.find_by(uuid: params[:card_uuid])
-    vocabularies = card.vocabularies.all
-    render json: { vocabularies: vocabularies }
+    card = current_user.cards.includes(:vocabularies).find_by(uuid: params[:card_uuid])
+    vocabularies = card.vocabularies
+
+    render json: vocabularies, each_serializer: VocabularySerializer, 
+           params: { card_uuid: params[:card_uuid] }
   end
 
   def create
