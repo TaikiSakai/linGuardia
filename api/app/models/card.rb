@@ -6,5 +6,6 @@ class Card < ApplicationRecord
   validates :status, presence: true
   enum :status, { secret: 0, open: 1 }
 
+  # front側から見える値はuuidを使用する
   before_create -> { self.uuid = SecureRandom.uuid }
 end
