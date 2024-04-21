@@ -6,4 +6,6 @@ class Vocabulary < ApplicationRecord
   validates :word, presence: true, length: { maximum: 80 }
   validates :meaning, allow_blank: true, length: { maximum: 80 }
   validates :card_id, presence: true
+
+  before_create -> { self.uuid = SecureRandom.uuid }
 end
