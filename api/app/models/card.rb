@@ -5,4 +5,6 @@ class Card < ApplicationRecord
   validates :title, presence: true, length: { minimum: 1, maximum: 20 }, uniqueness: { scope: :user_id }
   validates :status, presence: true
   enum :status, { secret: 0, open: 1 }
+
+  before_create -> { self.uuid = SecureRandom.uuid }
 end

@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "uuid"
     t.string "title", null: false
     t.integer "status", null: false
     t.integer "number_of_access", default: 0, null: false
@@ -20,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
     t.datetime "updated_at", null: false
     t.index ["title", "user_id"], name: "index_cards_on_title_and_user_id", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
+    t.index ["uuid"], name: "index_cards_on_uuid"
   end
 
   create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -55,12 +57,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
   end
 
   create_table "vocabularies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "uuid"
     t.string "word", null: false
     t.string "meaning"
     t.bigint "card_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_vocabularies_on_card_id"
+    t.index ["uuid"], name: "index_vocabularies_on_uuid"
   end
 
   create_table "word_roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
