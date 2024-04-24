@@ -13,11 +13,30 @@ class Vocabulary < ApplicationRecord
   def save_vocabulary_with_roles(role_names:)
     ActiveRecord::Base.transaction do      
       self.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
-      unless save
-        raise ActiveRecord::Rollback
-        reeturn false
-      end
+      raise ActiveRecord::Rollback unless save
     end
     true
+  end
+
+  def self.save_vocabulary_with_roles_test(card:, vocabularies_params:)
+    ActiveRecord::Base.transaction do
+      vocabularies_params.each do |vocabulary_params|
+        vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
+        unless vocabulary.save
+          return false
+        end
+
+        role_names = vocabulary_params[:role]
+        roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+
+        vocabulary.roles = roles
+        unless vocabulary.save
+          return false
+        end
+      end      
+    end
+    true
+  rescue ActiveRecord::Rollback
+    false
   end
 end
