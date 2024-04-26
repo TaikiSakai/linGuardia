@@ -22,14 +22,33 @@ class Vocabulary < ApplicationRecord
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
-        unless vocabulary.save
-          return false
-        end
+        # unless vocabulary.save
+        #   return false
+        # end
+        # vocabulary.roles = roles
 
         role_names = vocabulary_params[:role]
-        roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        vocabulary.roles << role_names.map { |name| Role.find_or_initialize_by(name: name) }
 
-        vocabulary.roles = roles
+        unless vocabulary.save!
+          return false
+        end
+      end      
+    end
+    true
+  rescue ActiveRecord::Rollback
+    false
+  end
+
+  def self.update_vocabulary_with_roles_test(card:, vocabularies_params:)
+    ActiveRecord::Base.transaction do
+      vocabularies_params.each do |vocabulary_params|
+        vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
+        vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
+        
+        role_names = vocabulary_params[:role]
+        vocabulary.roles << role_names.map { |name| Role.find_or_initialize_by(name: name) }
+
         unless vocabulary.save
           return false
         end
