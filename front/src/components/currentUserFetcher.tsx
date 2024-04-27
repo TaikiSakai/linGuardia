@@ -11,7 +11,7 @@ const CurrentUserFetcher = () => {
     }
 
     if (localStorage.getItem('access-token')) {
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/user'
+      const url = process.env.NEXT_PUBLIC_API_URL + '/current/user'
 
       axios
         .get(url, {
@@ -29,8 +29,6 @@ const CurrentUserFetcher = () => {
             isSignedIn: true,
             isFetched: true,
           })
-
-          console.log(res.data)
         })
         .catch((err: AxiosError<{ error: string }>) => {
           console.log(err.message)
