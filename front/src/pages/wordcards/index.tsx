@@ -10,7 +10,6 @@ type wordcardProps = {
   uuid: string
   title: string
   userId: string
-  createtedAt: string
   updatedAt: string
 }
 
