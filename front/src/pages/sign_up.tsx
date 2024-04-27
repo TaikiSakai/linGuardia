@@ -40,10 +40,9 @@ const SignUp: NextPage = () => {
   const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
     const SignUp = async (data: SignUpFormData) => {
       setIsLoading(true)
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth'
+      const url = process.env.NEXT_PUBLIC_API_URL + '/auth'
       const headers = { 'Content-Type': 'application/json' }
-      const confirmSuccessUrl =
-        process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/sign_in'
+      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/sign_in'
 
       await axios({
         method: 'POST',

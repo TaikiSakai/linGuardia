@@ -11,7 +11,7 @@ const SignOut: NextPage = () => {
 
   useEffect(() => {
     const userSignOut = async () => {
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_out'
+      const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_out'
       const headers = {
         uid: localStorage.getItem('uid'),
         client: localStorage.getItem('client'),
