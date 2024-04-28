@@ -1,13 +1,15 @@
 class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card, only: [:create, :update, :destroy]
+  before_action :set_card
 
   def index
-    card = current_user.cards.includes(:vocabularies).find_by(uuid: params[:card_uuid])
-    vocabularies = card.vocabularies
+    vocabularies = @card.vocabularies.includes(:roles)
 
-    render json: vocabularies, each_serializer: VocabularySerializer, 
-           params: { card_uuid: params[:card_uuid] }
+    if vocabularies.empty?
+      render json: { message: "単語が登録されていません"}, status: :ok
+    else
+      render json: {vocabularies: vocabularies }, each_serializer: VocabularySerializer, status: :ok
+    end
   end
 
   def create  
