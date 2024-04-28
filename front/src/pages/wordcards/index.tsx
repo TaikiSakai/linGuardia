@@ -16,12 +16,12 @@ type wordcardProps = {
 const Index: NextPage = () => {
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards'
 
-  const { data, error } = useSWR(url, fetcher)
+  const { data, error } = useSWR(url ? url : null, fetcher)
 
   if (error) return <div>単語帳を取得できません</div>
   if (!data) return <div>Loading...</div>
 
-  const wordcards = camelcaseKeys(data.cards)
+  const wordcards: wordcardProps[] = camelcaseKeys(data.cards)
 
   return (
     <Box

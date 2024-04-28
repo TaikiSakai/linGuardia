@@ -3,10 +3,21 @@ import { Box, Button, Typography, Grid, Card, CardContent } from '@mui/material'
 import Modal from '@mui/material/Modal'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import { useRouter } from 'next/router'
 
 const switchCss = css({
   width: 150,
   height: 35,
+})
+
+const modalCss = css({
+  borderRadius: 5,
+  position: 'absolute',
+  transform: 'translate(-50%, -50%)',
+  top: '50%',
+  left: '50%',
+  width: 390,
+  minHeight: 400,
 })
 
 type modalProps = {
@@ -18,20 +29,18 @@ type modalProps = {
 }
 
 const ModalCard = (props: modalProps) => {
+  const router = useRouter()
+  const getVocabularies = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault()
+    router.push(`/wordcards/cards/${props.uuid}`)
+  }
+
   return (
     <Box>
       <Modal open={props.open} onClose={props.handleClose}>
-        <Card
-          sx={{
-            borderRadius: 5,
-            position: 'absolute',
-            transform: 'translate(-50%, -50%)',
-            top: '50%',
-            left: '50%',
-            width: 400,
-            minHeight: 300,
-          }}
-        >
+        <Card css={modalCss}>
           <CardContent>
             <Box sx={{ display: 'flex' }}>
               <Grid container>
@@ -84,8 +93,14 @@ const ModalCard = (props: modalProps) => {
               </Grid>
             </Box>
             <Typography>{props.updatedAt}</Typography>
-            <Button href={'/wordcards/cards/' + props.uuid}>
-              {props.uuid}
+            <Button
+              variant="contained"
+              sx={{
+                width: 300,
+              }}
+              onClick={getVocabularies}
+            >
+              START
             </Button>
           </CardContent>
         </Card>
