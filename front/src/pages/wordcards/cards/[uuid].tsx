@@ -13,6 +13,7 @@ import {
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
@@ -32,19 +33,38 @@ type vocabularyProps = {
 }
 
 const Flashcard: NextPage = () => {
+  const [cards, setCards] = useState<vocabularyProps[]>([])
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+
   const router = useRouter()
   const { uuid } = router.query
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/'
-
   const { data, error } = useSWR(
     uuid ? url + uuid + '/vocabularies' : null,
     fetcher,
   )
+
+  useEffect(() => {
+    if (data) {
+      const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies)
+      setCards(vocabularies)
+    }
+  }, [data])
+
+  const nextCard = () => {
+    setCurrentIndex(currentIndex + 1)
+  }
+  const returnCard = () => {
+    setCurrentIndex(currentIndex - 1)
+  }
+
   if (error) return <div>error</div>
   if (!data) return <div>Loading...</div>
 
-  const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies)
-  console.log(vocabularies)
+  const currentCard = cards[currentIndex] || null
+
+  console.log(cards[currentIndex])
+  console.log(currentCard)
 
   return (
     <Box
@@ -53,12 +73,12 @@ const Flashcard: NextPage = () => {
         backgroundColor: '#e6f2ff',
       }}
     >
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 2, textAlign: 'right' }}>
         <Button onClick={router.back}>
           <CloseIcon />
         </Button>
       </Box>
-      {vocabularies && (
+      {currentCard && (
         <Container
           maxWidth="md"
           sx={{
@@ -92,18 +112,50 @@ const Flashcard: NextPage = () => {
                           fontWeight: 'bold',
                         }}
                       >
-                        Vocabulary
+                        {currentCard.word}
                       </Typography>
                       <Divider />
+                      <Typography
+                        component="h3"
+                        css={fontSizeCss}
+                        sx={{
+                          color: '#000040',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {currentCard.meaning}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
+          <Grid
+            container
+            sx={{
+              pt: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Grid item>
+              <Box>
+                <Button onClick={returnCard} disabled={currentIndex === 0}>
+                  return
+                </Button>
+                <Button
+                  onClick={nextCard}
+                  disabled={currentIndex === cards.length - 1}
+                >
+                  next
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Container>
       )}
-      {!vocabularies && <Box>{data.message}</Box>}
+      {!currentCard && <Box>{data.message}</Box>}
     </Box>
   )
 }
