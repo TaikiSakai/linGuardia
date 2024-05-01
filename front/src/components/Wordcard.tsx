@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography, Grid, Button } from '@mui/material'
+import { Box, Card, CardContent, Typography, Grid } from '@mui/material'
 import { useState } from 'react'
 import ModalCard from './ModalCard'
 
@@ -20,36 +20,28 @@ const Wordcard = (props: wordcardProps) => {
           <CardContent>
             <Grid container sx={{ alignItems: 'center' }}>
               <Grid item xs={6} md={6}>
-                <Typography
-                  component="h3"
-                  sx={{
-                    mb: 3,
-                    minHeight: 50,
-                    fontSize: 20,
-                    color: '#000040',
-                    fontWeight: 'bold',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {props.title}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography
+                    component="h3"
+                    sx={{
+                      mb: 3,
+                      minHeight: 50,
+                      fontSize: 20,
+                      color: '#000040',
+                      fontWeight: 'bold',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {props.title}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid item xs={6} md={6}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} md={8}>
-                    <Box>
-                      <Typography sx={{ fontSize: 12 }}>
-                        {props.updatedAt}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={6} md={4}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button>編集</Button>
-                      <Button>削除</Button>
-                    </Box>
-                  </Grid>
-                </Grid>
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography sx={{ fontSize: 12 }}>
+                    {props.updatedAt}
+                  </Typography>
+                </Box>
               </Grid>
             </Grid>
           </CardContent>

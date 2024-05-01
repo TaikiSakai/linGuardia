@@ -1,5 +1,13 @@
 import { css } from '@emotion/react'
-import { Box, Button, Typography, Grid, Card, CardContent } from '@mui/material'
+import {
+  Box,
+  Button,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Link,
+} from '@mui/material'
 import Modal from '@mui/material/Modal'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
@@ -20,7 +28,7 @@ const modalCss = css({
   minHeight: 400,
 })
 
-type modalProps = {
+type currentCardProps = {
   uuid: string
   title: string
   updatedAt: string
@@ -28,13 +36,16 @@ type modalProps = {
   handleClose: () => void
 }
 
-const ModalCard = (props: modalProps) => {
+const ModalCard = (props: currentCardProps) => {
   const router = useRouter()
-  const getVocabularies = (
+
+  // mui Linkが通常のリンクとして機能してしまうため、
+  // useRouterでspaに対応
+  const startFlashcard = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault()
-    router.push(`/wordcards/cards/${props.uuid}`)
+    router.push(`/wordcards/${props.uuid}`)
   }
 
   return (
@@ -98,10 +109,11 @@ const ModalCard = (props: modalProps) => {
               sx={{
                 width: 300,
               }}
-              onClick={getVocabularies}
+              onClick={startFlashcard}
             >
               START
             </Button>
+            <Link href={'wordcards/edit/' + props.uuid}>edit</Link>
           </CardContent>
         </Card>
       </Modal>
