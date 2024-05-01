@@ -1,17 +1,17 @@
-import { Box, Card, CardContent, Typography, Grid } from '@mui/material'
-import { useState } from 'react'
-import ModalCard from './ModalCard'
+import { Box, Card, CardContent, Typography, Grid } from '@mui/material';
+import { useState } from 'react';
+import ModalCard from './ModalCard';
 
 type wordcardProps = {
-  uuid: string
-  title: string
-  updatedAt: string
-}
+  uuid: string;
+  title: string;
+  updatedAt: string;
+};
 
 const Wordcard = (props: wordcardProps) => {
-  const [open, setModalOpen] = useState<boolean>(false)
-  const handleOpen = () => setModalOpen(true)
-  const handleClose = () => setModalOpen(false)
+  const [open, setModalOpen] = useState<boolean>(false);
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   return (
     <Box>
@@ -55,7 +55,7 @@ const Wordcard = (props: wordcardProps) => {
         updatedAt={props.updatedAt}
       />
     </Box>
-  )
-}
+  );
+};
 
-export default Wordcard
+export default Wordcard;

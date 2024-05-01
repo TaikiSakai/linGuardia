@@ -1,5 +1,5 @@
-import { css } from '@emotion/react'
-import CloseIcon from '@mui/icons-material/Close'
+import { css } from '@emotion/react';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -9,62 +9,62 @@ import {
   Typography,
   Grid,
   Divider,
-} from '@mui/material'
-import camelcaseKeys from 'camelcase-keys'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
-import useSWR from 'swr'
-import { styles } from '@/styles'
-import { fetcher } from '@/utils'
+} from '@mui/material';
+import camelcaseKeys from 'camelcase-keys';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import { styles } from '@/styles';
+import { fetcher } from '@/utils';
 
 const fontSizeCss = css({
   fontSize: 100,
   '@media (max-width: 600px)': {
     fontSize: 40,
   },
-})
+});
 
 type vocabularyProps = {
-  id: number
-  word: string
-  meaning: string
-  roles: string
-}
+  id: number;
+  word: string;
+  meaning: string;
+  roles: string;
+};
 
 const Flashcard: NextPage = () => {
-  const [cards, setCards] = useState<vocabularyProps[]>([])
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [cards, setCards] = useState<vocabularyProps[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const router = useRouter()
-  const { uuid } = router.query
-  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/'
+  const router = useRouter();
+  const { uuid } = router.query;
+  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(
     uuid ? url + uuid + '/vocabularies' : null,
     fetcher,
-  )
+  );
 
   useEffect(() => {
     if (data) {
-      const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies)
-      setCards(vocabularies)
+      const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies);
+      setCards(vocabularies);
     }
-  }, [data])
+  }, [data]);
 
   const nextCard = () => {
-    setCurrentIndex(currentIndex + 1)
-  }
+    setCurrentIndex(currentIndex + 1);
+  };
   const returnCard = () => {
-    setCurrentIndex(currentIndex - 1)
-  }
+    setCurrentIndex(currentIndex - 1);
+  };
 
-  if (error) return <div>error</div>
-  if (!data) return <div>Loading...</div>
+  if (error) return <div>error</div>;
+  if (!data) return <div>Loading...</div>;
 
-  const currentCard = cards[currentIndex] || null
+  const currentCard = cards[currentIndex] || null;
 
-  console.log(cards[currentIndex])
-  console.log(currentCard)
+  console.log(cards[currentIndex]);
+  console.log(currentCard);
 
   return (
     <Box
@@ -157,7 +157,7 @@ const Flashcard: NextPage = () => {
       )}
       {!currentCard && <Box>{data.message}</Box>}
     </Box>
-  )
-}
+  );
+};
 
-export default Flashcard
+export default Flashcard;

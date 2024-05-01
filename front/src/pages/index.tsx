@@ -1,15 +1,15 @@
-import { Box } from '@mui/material'
-import type { NextPage } from 'next'
-import useSWR from 'swr'
-import { styles } from '@/styles'
-import { fetcher } from '@/utils'
+import { Box } from '@mui/material';
+import type { NextPage } from 'next';
+import useSWR from 'swr';
+import { styles } from '@/styles';
+import { fetcher } from '@/utils';
 
 const Index: NextPage = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL + '/health_check'
-  const { data, error } = useSWR(url, fetcher)
+  const url = process.env.NEXT_PUBLIC_API_URL + '/health_check';
+  const { data, error } = useSWR(url, fetcher);
 
-  if (error) return <div>An error has occurred.</div>
-  if (!data) return <div>Loading...</div>
+  if (error) return <div>An error has occurred.</div>;
+  if (!data) return <div>Loading...</div>;
 
   return (
     <Box
@@ -22,7 +22,7 @@ const Index: NextPage = () => {
       <div>レスポンスメッセージ: {data.status}</div>
       <div>This is top page</div>
     </Box>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

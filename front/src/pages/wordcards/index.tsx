@@ -1,27 +1,27 @@
-import { Grid, Container, Box } from '@mui/material'
-import camelcaseKeys from 'camelcase-keys'
-import type { NextPage } from 'next'
-import useSWR from 'swr'
-import Wordcard from '@/components/Wordcard'
-import { styles } from '@/styles'
-import { fetcher } from '@/utils'
+import { Grid, Container, Box } from '@mui/material';
+import camelcaseKeys from 'camelcase-keys';
+import type { NextPage } from 'next';
+import useSWR from 'swr';
+import Wordcard from '@/components/Wordcard';
+import { styles } from '@/styles';
+import { fetcher } from '@/utils';
 
 type wordcardProps = {
-  uuid: string
-  title: string
-  userId: string
-  updatedAt: string
-}
+  uuid: string;
+  title: string;
+  userId: string;
+  updatedAt: string;
+};
 
 const Index: NextPage = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards'
+  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards';
 
-  const { data, error } = useSWR(url ? url : null, fetcher)
+  const { data, error } = useSWR(url ? url : null, fetcher);
 
-  if (error) return <div>単語帳を取得できません</div>
-  if (!data) return <div>Loading...</div>
+  if (error) return <div>単語帳を取得できません</div>;
+  if (!data) return <div>Loading...</div>;
 
-  const wordcards: wordcardProps[] = camelcaseKeys(data.cards)
+  const wordcards: wordcardProps[] = camelcaseKeys(data.cards);
 
   return (
     <Box
@@ -51,7 +51,7 @@ const Index: NextPage = () => {
         </Grid>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import {
   Box,
   Button,
@@ -7,9 +7,9 @@ import {
   Card,
   CardContent,
   TextField,
-} from '@mui/material'
-import Modal from '@mui/material/Modal'
-import { useRouter } from 'next/router'
+} from '@mui/material';
+import Modal from '@mui/material/Modal';
+import { useRouter } from 'next/router';
 
 const modalCss = css({
   borderRadius: 5,
@@ -19,15 +19,15 @@ const modalCss = css({
   left: '50%',
   width: 390,
   minHeight: 400,
-})
+});
 
 type currentVocabularyProps = {
-  id: number
-  word: string
-  meaning: string
-  open: boolean
-  handleClose: () => void
-}
+  id: number;
+  word: string;
+  meaning: string;
+  open: boolean;
+  handleClose: () => void;
+};
 
 const EditModal = (props: currentVocabularyProps) => {
   return (
@@ -47,7 +47,7 @@ const EditModal = (props: currentVocabularyProps) => {
         </Card>
       </Modal>
     </Box>
-  )
-}
+  );
+};
 
-export default EditModal
+export default EditModal;
