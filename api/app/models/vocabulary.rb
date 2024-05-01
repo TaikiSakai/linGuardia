@@ -32,9 +32,9 @@ class Vocabulary < ApplicationRecord
         vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
         vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
         
-        role_names = vocabulary_params[:role].uniq
+        role_names = vocabulary_params[:role]
         vocabulary.roles.clear
-        vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        # vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
       end      
