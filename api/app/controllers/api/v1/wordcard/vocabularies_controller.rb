@@ -13,13 +13,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create  
-    # vocabularies_params.each do |vocabulary_params|
-    #   vocabulary = @card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
-    #   vocabulary.save_vocabulary_with_roles(role_names: vocabulary_params[:role])      
-    # end
-    # render json: { message: "単語を登録しました" }, status: :ok
-
-    if Vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+    if Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
       render json: { message: "単語を登録しました" }, status: :ok
     else
       render json: { message: "単語の登録に失敗しました" }, status: :unprocessable_entity
@@ -27,12 +21,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def update
-    # vocabularies_params.each do |vocabulary_params|
-    #   vocabulary = @card.vocabularies.find(vocabulary_params[:id])
-    #   vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
-    #   vocabulary.save_vocabulary_with_roles(role_names: vocabulary_params[:role])      
-    
-    if Vocabulary.update_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+    if Vocabulary.update_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
       render json: { message: "単語を更新しました" }, status: :ok
     else
       render json: { message: "単語の更新に失敗しました" }, status: :unprocessable_entity
