@@ -1,23 +1,23 @@
-import { CacheProvider, EmotionCache } from '@emotion/react'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
-import type { AppProps } from 'next/app'
-import * as React from 'react'
-import Header from '@/components/Header'
-import NotiSnackbar from '@/components/NotiSnackbar'
-import CurrentUserFetcher from '@/components/currentUserFetcher'
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import type { AppProps } from 'next/app';
+import * as React from 'react';
+import Header from '@/components/Header';
+import NotiSnackbar from '@/components/NotiSnackbar';
+import CurrentUserFetcher from '@/components/currentUserFetcher';
 
-import createEmotionCache from '@/styles/createEmotionCache'
-import theme from '@/styles/theme'
+import createEmotionCache from '@/styles/createEmotionCache';
+import theme from '@/styles/theme';
 
-const clientSideEmotionCache = createEmotionCache()
+const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache
+  emotionCache?: EmotionCache;
 }
 
 export default function MyApp(props: MyAppProps): JSX.Element {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
@@ -28,5 +28,5 @@ export default function MyApp(props: MyAppProps): JSX.Element {
         <NotiSnackbar />
       </ThemeProvider>
     </CacheProvider>
-  )
+  );
 }
