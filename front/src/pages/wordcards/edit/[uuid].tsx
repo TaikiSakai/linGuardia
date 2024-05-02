@@ -1,97 +1,92 @@
-import { css } from '@emotion/react'
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  Grid,
-  TextField,
-} from '@mui/material'
-import axios, { AxiosResponse, AxiosError } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { Controller } from 'react-hook-form'
-import useSWR from 'swr'
-import { styles } from '@/styles'
-import { fetcher } from '@/utils'
+import { Box, Button, Container, Grid, TextField } from '@mui/material';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import camelcaseKeys from 'camelcase-keys';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import useSWR from 'swr';
+import { styles } from '@/styles';
+import { VocabularyData } from '@/types/VocabularyType';
+import { fetcher } from '@/utils';
 
-type EditVocabularyProps = {
-  id: number
-  word: string
-  meaning: string
-  roles: string
-}
+type VocabularyFormData = VocabularyData & {
+  // TextFieldに動的なプロパティを設定する
+  [key: string]: string;
+};
 
-type VocabularyFormData = {
-  id: number
-  word: string
-  meaning: string
-  // [key: string]: string
-}
+const EditVocabPage: NextPage = () => {
+  const router = useRouter();
+  const { uuid } = router.query;
 
-const EditPage: NextPage = () => {
-  const router = useRouter()
-  const { uuid } = router.query
-
-  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/'
+  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(
     uuid ? url + uuid + '/vocabularies' : null,
     fetcher,
-  )
+  );
 
-  const { handleSubmit, control } = useForm<VocabularyFormData>()
+  const { handleSubmit, control } = useForm<VocabularyFormData>();
 
-  if (error) return <div>単語帳を取得できません</div>
-  if (!data) return <div>Loading...</div>
+  if (error) return <div>単語帳を取得できません</div>;
+  if (!data) return <div>Loading...</div>;
 
-  const vocabularies: EditVocabularyProps[] = camelcaseKeys(data.vocabularies)
+  const vocabularies: VocabularyData[] = camelcaseKeys(data.vocabularies);
+
   const onSubmit: SubmitHandler<VocabularyFormData> = (data) => {
-    const vocabularies = []
+    const vocabularies = [];
+    console.log(data);
 
-    // vocabularies配列を生成
+    // dataは word-idとmeaning-id を交互に返す
     for (const key in data) {
-      const [field, id] = key.split('-') // 'word-276' から ['word', '276'] を取得
-      const index = vocabularies.findIndex(v => v.id === parseInt(id))
+      // 例 'word-276' から ['word', '276']に分離する
+      const [property, id] = key.split('-');
 
+      // vocabularies配列内に同じidを持つオブジェクトが存在するかを確認し、
+      // 存在する場合はそのindexを返す
+      // 存在しない場合は-1を返す
+      const index = vocabularies.findIndex((s) => s.id === parseInt(id));
+
+      // indexが-1の場合は、新たにオブジェクトを作成する
+      // ここではid、wordプロパティを追加する
       if (index === -1) {
         vocabularies.push({
           id: parseInt(id),
-          [field]: data[key],
-        })
-      } else {
-        vocabularies[index][field] = data[key]
+          [property]: data[key],
+        });
+      }
+      // 同じidを持つオブジェクトが存在する場合は、要素を追加する
+      // ここではmeaningプロパティを追加する
+      else {
+        vocabularies[index][property] = data[key];
       }
     }
 
     // ここでAPIに送信するデータを整形
-    const payload = {
+    const vocabData = JSON.stringify({
       vocabularies: vocabularies,
-    }
+    });
 
-    console.log(payload) // デバッグ用にコンソールに出力
-    console.log(JSON.stringify(payload, null, 2))
+    // console.log(payload) // デバッグ用にコンソールに出力
+    console.log(JSON.stringify(vocabularies, null, 2));
 
     const headers = {
       'Content-Type': 'application/json',
       'access-token': localStorage.getItem('access-token'),
       client: localStorage.getItem('client'),
       uid: localStorage.getItem('uid'),
-    }
+    };
     axios({
       method: 'PATCH',
       url: url + uuid + '/vocabularies/update',
       headers: headers,
-      data: payload,
+      data: vocabData,
     })
       .then((res: AxiosResponse) => {
-        console.log(res.data.message)
+        console.log(res.data.message);
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message)
-      })
-  }
+        console.log(e.message);
+      });
+  };
 
   return (
     <Box
@@ -111,7 +106,7 @@ const EditPage: NextPage = () => {
           component="form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {vocabularies.map((vocabulary: EditVocabularyProps, i: number) => (
+          {vocabularies.map((vocabulary: VocabularyData, i: number) => (
             <Grid container item spacing={2} key={i} xs={10} md={10}>
               <Grid item xs={6} md={6}>
                 <Controller
@@ -161,7 +156,7 @@ const EditPage: NextPage = () => {
         </Grid>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default EditPage
+export default EditVocabPage;
