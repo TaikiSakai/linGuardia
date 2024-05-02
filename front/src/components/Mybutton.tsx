@@ -1,8 +1,8 @@
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 
 type buttonProps = {
-  label: string
-}
+  label: string;
+};
 
 const MyButton = (props: buttonProps) => {
   return (
@@ -16,7 +16,7 @@ const MyButton = (props: buttonProps) => {
     >
       {props.label}
     </Button>
-  )
-}
+  );
+};
 
-export default MyButton
+export default MyButton;

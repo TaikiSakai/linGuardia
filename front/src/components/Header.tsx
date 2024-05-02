@@ -1,6 +1,6 @@
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import PersonIcon from '@mui/icons-material/Person'
-import SearchIcon from '@mui/icons-material/Search'
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   AppBar,
   Box,
@@ -11,23 +11,23 @@ import {
   ListItemIcon,
   Typography,
   Stack,
-} from '@mui/material'
-import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { useUserState } from '@/hooks/useGlobalState'
+} from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useUserState } from '@/hooks/useGlobalState';
 
 const Header = () => {
-  const [user] = useUserState()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+  const [user] = useUserState();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
@@ -132,7 +132,7 @@ const Header = () => {
         </Box>
       </Container>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

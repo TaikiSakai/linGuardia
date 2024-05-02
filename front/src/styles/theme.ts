@@ -1,5 +1,5 @@
-import { red } from '@mui/material/colors'
-import { createTheme } from '@mui/material/styles'
+import { red } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 
 // ここにページ共通のカラーテーマを宣言する
 let theme = createTheme({
@@ -14,7 +14,7 @@ let theme = createTheme({
       main: red.A400,
     },
   },
-})
+});
 
 theme = createTheme(theme, {
   palette: {
@@ -22,6 +22,6 @@ theme = createTheme(theme, {
       main: '#e6f2ff',
     },
   },
-})
+});
 
-export default theme
+export default theme;

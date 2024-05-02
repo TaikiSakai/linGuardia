@@ -1,24 +1,24 @@
-import { LoadingButton } from '@mui/lab'
-import { Grid, Card, TextField, Typography, Stack, Box } from '@mui/material'
-import axios, { AxiosResponse, AxiosError } from 'axios'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { styles } from '@/styles'
+import { LoadingButton } from '@mui/lab';
+import { Grid, Card, TextField, Typography, Stack, Box } from '@mui/material';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { styles } from '@/styles';
 
 type SignUpFormData = {
-  name: string
-  email: string
-  password: string
-}
+  name: string;
+  email: string;
+  password: string;
+};
 
 const SignUp: NextPage = () => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, control } = useForm<SignUpFormData>({
     defaultValues: { email: '', password: '' },
-  })
+  });
 
   const validationRules = {
     name: {
@@ -35,15 +35,14 @@ const SignUp: NextPage = () => {
     password: {
       required: 'パスワードを入力してください',
     },
-  }
+  };
 
   const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
     const SignUp = async (data: SignUpFormData) => {
-      setIsLoading(true)
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth'
-      const headers = { 'Content-Type': 'application/json' }
-      const confirmSuccessUrl =
-        process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/sign_in'
+      setIsLoading(true);
+      const url = process.env.NEXT_PUBLIC_API_URL + '/auth';
+      const headers = { 'Content-Type': 'application/json' };
+      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/sign_in';
 
       await axios({
         method: 'POST',
@@ -55,22 +54,22 @@ const SignUp: NextPage = () => {
           localStorage.setItem(
             'access-token',
             res.headers['access-token'] || '',
-          )
-          localStorage.setItem('client', res.headers['client'] || '')
-          localStorage.setItem('uid', res.headers['uid'] || '')
+          );
+          localStorage.setItem('client', res.headers['client'] || '');
+          localStorage.setItem('uid', res.headers['uid'] || '');
           // snackbar
-          router.push('/sign_in')
+          router.push('/sign_in');
         })
         .catch((e: AxiosError<{ error: string }>) => {
-          console.log(e.message)
+          console.log(e.message);
           // snackbar
-          router.push('/sign_up')
-        })
-      setIsLoading(false)
-    }
+          router.push('/sign_up');
+        });
+      setIsLoading(false);
+    };
 
-    SignUp(data)
-  }
+    SignUp(data);
+  };
 
   return (
     <Box
@@ -162,7 +161,7 @@ const SignUp: NextPage = () => {
         </Grid>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

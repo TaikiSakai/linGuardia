@@ -1,25 +1,25 @@
-import { LoadingButton } from '@mui/lab'
-import { Grid, Card, TextField, Typography, Stack, Box } from '@mui/material'
-import axios, { AxiosResponse, AxiosError } from 'axios'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { useUserState, useSnackbarState } from '@/hooks/useGlobalState'
+import { LoadingButton } from '@mui/lab';
+import { Grid, Card, TextField, Typography, Stack, Box } from '@mui/material';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 
 type SignInFormData = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 const SignIn: NextPage = () => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [user, setUser] = useUserState()
-  const [, setSnackbar] = useSnackbarState()
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useUserState();
+  const [, setSnackbar] = useSnackbarState();
   const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
-  })
+  });
 
   const validationRules = {
     email: {
@@ -33,39 +33,39 @@ const SignIn: NextPage = () => {
     password: {
       required: 'パスワードを入力してください',
     },
-  }
+  };
 
   const onSubmit: SubmitHandler<SignInFormData> = (data) => {
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
-    const headers = { 'Content-Type': 'application/json' }
-    setIsLoading(true)
+    const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_in';
+    const headers = { 'Content-Type': 'application/json' };
+    setIsLoading(true);
 
     axios({ method: 'POST', url: url, data: data, headers: headers })
       .then((res: AxiosResponse) => {
-        localStorage.setItem('access-token', res.headers['access-token'])
-        localStorage.setItem('client', res.headers['client'])
-        localStorage.setItem('uid', res.headers['uid'])
+        localStorage.setItem('access-token', res.headers['access-token']);
+        localStorage.setItem('client', res.headers['client']);
+        localStorage.setItem('uid', res.headers['uid']);
         setUser({
           ...user,
           isFetched: false,
-        })
+        });
         setSnackbar({
           message: 'サインインしました',
           severity: 'success',
           pathname: '/',
-        })
-        router.push('/')
+        });
+        router.push('/');
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message)
+        console.log(e.message);
         setSnackbar({
           message: 'サインインに失敗しました',
           severity: 'error',
           pathname: '/sign_in',
-        })
-      })
-    setIsLoading(false)
-  }
+        });
+      });
+    setIsLoading(false);
+  };
 
   return (
     <Box sx={{ backgroundColor: '#e6f2ff', minHeight: '100vh' }}>
@@ -133,7 +133,7 @@ const SignIn: NextPage = () => {
         </Grid>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

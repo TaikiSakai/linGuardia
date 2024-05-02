@@ -9,6 +9,14 @@ Rails.application.routes.draw do
       namespace :current do
         resource :user, only: [:show]
       end
+
+      namespace :wordcard do
+        resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
+          resources :vocabularies, only: [:index, :create, :destroy]
+          patch "vocabularies/update", to: "vocabularies#update"
+          # delete "vocabularies/delete", to: "vocabularies#destroy"
+        end
+      end
     end
   end
 end
