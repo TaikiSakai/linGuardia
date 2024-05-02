@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import {
   Box,
   Button,
@@ -7,16 +7,16 @@ import {
   Card,
   CardContent,
   Link,
-} from '@mui/material'
-import Modal from '@mui/material/Modal'
-import ToggleButton from '@mui/material/ToggleButton'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import { useRouter } from 'next/router'
+} from '@mui/material';
+import Modal from '@mui/material/Modal';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useRouter } from 'next/router';
 
 const switchCss = css({
   width: 150,
   height: 35,
-})
+});
 
 const modalCss = css({
   borderRadius: 5,
@@ -26,27 +26,27 @@ const modalCss = css({
   left: '50%',
   width: 390,
   minHeight: 400,
-})
+});
 
 type currentCardProps = {
-  uuid: string
-  title: string
-  updatedAt: string
-  open: boolean
-  handleClose: () => void
-}
+  uuid: string;
+  title: string;
+  updatedAt: string;
+  open: boolean;
+  handleClose: () => void;
+};
 
 const ModalCard = (props: currentCardProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
   // mui Linkが通常のリンクとして機能してしまうため、
   // useRouterでspaに対応
   const startFlashcard = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    e.preventDefault()
-    router.push(`/wordcards/${props.uuid}`)
-  }
+    e.preventDefault();
+    router.push(`/wordcards/${props.uuid}`);
+  };
 
   return (
     <Box>
@@ -118,7 +118,7 @@ const ModalCard = (props: currentCardProps) => {
         </Card>
       </Modal>
     </Box>
-  )
-}
+  );
+};
 
-export default ModalCard
+export default ModalCard;
