@@ -46,6 +46,11 @@ gem "active_model_serializers"
 
 # 環境毎の設定
 gem "config"
+
+# chatGPT API対応
+gem "dotenv"
+gem "faraday"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
