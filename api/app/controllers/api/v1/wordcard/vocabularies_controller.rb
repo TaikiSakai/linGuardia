@@ -12,7 +12,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     end
   end
 
-  def create  
+  def create
     if Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
       render json: { message: "単語を登録しました" }, status: :ok
     else
@@ -28,7 +28,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     end
   end
 
-
+  
   def destroy
     vocabulary = @card.vocabularies.find(params[:id])
     vocabulary.destroy!

@@ -10,12 +10,14 @@ class Vocabulary < ApplicationRecord
   # クライエント側から見える値はuuidを使用する
   before_create -> { self.uuid = SecureRandom.uuid }
 
+  scope :with_role, ->(role_name) { joins(:roles).where(roles: { name: role_name }) }
+
   def self.save_vocabulary_with_roles(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
 
-        role_names = vocabulary_params[:role].uniq
+        role_names = vocabulary_params[:role]
         vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
@@ -34,7 +36,7 @@ class Vocabulary < ApplicationRecord
         
         role_names = vocabulary_params[:role]
         vocabulary.roles.clear
-        # vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
       end      
