@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
-const useModal = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const useModal = (callback: () => void = () => {}) => {
+  const [open, setIsOpen] = useState<boolean>(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => {
+    setIsOpen(false);
+    callback();
+  };
 
   return [open, handleOpen, handleClose] as [boolean, () => void, () => void];
 };

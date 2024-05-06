@@ -1,15 +1,7 @@
 import { css } from '@emotion/react';
-import {
-  Box,
-  Button,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  TextField,
-} from '@mui/material';
+import { Box, Grid, Card, CardContent } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import { useRouter } from 'next/router';
+import { ReactNode } from 'react';
 
 const modalCss = css({
   borderRadius: 5,
@@ -21,27 +13,22 @@ const modalCss = css({
   minHeight: 400,
 });
 
-type currentVocabularyProps = {
-  id: number;
-  word: string;
-  meaning: string;
+type modalProps = {
+  title: string;
   open: boolean;
   handleClose: () => void;
+  children: ReactNode;
 };
 
-const EditModal = (props: currentVocabularyProps) => {
+const EditModal = (props: modalProps) => {
   return (
     <Box>
       <Modal open={props.open} onClose={props.handleClose}>
         <Card css={modalCss}>
           <CardContent>
             <Grid container>
-              <Grid item>
-                <TextField></TextField>
-              </Grid>
-              <Grid item>
-                <TextField></TextField>
-              </Grid>
+              <Grid>{props.title}</Grid>
+              <Grid>{props.children}</Grid>
             </Grid>
           </CardContent>
         </Card>
