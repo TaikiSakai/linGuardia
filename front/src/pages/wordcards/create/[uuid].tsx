@@ -1,21 +1,50 @@
+import { InputTwoTone } from '@mui/icons-material';
 import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { Dispatch, SetStateAction, useState, createContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
+import InputDisplayBox from '@/components/InputDisplayBox';
+import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
-import { useState } from 'react';
 
-const AddVocabPage: NextPage = () => {
-  const [index, setIndex] = useState<number>(0);
+type inputType = {
+  id: number;
+  word: string;
+  meaning: string;
+};
+
+export const InputContext = createContext<inputType[]>([]);
+export const SetInputContext = createContext<(newValue: inputType) => void>(
+  () => {},
+);
+
+const AddPage: NextPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
 
-  
+  // 入力された単語オブジェクトを登録する処理
+  const [inputValues, setInputValue] = useState<inputType[]>([]);
+  const addValue = (newValue: inputType) => {
+    // inputValuesに同じidを持つオブジェクトがあるか確認
+    const id = inputValues.findIndex((item) => item.id === newValue.id);
+    // 同じidが存在する場合は、そのidが返る
+    if (id !== -1) {
+      inputValues[id] = newValue;
+      setInputValue(inputValues);
+    }
+    // idが存在しない場合は-1が買えるので、配列にオブジェクトを追加する
+    else {
+      setInputValue([...inputValues, newValue]);
+    }
+    console.log(inputValues);
+  };
+
   return (
     <Box
       css={styles.pageMinHeight}
@@ -26,21 +55,23 @@ const AddVocabPage: NextPage = () => {
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
         <Grid
           container
-          spacing={2}
           sx={{
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          spacing={3.5}
         >
-          <Grid container item spacing={2} xs={10} md={10}>
-            <Grid item xs={6} md={6}>
-              
-            </Grid>
-          </Grid>
+          <InputContext.Provider value={inputValues}>
+            <SetInputContext.Provider value={addValue}>
+              <InputDisplayBox id={1} />
+              <InputDisplayBox id={2} />
+              <InputDisplayBox id={3} />
+            </SetInputContext.Provider>
+          </InputContext.Provider>
         </Grid>
       </Container>
     </Box>
   );
 };
 
-export default AddVocabPage;
+export default AddPage;
