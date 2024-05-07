@@ -70,25 +70,12 @@ const SignIn: NextPage = () => {
   return (
     <Box sx={{ backgroundColor: '#e6f2ff', minHeight: '100vh' }}>
       <Grid container columns={18}>
-        <Grid
-          item
-          xs={12}
-          md={18}
-          sx={{ margin: 'auto', pt: 20 }}
-          style={{ maxWidth: '800px' }}
-        >
+        <Grid item xs={12} md={18} sx={{ margin: 'auto', pt: 20 }} style={{ maxWidth: '800px' }}>
           <Card sx={{ p: 2 }}>
-            <Typography
-              component="h2"
-              sx={{ fontSize: 28, color: 'black', fontWeight: 'bold' }}
-            >
+            <Typography component="h2" sx={{ fontSize: 28, color: 'black', fontWeight: 'bold' }}>
               ログイン
             </Typography>
-            <Stack
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              spacing={4}
-            >
+            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
               <Controller
                 name="email"
                 control={control}

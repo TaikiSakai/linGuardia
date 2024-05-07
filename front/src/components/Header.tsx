@@ -1,4 +1,3 @@
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -36,7 +35,7 @@ const Header = () => {
         backgroundColor: 'white',
         color: 'black',
         boxShadow: 1,
-        py: '12px',
+        py: '5px',
       }}
     >
       <Container maxWidth="lg" sx={{ px: 2 }}>
@@ -93,7 +92,6 @@ const Header = () => {
                   <Stack direction="row">
                     <Box sx={{ color: 'gray', px: '10px' }}>
                       <SearchIcon />
-                      <NotificationsIcon />
                       <PersonIcon />
                     </Box>
                     <Box>
