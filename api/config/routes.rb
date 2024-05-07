@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
+          post "chat/create", to: "chat#create"
           # delete "vocabularies/delete", to: "vocabularies#destroy"
         end
       end
