@@ -12,6 +12,7 @@ import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
+import { useRef } from 'react';
 
 type inputType = {
   id: number;
@@ -20,13 +21,12 @@ type inputType = {
 };
 
 export const InputContext = createContext<inputType[]>([]);
-export const SetInputContext = createContext<(newValue: inputType) => void>(
-  () => {},
-);
+export const SetInputContext = createContext<(newValue: inputType) => void>(() => {});
 
 const AddPage: NextPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
+  const inputRef = useRef(null);
 
   // 入力された単語オブジェクトを登録する処理
   const [inputValues, setInputValue] = useState<inputType[]>([]);
@@ -38,7 +38,7 @@ const AddPage: NextPage = () => {
       inputValues[id] = newValue;
       setInputValue(inputValues);
     }
-    // idが存在しない場合は-1が買えるので、配列にオブジェクトを追加する
+    // idが存在しない場合は-1が返るので、配列にオブジェクトを追加する
     else {
       setInputValue([...inputValues, newValue]);
     }
@@ -53,22 +53,24 @@ const AddPage: NextPage = () => {
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
-        <Grid
-          container
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          spacing={3.5}
-        >
-          <InputContext.Provider value={inputValues}>
-            <SetInputContext.Provider value={addValue}>
+        <InputContext.Provider value={inputValues}>
+          <SetInputContext.Provider value={addValue}>
+            <Grid
+              container
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              spacing={3.5}
+              ref={inputRef}
+            >
               <InputDisplayBox id={1} />
               <InputDisplayBox id={2} />
               <InputDisplayBox id={3} />
-            </SetInputContext.Provider>
-          </InputContext.Provider>
-        </Grid>
+            </Grid>
+          </SetInputContext.Provider>
+        </InputContext.Provider>
+        <Button onClick={createInputBox}>test</Button>
       </Container>
     </Box>
   );
