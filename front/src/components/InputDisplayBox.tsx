@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { Card, CardContent, Typography, Grid, TextField, Button, Stack } from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Box, Card, CardContent, Typography, Grid, TextField, Button, Stack } from '@mui/material';
 import { useContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
@@ -34,8 +35,8 @@ const InputDisplayBox = (props: VocabularyData) => {
   };
 
   return (
-    <Grid container item xs={10} md={10} spacing={2}>
-      <Grid item xs={6} md={6}>
+    <Grid container item xs={11} md={11} spacing={2}>
+      <Grid item xs={5} md={5}>
         <Card css={cardListCss} onClick={handleOpen}>
           <CardContent>
             <Grid
@@ -54,26 +55,29 @@ const InputDisplayBox = (props: VocabularyData) => {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={6} md={6}>
+      <Grid item xs={5} md={5}>
         <Card css={cardListCss} onClick={handleOpen}>
           <CardContent>
             <Grid
               container
+              item
               spacing={2}
               sx={{
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              xs={12}
-              md={12}
             >
-              <Grid item xs={6} md={6}>
+              <Grid item>
                 <Typography component="h3">{props.meaning}</Typography>
               </Grid>
             </Grid>
           </CardContent>
         </Card>
-        <Button onClick={() => deleteMyself(props.id)}>delete</Button>
+      </Grid>
+      <Grid item xs={1} md={1}>
+        <Box sx={{ color: 'gray', py: 1 }} onClick={() => deleteMyself(props.id)}>
+          <DeleteForeverIcon />
+        </Box>
       </Grid>
       <ModalCard title="単語編集" open={open} handleClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
