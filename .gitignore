@@ -1,8 +1,9 @@
 #ignore node modules
+.DS_Store
+
 /front/node_modules/
 /front/.next/
 /front/.DS_Store
 
 /api/.DS_Store
-/.DS_Store
 /api/tmp/cache/

@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import createEmotionServer from '@emotion/server/create-instance'
-import { RenderPageResult } from 'next/dist/shared/lib/utils'
+import createEmotionServer from '@emotion/server/create-instance';
+import { RenderPageResult } from 'next/dist/shared/lib/utils';
 import Document, {
   Html,
   Head,
   Main,
   NextScript,
   DocumentInitialProps,
-} from 'next/document'
-import * as React from 'react'
+} from 'next/document';
+import * as React from 'react';
 
-import createEmotionCache from '@/styles/createEmotionCache'
-import theme from '@/styles/theme'
+import createEmotionCache from '@/styles/createEmotionCache';
+import theme from '@/styles/theme';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
@@ -59,12 +59,12 @@ MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
   // 3. app.render
   // 4. page.render
 
-  const originalRenderPage = ctx.renderPage
+  const originalRenderPage = ctx.renderPage;
 
   // You can consider sharing the same emotion cache between all the SSR requests to speed up performance.
   // However, be aware that it can have global side effects.
-  const cache = createEmotionCache()
-  const { extractCriticalToChunks } = createEmotionServer(cache)
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = (): RenderPageResult | Promise<RenderPageResult> =>
     originalRenderPage({
@@ -72,12 +72,12 @@ MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
         (App: any) =>
         // eslint-disable-next-line react/display-name
         (props): JSX.Element => <App emotionCache={cache} {...props} />,
-    })
+    });
 
-  const initialProps = await Document.getInitialProps(ctx)
+  const initialProps = await Document.getInitialProps(ctx);
   // This is important. It prevents emotion to render invalid HTML.
   // See https://github.com/mui-org/material-ui/issues/26561#issuecomment-855286153
-  const emotionStyles = extractCriticalToChunks(initialProps.html)
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
@@ -85,7 +85,7 @@ MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
     />
-  ))
+  ));
 
   return {
     ...initialProps,
@@ -94,5 +94,5 @@ MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
       ...React.Children.toArray(initialProps.styles),
       ...emotionStyleTags,
     ],
-  }
-}
+  };
+};

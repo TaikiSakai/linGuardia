@@ -1,18 +1,27 @@
-import { red } from '@mui/material/colors'
-import { createTheme } from '@mui/material/styles'
+import { red } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+// ここにページ共通のカラーテーマを宣言する
+let theme = createTheme({
   palette: {
     primary: {
-      main: '#3EA8FF',
+      main: '#3063ba',
     },
     secondary: {
-      main: '#19857b',
+      main: '#3EA8FF',
     },
     error: {
       main: red.A400,
     },
   },
-})
+});
 
-export default theme
+theme = createTheme(theme, {
+  palette: {
+    background: {
+      main: '#e6f2ff',
+    },
+  },
+});
+
+export default theme;

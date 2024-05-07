@@ -1,0 +1,6 @@
+ja:
+  activerecord:
+    attributes:
+      card:
+        title: タイトル
+        status: ステータス
