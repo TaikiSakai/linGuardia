@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import { Box, Card, CardContent, Typography, Grid, TextField, Button } from '@mui/material';
+import { Card, CardContent, Typography, Grid, TextField, Button, Stack } from '@mui/material';
 import { useContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import EditModal from './EditModal';
+import ModalCard from './ModalCard';
 import useModal from './ModalState';
 import { AddInputContext, DeleteInputContext } from '@/pages/wordcards/create/[uuid]';
 import { VocabularyData } from '@/types/VocabularyType';
@@ -75,8 +75,8 @@ const InputDisplayBox = (props: VocabularyData) => {
         </Card>
         <Button onClick={() => deleteMyself(props.id)}>delete</Button>
       </Grid>
-      <EditModal title="単語新規登録" open={open} handleClose={handleClose}>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <ModalCard title="単語編集" open={open} handleClose={handleClose}>
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
           <Controller
             name={'word'}
             defaultValue={props.word}
@@ -115,9 +115,11 @@ const InputDisplayBox = (props: VocabularyData) => {
               />
             )}
           />
-          <Button type="submit">submit</Button>
-        </Box>
-      </EditModal>
+          <Button variant="contained" type="submit">
+            変更
+          </Button>
+        </Stack>
+      </ModalCard>
     </Grid>
   );
 };

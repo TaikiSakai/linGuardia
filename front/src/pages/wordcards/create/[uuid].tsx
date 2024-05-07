@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField } from '@mui/material';
+import { Box, Button, Container, Grid, TextField, Stack } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useState, createContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
-import EditModal from '@/components/EditModal';
+import ModalCard from '@/components/ModalCard';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
@@ -16,7 +16,6 @@ import { fetcher } from '@/utils';
 export const InputContext = createContext<VocabularyData[]>([]);
 export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
 export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
-
 
 const AddPage: NextPage = () => {
   const router = useRouter();
@@ -80,6 +79,7 @@ const AddPage: NextPage = () => {
                     id={item.id}
                     word={item.word}
                     meaning={item.meaning}
+                    roles={[]}
                   />
                 ))}
               </Grid>
@@ -89,8 +89,8 @@ const AddPage: NextPage = () => {
         <Button onClick={handleOpen}>test</Button>
         <Button onClick={() => console.log(inputValues)}>show inputvalues</Button>
       </Container>
-      <EditModal title="単語新規登録" open={open} handleClose={handleClose}>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <ModalCard title="単語新規登録" open={open} handleClose={handleClose}>
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
           <Controller
             name={'word'}
             defaultValue={''}
@@ -129,9 +129,9 @@ const AddPage: NextPage = () => {
               />
             )}
           />
-          <Button type="submit">submit</Button>
-        </Box>
-      </EditModal>
+          <Button variant="contained" type="submit">追加</Button>
+        </Stack>
+      </ModalCard>
     </Box>
   );
 };
