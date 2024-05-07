@@ -1,36 +1,35 @@
-import { InputTwoTone } from '@mui/icons-material';
 import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useState, createContext } from 'react';
+import { useState, createContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
+import EditModal from '@/components/EditModal';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
-import { useRef } from 'react';
 
-type inputType = {
-  id: number;
-  word: string;
-  meaning: string;
-};
+export const InputContext = createContext<VocabularyData[]>([]);
+export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
+export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
 
-export const InputContext = createContext<inputType[]>([]);
-export const SetInputContext = createContext<(newValue: inputType) => void>(() => {});
 
 const AddPage: NextPage = () => {
   const router = useRouter();
-  const { uuid } = router.query;
-  const inputRef = useRef(null);
+  const { handleSubmit, control, reset } = useForm<VocabularyData>();
+  const [open, handleOpen, handleClose] = useModal(reset);
 
-  // 入力された単語オブジェクトを登録する処理
-  const [inputValues, setInputValue] = useState<inputType[]>([]);
-  const addValue = (newValue: inputType) => {
+  // 入力値のインデックス管理 
+  // カウンターを使用することで、入力値を削除した場合でもインデックスが重複しない
+  const [count, setCount] = useState<number>(0);
+
+  const [inputValues, setInputValue] = useState<VocabularyData[]>([]);
+
+  const addInputValue = (newValue: VocabularyData) => {
     // inputValuesに同じidを持つオブジェクトがあるか確認
     const id = inputValues.findIndex((item) => item.id === newValue.id);
     // 同じidが存在する場合は、そのidが返る
@@ -38,11 +37,22 @@ const AddPage: NextPage = () => {
       inputValues[id] = newValue;
       setInputValue(inputValues);
     }
-    // idが存在しない場合は-1が返るので、配列にオブジェクトを追加する
+    // idが存在しない場合は-1が買えるので、配列にオブジェクトを追加する
     else {
       setInputValue([...inputValues, newValue]);
     }
-    console.log(inputValues);
+    setCount(count + 1);
+  };
+
+  // delete  input 入力されたidを除外して新たに配列を作成する
+  const deleteInputValue = (valueId: number) => {
+    setInputValue((prevInputValue) => prevInputValue.filter((item) => item.id !== valueId));
+  };
+
+  // typeはform用に変更すること
+  const onSubmit = (data: VocabularyData) => {
+    data['id'] = data['id'] === undefined ? count : data['id'];
+    addInputValue(data);
   };
 
   return (
@@ -54,24 +64,74 @@ const AddPage: NextPage = () => {
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
         <InputContext.Provider value={inputValues}>
-          <SetInputContext.Provider value={addValue}>
-            <Grid
-              container
-              sx={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              spacing={3.5}
-              ref={inputRef}
-            >
-              <InputDisplayBox id={1} />
-              <InputDisplayBox id={2} />
-              <InputDisplayBox id={3} />
-            </Grid>
-          </SetInputContext.Provider>
+          <AddInputContext.Provider value={addInputValue}>
+            <DeleteInputContext.Provider value={deleteInputValue}>
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                spacing={3.5}
+              >
+                {inputValues.map((item) => (
+                  <InputDisplayBox
+                    key={item.id}
+                    id={item.id}
+                    word={item.word}
+                    meaning={item.meaning}
+                  />
+                ))}
+              </Grid>
+            </DeleteInputContext.Provider>
+          </AddInputContext.Provider>
         </InputContext.Provider>
-        <Button onClick={createInputBox}>test</Button>
+        <Button onClick={handleOpen}>test</Button>
+        <Button onClick={() => console.log(inputValues)}>show inputvalues</Button>
       </Container>
+      <EditModal title="単語新規登録" open={open} handleClose={handleClose}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name={'word'}
+            defaultValue={''}
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                type="text"
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+                placeholder="表面"
+                fullWidth
+                size="small"
+                multiline
+                rows={3}
+                sx={{ backgroundColor: 'white' }}
+              />
+            )}
+          />
+          <Controller
+            name={'meaning'}
+            defaultValue={''}
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                type="text"
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+                placeholder="裏面"
+                fullWidth
+                size="small"
+                multiline
+                rows={3}
+                sx={{ backgroundColor: 'white' }}
+              />
+            )}
+          />
+          <Button type="submit">submit</Button>
+        </Box>
+      </EditModal>
     </Box>
   );
 };
