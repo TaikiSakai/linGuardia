@@ -1,13 +1,5 @@
 import { css } from '@emotion/react';
-import {
-  Box,
-  Button,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Link,
-} from '@mui/material';
+import { Box, Button, Typography, Grid, Card, CardContent, Link } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -41,9 +33,7 @@ const ModalCard = (props: currentCardProps) => {
 
   // mui Linkが通常のリンクとして機能してしまうため、
   // useRouterでspaに対応
-  const startFlashcard = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const startFlashcard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     router.push(`/wordcards/${props.uuid}`);
   };
@@ -73,11 +63,7 @@ const ModalCard = (props: currentCardProps) => {
                 </Grid>
                 <Grid container sx={{ justifyContent: 'center' }}>
                   <Grid item sx={{ p: 2 }}>
-                    <ToggleButtonGroup
-                      color="primary"
-                      exclusive
-                      aria-label="Platform"
-                    >
+                    <ToggleButtonGroup color="primary" exclusive aria-label="Platform">
                       <ToggleButton css={switchCss} value="face">
                         表面
                       </ToggleButton>
@@ -87,11 +73,7 @@ const ModalCard = (props: currentCardProps) => {
                     </ToggleButtonGroup>
                   </Grid>
                   <Grid item sx={{ p: 2 }}>
-                    <ToggleButtonGroup
-                      color="primary"
-                      exclusive
-                      aria-label="Platform"
-                    >
+                    <ToggleButtonGroup color="primary" exclusive aria-label="Platform">
                       <ToggleButton css={switchCss} value="face">
                         順番通り
                       </ToggleButton>

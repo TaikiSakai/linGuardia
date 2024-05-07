@@ -19,10 +19,7 @@ const EditVocabPage: NextPage = () => {
   const { uuid } = router.query;
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
-  const { data, error } = useSWR(
-    uuid ? url + uuid + '/vocabularies' : null,
-    fetcher,
-  );
+  const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
 
   const { handleSubmit, control } = useForm<VocabularyFormData>();
 
