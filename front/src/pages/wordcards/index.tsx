@@ -28,6 +28,7 @@ const Index: NextPage = () => {
       css={styles.pageMinHeight}
       sx={{
         backgroundColor: '#e6f2ff',
+        pb: 7,
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
