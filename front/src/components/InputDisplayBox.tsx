@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Box, Card, CardContent, Typography, Grid, TextField, Button, Stack } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useContext } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
@@ -33,6 +34,7 @@ const InputDisplayBox = (props: VocabularyData) => {
     data['id'] = props.id;
     addInputValue(data);
   };
+  console.log('inputbox');
 
   return (
     <Grid container item xs={11} md={11} spacing={2}>
@@ -116,6 +118,27 @@ const InputDisplayBox = (props: VocabularyData) => {
                 multiline
                 rows={3}
                 sx={{ backgroundColor: 'white' }}
+              />
+            )}
+          />
+          <Controller
+            name={'roles'}
+            defaultValue={props.roles}
+            control={control}
+            render={({ field }) => (
+              <Autocomplete
+                multiple
+                limitTags={3}
+                defaultValue={props.roles}
+                value={field.value}
+                options={['動詞', '名詞', '形容詞', '副詞']}
+                onChange={(_, value) => {
+                  field.onChange(value);
+                  console.log(field.value);
+                }}
+                renderInput={(params) => (
+                  <TextField type="text" {...params} label="品詞を選択してください" />
+                )}
               />
             )}
           />

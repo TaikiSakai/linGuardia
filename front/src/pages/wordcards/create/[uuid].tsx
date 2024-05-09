@@ -1,5 +1,6 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Button, Container, Grid, TextField, Stack, Paper } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -84,7 +85,7 @@ const AddPage: NextPage = () => {
                     id={item.id}
                     word={item.word}
                     meaning={item.meaning}
-                    roles={[]}
+                    roles={item.roles}
                   />
                 ))}
               </Grid>
@@ -133,13 +134,33 @@ const AddPage: NextPage = () => {
               />
             )}
           />
+          <Controller
+            name={'roles'}
+            // defaultValue={props.roles}
+            control={control}
+            render={({ field }) => (
+              <Autocomplete
+                multiple
+                limitTags={3}
+                // defaultValue={['動詞']}
+                value={field.value}
+                options={['動詞', '名詞', '形容詞', '副詞']}
+                onChange={(_, value) => field.onChange(value)}
+                renderInput={(params) => (
+                  <TextField type="text" {...params} {...field} label="品詞を選択してください" />
+                )}
+              />
+            )}
+          />
           <Button variant="contained" type="submit">
             追加
           </Button>
         </Stack>
       </ModalCard>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-        <BottomNavigation showLabels>
+        <BottomNavigation>
+          {/* 修正して */}
+          {/* client.js:26 Warning: React does not recognize the `showLabel` prop on a DOM elemen */}
           <Box display="flex" alignItems="center">
             <Link href="/wordcards">
               <Button sx={{ width: 100 }}>キャンセル</Button>
