@@ -27,10 +27,7 @@ const InputDisplayBox = (props: VocabularyData) => {
   // 値を更新しないでmodalを閉じた場合は、入力値をリセットする
   const [open, handleOpen, handleClose] = useModal(reset);
 
-  const onSubmit: SubmitHandler<VocabularyData> = (data, event) => {
-    if (event) {
-      event.preventDefault();
-    }
+  const onSubmit = (data: VocabularyData) => {
     data['id'] = props.id;
     addInputValue(data);
   };
@@ -129,16 +126,15 @@ const InputDisplayBox = (props: VocabularyData) => {
               <Autocomplete
                 multiple
                 limitTags={3}
-                defaultValue={props.roles}
-                value={field.value}
+                // valueの初期値はundefinedになるので、uncontrolledコンポーネントになる
+                // これを書き換えようとするとエラーになる
+                value={field.value === undefined ? [] : field.value}
                 options={['動詞', '名詞', '形容詞', '副詞']}
                 onChange={(_, value) => {
                   field.onChange(value);
                   console.log(field.value);
                 }}
-                renderInput={(params) => (
-                  <TextField type="text" {...params} label="品詞を選択してください" />
-                )}
+                renderInput={(params) => <TextField type="text" {...params} label="品詞" />}
               />
             )}
           />

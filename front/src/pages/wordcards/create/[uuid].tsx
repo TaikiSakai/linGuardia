@@ -1,22 +1,17 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Button, Container, Grid, TextField, Stack, Paper } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, createContext } from 'react';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import useSWR from 'swr';
-import ModalCard from '@/components/ModalCard';
+import { useForm, Controller } from 'react-hook-form';
 import InputDisplayBox from '@/components/InputDisplayBox';
+import ModalCard from '@/components/ModalCard';
 import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
-import { fetcher } from '@/utils';
 
 export const InputContext = createContext<VocabularyData[]>([]);
 export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
@@ -30,7 +25,6 @@ const AddPage: NextPage = () => {
   // 入力値のインデックス管理
   // カウンターを使用することで、入力値を削除した場合でもインデックスが重複しない
   const [count, setCount] = useState<number>(0);
-
   const [inputValues, setInputValue] = useState<VocabularyData[]>([]);
 
   const addInputValue = (newValue: VocabularyData) => {
@@ -41,22 +35,49 @@ const AddPage: NextPage = () => {
       inputValues[id] = newValue;
       setInputValue(inputValues);
     }
-    // idが存在しない場合は-1が買えるので、配列にオブジェクトを追加する
+    // idが存在しない場合は-1が返るので、配列にオブジェクトを追加する
     else {
       setInputValue([...inputValues, newValue]);
     }
     setCount(count + 1);
   };
 
-  // delete  input 入力されたidを除外して新たに配列を作成する
+  // 入力値の削除 入力されたidを除外して新たに配列を作成する
   const deleteInputValue = (valueId: number) => {
     setInputValue((prevInputValue) => prevInputValue.filter((item) => item.id !== valueId));
   };
 
-  // typeはform用に変更すること
-  const onSubmit = (data: VocabularyData) => {
+  const addToIndex = (data: VocabularyData) => {
     data['id'] = data['id'] === undefined ? count : data['id'];
     addInputValue(data);
+  };
+
+  const onSubmit = () => {
+    const { uuid } = router.query;
+    const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/' + uuid + '/vocabularies/';
+
+    const data = JSON.stringify({
+      vocabularies: inputValues,
+    });
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'access-token': localStorage.getItem('access-token'),
+      client: localStorage.getItem('client'),
+      uid: localStorage.getItem('uid'),
+    };
+    axios({
+      method: 'POST',
+      url: url,
+      headers: headers,
+      data: data,
+    })
+      .then((res: AxiosResponse) => {
+        console.log(res.data.message);
+      })
+      .catch((e: AxiosError<{ error: string }>) => {
+        console.log(e.message);
+      });
   };
 
   return (
@@ -95,7 +116,7 @@ const AddPage: NextPage = () => {
         <Button onClick={() => console.log(inputValues)}>show inputvalues</Button>
       </Container>
       <ModalCard title="単語新規登録" open={open} handleClose={handleClose}>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Stack component="form" onSubmit={handleSubmit(addToIndex)} spacing={4}>
           <Controller
             name={'word'}
             defaultValue={''}
@@ -136,18 +157,17 @@ const AddPage: NextPage = () => {
           />
           <Controller
             name={'roles'}
-            // defaultValue={props.roles}
             control={control}
+            defaultValue={[]}
             render={({ field }) => (
               <Autocomplete
                 multiple
                 limitTags={3}
-                // defaultValue={['動詞']}
-                value={field.value}
+                value={field.value === undefined ? [] : field.value}
                 options={['動詞', '名詞', '形容詞', '副詞']}
                 onChange={(_, value) => field.onChange(value)}
                 renderInput={(params) => (
-                  <TextField type="text" {...params} {...field} label="品詞を選択してください" />
+                  <TextField type="text" {...params} label="品詞を選択してください" />
                 )}
               />
             )}
@@ -158,21 +178,23 @@ const AddPage: NextPage = () => {
         </Stack>
       </ModalCard>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-        <BottomNavigation>
-          {/* 修正して */}
-          {/* client.js:26 Warning: React does not recognize the `showLabel` prop on a DOM elemen */}
-          <Box display="flex" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
+          <Grid item>
             <Link href="/wordcards">
               <Button sx={{ width: 100 }}>キャンセル</Button>
             </Link>
-          </Box>
-          <Button onClick={handleOpen}>
-            <AddCircleIcon />
-          </Button>
-          <Box display="flex" alignItems="center">
-            <Button sx={{ width: 100 }}>登録</Button>
-          </Box>
-        </BottomNavigation>
+          </Grid>
+          <Grid item>
+            <Button onClick={handleOpen}>
+              <AddCircleIcon />
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button onClick={onSubmit} sx={{ width: 100 }}>
+              登録
+            </Button>
+          </Grid>
+        </Grid>
       </Paper>
     </Box>
   );
