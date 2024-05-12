@@ -29,7 +29,7 @@ const ModalCard = (props: modalProps) => {
             <Grid container>
               <Grid container item sx={{ p: 1 }}>
                 <Grid item xs={6} md={6}>
-                  <Typography component="h3" sx={{ fontSize: 25, fontWeight: 'bold' }}>
+                  <Typography component="h3" sx={{ fontSize: 20, fontWeight: 'bold' }}>
                     {props.title}
                   </Typography>
                 </Grid>
