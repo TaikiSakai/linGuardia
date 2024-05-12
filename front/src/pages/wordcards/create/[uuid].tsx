@@ -5,7 +5,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, createContext } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import ModalCard from '@/components/ModalCard';
@@ -13,9 +13,9 @@ import useModal from '@/components/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 
-export const InputContext = createContext<VocabularyData[]>([]);
-export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
-export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
+// export const InputContext = createContext<VocabularyData[]>([]);
+// export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
+// export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
 
 const AddPage: NextPage = () => {
   const router = useRouter();
@@ -29,11 +29,13 @@ const AddPage: NextPage = () => {
 
   const addInputValue = (newValue: VocabularyData) => {
     // inputValuesに同じidを持つオブジェクトがあるか確認
-    const id = inputValues.findIndex((item) => item.id === newValue.id);
-    // 同じidが存在する場合は、そのidが返る
-    if (id !== -1) {
-      inputValues[id] = newValue;
-      setInputValue(inputValues);
+    const index = inputValues.findIndex((item) => item.id === newValue.id);
+
+    // 同じidが存在する場合は、そのindexが返る
+    if (index !== -1) {
+      const updatedInputValues = [...inputValues];
+      updatedInputValues[index] = newValue;
+      setInputValue(updatedInputValues);
     }
     // idが存在しない場合は-1が返るので、配列にオブジェクトを追加する
     else {
@@ -50,6 +52,7 @@ const AddPage: NextPage = () => {
   const addToIndex = (data: VocabularyData) => {
     data['id'] = data['id'] === undefined ? count : data['id'];
     addInputValue(data);
+    handleClose();
   };
 
   const onSubmit = () => {
@@ -89,30 +92,26 @@ const AddPage: NextPage = () => {
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
-        <InputContext.Provider value={inputValues}>
-          <AddInputContext.Provider value={addInputValue}>
-            <DeleteInputContext.Provider value={deleteInputValue}>
-              <Grid
-                container
-                sx={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                spacing={3.5}
-              >
-                {inputValues.map((item) => (
-                  <InputDisplayBox
-                    key={item.id}
-                    id={item.id}
-                    word={item.word}
-                    meaning={item.meaning}
-                    roles={item.roles}
-                  />
-                ))}
-              </Grid>
-            </DeleteInputContext.Provider>
-          </AddInputContext.Provider>
-        </InputContext.Provider>
+        <Grid
+          container
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          spacing={3.5}
+        >
+          {inputValues.map((item) => (
+            <InputDisplayBox
+              key={item.id}
+              id={item.id}
+              word={item.word}
+              meaning={item.meaning}
+              roles={item.roles}
+              addValue={addInputValue}
+              deleteValue={deleteInputValue}
+            />
+          ))}
+        </Grid>
         <Button onClick={() => console.log(inputValues)}>show inputvalues</Button>
       </Container>
       <ModalCard title="単語新規登録" open={open} handleClose={handleClose}>
@@ -191,7 +190,7 @@ const AddPage: NextPage = () => {
           </Grid>
           <Grid item>
             <Button onClick={onSubmit} sx={{ width: 100 }}>
-              登録
+              保存
             </Button>
           </Grid>
         </Grid>
