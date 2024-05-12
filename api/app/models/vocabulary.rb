@@ -17,7 +17,7 @@ class Vocabulary < ApplicationRecord
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
 
-        role_names = vocabulary_params[:role]
+        role_names = vocabulary_params[:roles]
         vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
@@ -34,9 +34,12 @@ class Vocabulary < ApplicationRecord
         vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
         vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
         
-        role_names = vocabulary_params[:role]
-        vocabulary.roles.clear
-        vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        role_names = vocabulary_params[:roles]
+
+        if !role_names.nil?
+          vocabulary.roles.clear
+          vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        end
 
         vocabulary.save!
       end      

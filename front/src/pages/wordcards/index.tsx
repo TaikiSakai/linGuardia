@@ -2,6 +2,7 @@ import { Grid, Container, Box } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
+import CardMenu from '@/components/CardMenu';
 import Wordcard from '@/components/Wordcard';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
@@ -32,6 +33,7 @@ const Index: NextPage = () => {
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
+        <CardMenu />
         <Grid
           container
           spacing={3}

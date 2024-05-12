@@ -51,10 +51,7 @@ const SignUp: NextPage = () => {
         headers: headers,
       })
         .then((res: AxiosResponse) => {
-          localStorage.setItem(
-            'access-token',
-            res.headers['access-token'] || '',
-          );
+          localStorage.setItem('access-token', res.headers['access-token'] || '');
           localStorage.setItem('client', res.headers['client'] || '');
           localStorage.setItem('uid', res.headers['uid'] || '');
           // snackbar
@@ -79,13 +76,7 @@ const SignUp: NextPage = () => {
       }}
     >
       <Grid container columns={20}>
-        <Grid
-          item
-          xs={15}
-          md={18}
-          sx={{ margin: 'auto', pt: 20 }}
-          style={{ maxWidth: '500px' }}
-        >
+        <Grid item xs={15} md={18} sx={{ margin: 'auto', pt: 20 }} style={{ maxWidth: '500px' }}>
           <Card sx={{ p: 2 }}>
             <Typography
               component="h2"
@@ -98,11 +89,7 @@ const SignUp: NextPage = () => {
             >
               ユーザー登録
             </Typography>
-            <Stack
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              spacing={4}
-            >
+            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
               <Controller
                 name="name"
                 control={control}

@@ -27,13 +27,13 @@ export const useUserState = () => {
 export const useSnackbarState = () => {
   type snackbarStateStype = {
     message: null | string;
-    severity: null | 'success' | 'error' | 'info' | 'aleart';
+    severity: 'success' | 'error' | 'info';
     pathname: null | string;
   };
 
   const initialData: snackbarStateStype = {
     message: null,
-    severity: null,
+    severity: 'success',
     pathname: null,
   };
 

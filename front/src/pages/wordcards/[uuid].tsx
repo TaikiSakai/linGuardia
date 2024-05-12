@@ -29,7 +29,7 @@ type vocabularyProps = {
   id: number;
   word: string;
   meaning: string;
-  roles: string;
+  roles: string[];
 };
 
 const Flashcard: NextPage = () => {
@@ -39,14 +39,11 @@ const Flashcard: NextPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
-  const { data, error } = useSWR(
-    uuid ? url + uuid + '/vocabularies' : null,
-    fetcher,
-  );
+  const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
 
   useEffect(() => {
     if (data) {
-      const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies);
+      const vocabularies: vocabularyProps[] = camelcaseKeys(data);
       setCards(vocabularies);
     }
   }, [data]);
@@ -64,7 +61,6 @@ const Flashcard: NextPage = () => {
   const currentCard = cards[currentIndex] || null;
 
   console.log(cards[currentIndex]);
-  console.log(currentCard);
 
   return (
     <Box
@@ -144,10 +140,7 @@ const Flashcard: NextPage = () => {
                 <Button onClick={returnCard} disabled={currentIndex === 0}>
                   return
                 </Button>
-                <Button
-                  onClick={nextCard}
-                  disabled={currentIndex === cards.length - 1}
-                >
+                <Button onClick={nextCard} disabled={currentIndex === cards.length - 1}>
                   next
                 </Button>
               </Box>
