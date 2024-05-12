@@ -6,6 +6,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
+import { useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 import type { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
@@ -18,16 +19,18 @@ const fontSizeCss = css({
 });
 
 const Flashcard: NextPage = () => {
+  const router = useRouter();
+  const { uuid } = router.query;
+
+  const [, setSnackbar] = useSnackbarState();
+
   const [cards, setCards] = useState<VocabularyData[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
   const [beTurnedOver, setBeTurnedOver] = useState<boolean>(false);
   const turnOver: () => void = () => {
     setBeTurnedOver(!beTurnedOver);
   };
 
-  const router = useRouter();
-  const uuid = 'fdb2146f-8d35-43a1-a6fc-24e30d338204';
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
 
@@ -48,7 +51,15 @@ const Flashcard: NextPage = () => {
     beTurnedOver && turnOver();
   };
 
-  if (error) return <div>error</div>;
+  if (error) {
+    setSnackbar({
+      message: error.response.data.message,
+      severity: 'error',
+      pathname: '/wordcards',
+    });
+    router.push('/wordcards');
+  }
+
   if (!data) return <div>Loading...</div>;
 
   const currentCard = cards[currentIndex] || null;

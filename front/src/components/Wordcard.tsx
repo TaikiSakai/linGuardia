@@ -5,7 +5,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ModalCard from './ModalCard';
-import useModal from './ModalState';
+import useModal from '@/hooks/ModalState';
 
 type wordcardProps = {
   uuid: string;

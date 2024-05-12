@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Typography, Grid, TextField, Button, Stack } fr
 import Autocomplete from '@mui/material/Autocomplete';
 import { useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
-import useModal from './ModalState';
+import useModal from '@/hooks/ModalState';
 import { VocabularyData } from '@/types/VocabularyType';
 
 const cardListCss = css({
