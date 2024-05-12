@@ -29,7 +29,7 @@ type vocabularyProps = {
   id: number;
   word: string;
   meaning: string;
-  roles: string;
+  roles: string[];
 };
 
 const Flashcard: NextPage = () => {
@@ -43,7 +43,7 @@ const Flashcard: NextPage = () => {
 
   useEffect(() => {
     if (data) {
-      const vocabularies: vocabularyProps[] = camelcaseKeys(data.vocabularies);
+      const vocabularies: vocabularyProps[] = camelcaseKeys(data);
       setCards(vocabularies);
     }
   }, [data]);
@@ -61,7 +61,6 @@ const Flashcard: NextPage = () => {
   const currentCard = cards[currentIndex] || null;
 
   console.log(cards[currentIndex]);
-  console.log(currentCard);
 
   return (
     <Box
