@@ -26,7 +26,7 @@ const Wordcard = (props: wordcardProps) => {
   // useRouterでspaに対応
   const startFlashcard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    router.push('/wordcards/' + props.uuid);
+    router.push('/wordcards/flashcard/' + props.uuid);
   };
 
   return (
