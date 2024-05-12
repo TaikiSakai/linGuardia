@@ -6,9 +6,9 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     vocabularies = @card.vocabularies.includes(:roles)
 
     if vocabularies.empty?
-      render json: { message: "単語が登録されていません"}, status: :ok
+      render json: { message: "単語が登録されていません"}, status: :not_found
     else
-      render json: {vocabularies: vocabularies }, each_serializer: VocabularySerializer, status: :ok
+      render json: vocabularies, each_serializer: VocabularySerializer, status: :ok
     end
   end
 
@@ -41,7 +41,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
       # paramsを単語ごとに取り出して配列に入れる
       # 単語をまとめて登録するために使用する
       params.require(:vocabularies).map do |vocabulary_params|
-        vocabulary_params.permit(:id, :word, :meaning, role: [])
+        vocabulary_params.permit(:id, :word, :meaning, roles: [])
       end
     end
 
