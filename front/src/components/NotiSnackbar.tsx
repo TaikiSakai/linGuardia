@@ -20,7 +20,7 @@ const NotiSnackbar = () => {
     }
 
     setOpen(false);
-    setSnackbar({ message: null, severity: null, pathname: null });
+    setSnackbar({ message: null, severity: 'success', pathname: null });
   };
 
   return (
