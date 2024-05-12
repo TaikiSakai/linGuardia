@@ -10,7 +10,7 @@ import Select from '@mui/material/Select';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
-import useModal from './ModalState';
+import useModal from '@/hooks/ModalState';
 
 // フォントの設定
 const fontSizeCss = css({

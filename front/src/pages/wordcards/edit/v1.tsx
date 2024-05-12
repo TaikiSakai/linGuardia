@@ -2,7 +2,6 @@ import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
 import { styles } from '@/styles';
@@ -15,7 +14,6 @@ type VocabularyFormData = VocabularyData & {
 };
 
 const EditVocabPage: NextPage = () => {
-  const router = useRouter();
   const uuid = 'f0c520c6-681b-45f6-9008-d27e77269303';
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';

@@ -5,7 +5,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ModalCard from './ModalCard';
-import useModal from './ModalState';
+import useModal from '@/hooks/ModalState';
 
 type wordcardProps = {
   uuid: string;
@@ -26,7 +26,7 @@ const Wordcard = (props: wordcardProps) => {
   // useRouterでspaに対応
   const startFlashcard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    router.push('/wordcards/' + props.uuid);
+    router.push('/wordcards/flashcard/' + props.uuid);
   };
 
   return (

@@ -26,7 +26,13 @@ const NotiSnackbar = () => {
   return (
     <>
       {snackbar.message != null && (
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        <Snackbar
+          open={open}
+          onClose={handleClose}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          sx={{ mt: '60px' }}
+        >
           <Alert
             onClose={handleClose}
             severity={snackbar.severity}

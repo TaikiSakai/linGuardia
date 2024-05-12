@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import ModalCard from '@/components/ModalCard';
-import useModal from '@/components/ModalState';
+import useModal from '@/hooks/ModalState';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 
