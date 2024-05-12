@@ -2,11 +2,9 @@ import { css } from '@emotion/react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Box, Card, CardContent, Typography, Grid, TextField, Button, Stack } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useContext } from 'react';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
 import useModal from './ModalState';
-import { AddInputContext, DeleteInputContext } from '@/pages/wordcards/create/[uuid]';
 import { VocabularyData } from '@/types/VocabularyType';
 
 const cardListCss = css({
@@ -19,9 +17,16 @@ const cardListCss = css({
   justifyContent: 'center',
 });
 
-const InputDisplayBox = (props: VocabularyData) => {
-  const addInputValue = useContext(AddInputContext);
-  const deleteMyself = useContext(DeleteInputContext);
+type DisplayBoxType = VocabularyData & {
+  addValue: (newValue: VocabularyData) => void;
+  deleteValue: (valueId: number) => void;
+};
+
+const InputDisplayBox = (props: DisplayBoxType) => {
+  // const addInputValue = useContext(AddInputContext);
+  // const deleteMyself = useContext(DeleteInputContext);
+  const addInputValue = props.addValue;
+  const deleteMyself = props.deleteValue;
 
   const { handleSubmit, control, reset } = useForm<VocabularyData>();
   // 値を更新しないでmodalを閉じた場合は、入力値をリセットする
@@ -120,7 +125,7 @@ const InputDisplayBox = (props: VocabularyData) => {
           />
           <Controller
             name={'roles'}
-            defaultValue={props.roles}
+            defaultValue={props.roles || []}
             control={control}
             render={({ field }) => (
               <Autocomplete
@@ -132,7 +137,6 @@ const InputDisplayBox = (props: VocabularyData) => {
                 options={['動詞', '名詞', '形容詞', '副詞']}
                 onChange={(_, value) => {
                   field.onChange(value);
-                  console.log(field.value);
                 }}
                 renderInput={(params) => <TextField type="text" {...params} label="品詞" />}
               />
