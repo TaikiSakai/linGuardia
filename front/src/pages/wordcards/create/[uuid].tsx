@@ -10,6 +10,7 @@ import { useForm, Controller } from 'react-hook-form';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
+import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
@@ -22,8 +23,11 @@ const AddPage: NextPage = () => {
   useRequireSignedIn();
 
   const router = useRouter();
+  const { uuid } = router.query;
+
   const { handleSubmit, control, reset } = useForm<VocabularyData>();
   const [open, handleOpen, handleClose] = useModal(reset);
+  const [, setSnackbar] = useSnackbarState();
 
   // 入力値のインデックス管理
   // カウンターを使用することで、入力値を削除した場合でもインデックスが重複しない
@@ -59,9 +63,7 @@ const AddPage: NextPage = () => {
   };
 
   const onSubmit = () => {
-    const { uuid } = router.query;
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/' + uuid + '/vocabularies/';
-
     const data = JSON.stringify({
       vocabularies: inputValues,
     });
@@ -80,9 +82,20 @@ const AddPage: NextPage = () => {
     })
       .then((res: AxiosResponse) => {
         console.log(res.data.message);
+        setSnackbar({
+          message: res.data.message,
+          severity: 'success',
+          pathname: '/wordcards',
+        });
+        router.push('/wordcards');
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
+        console.log(e);
+        setSnackbar({
+          message: e.message,
+          severity: 'error',
+          pathname: '/wordcards/create/[uuid]',
+        });
       });
   };
 

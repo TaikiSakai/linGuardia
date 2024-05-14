@@ -31,8 +31,11 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   
   def destroy
     vocabulary = @card.vocabularies.find(params[:id])
-    vocabulary.destroy!
-    render json: { message: "削除しました" }, statu: :ok    
+    if vocabulary.destroy
+      render json: { message: "単語を削除しました" }, statu: :ok
+    else
+      render json: { message: "単語の削除に失敗しました" }, status: :unprocessable_entity
+    end
   end
 
   private
