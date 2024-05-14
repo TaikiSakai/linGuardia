@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 import useSWR from 'swr';
 import CardMenu from '@/components/CardMenu';
 import Wordcard from '@/components/Wordcard';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
 
@@ -15,8 +16,9 @@ type wordcardProps = {
 };
 
 const Index: NextPage = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards';
+  useRequireSignedIn();
 
+  const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards';
   const { data, error } = useSWR(url ? url : null, fetcher);
 
   if (error) return <div>単語帳を取得できません</div>;

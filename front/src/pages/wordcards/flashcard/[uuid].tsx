@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import type { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
@@ -19,6 +20,7 @@ const fontSizeCss = css({
 });
 
 const Flashcard: NextPage = () => {
+  useRequireSignedIn();
   const router = useRouter();
   const { uuid } = router.query;
 
