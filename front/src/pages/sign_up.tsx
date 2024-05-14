@@ -72,12 +72,16 @@ const SignUp: NextPage = () => {
             message: '入力したメールアドレスへ確認メールを送信しました',
             severity: 'info',
             pathname: '/sign_in',
-          })
+          });
           router.push('/sign_in');
         })
         .catch((e: AxiosError<{ error: string }>) => {
           console.log(e.message);
-          // snackbar
+          setSnackbar({
+            message: 'エラーが発生しました。しばらく経ってからやり直してください',
+            severity: 'error',
+            pathname: '/sign_up',
+          });
           router.push('/sign_up');
         });
       setIsLoading(false);
