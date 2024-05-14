@@ -28,9 +28,9 @@ const EditVocabPage: NextPage = () => {
     setSnackbar({
       message: error.response.data.message,
       severity: 'error',
-      pathname: '/wordcards',
+      pathname: '/wordcards/create/[uuid]',
     });
-    router.push('/wordcards');
+    router.push('/wordcards/create/' + uuid);
   }
 
   if (!data) return <div>Loading...</div>;
@@ -57,6 +57,7 @@ const EditVocabPage: NextPage = () => {
   const deleteInputValue = (valueId: number) => {
     console.log(valueId);
 
+    // deleteはURLに削除する単語のidを含んでいるので、dataは送らない
     axios({
       method: 'DELETE',
       url: url + uuid + '/vocabularies/' + valueId,
@@ -65,6 +66,11 @@ const EditVocabPage: NextPage = () => {
       .then((res: AxiosResponse) => {
         setInputValue((prevInputValue) => prevInputValue.filter((item) => item.id !== valueId));
         console.log(res.data.message);
+        setSnackbar({
+          message: res.data.message,
+          severity: 'success',
+          pathname: '/wordcards/edit/[uuid]',
+        });
       })
       .catch((e: AxiosError<{ error: string }>) => {
         console.log(e.message);
@@ -89,9 +95,20 @@ const EditVocabPage: NextPage = () => {
     })
       .then((res: AxiosResponse) => {
         console.log(res.data.message);
+        setSnackbar({
+          message: res.data.message,
+          severity: 'success',
+          pathname: '/wordcards',
+        });
+        router.push('/wordcards');
       })
       .catch((e: AxiosError<{ error: string }>) => {
         console.log(e.message);
+        setSnackbar({
+          message: e.message,
+          severity: 'error',
+          pathname: '/wordcards/edit/[uuid]',
+        });
       });
   };
 
