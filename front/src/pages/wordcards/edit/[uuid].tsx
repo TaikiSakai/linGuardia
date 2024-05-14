@@ -7,11 +7,14 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 import { fetcher } from '@/utils';
 
 const EditVocabPage: NextPage = () => {
+  useRequireSignedIn();
+
   const router = useRouter();
   const { uuid } = router.query;
 
