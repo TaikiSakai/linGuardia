@@ -1,5 +1,3 @@
-import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
 import {
   AppBar,
   Box,
@@ -60,29 +58,13 @@ const Header = () => {
                       color="primary"
                       variant="text"
                       sx={{
-                        color: 'gray',
                         textTransform: 'none',
                         fontSize: 16,
                         borderRadius: 1,
                         boxShadow: 'none',
                       }}
                     >
-                      Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/sign_up">
-                    <Button
-                      color="primary"
-                      variant="text"
-                      sx={{
-                        textTransform: 'none',
-                        fontSize: 16,
-                        borderRadius: 1,
-                        boxShadow: 'none',
-                        ml: 2,
-                      }}
-                    >
-                      Sign up
+                      LogIn
                     </Button>
                   </Link>
                 </Box>
@@ -90,22 +72,19 @@ const Header = () => {
               {user.isSignedIn && (
                 <Box>
                   <Stack direction="row">
-                    <Box sx={{ color: 'gray', px: '10px' }}>
-                      <SearchIcon />
-                      <PersonIcon />
-                    </Box>
                     <Box>
-                      <Typography
-                        onClick={handleClick}
-                        variant="h5"
-                        sx={{
-                          fontSize: 20,
-                          color: 'gray',
-                          fontWeight: 'solid',
-                        }}
-                      >
-                        {user.name}
-                      </Typography>
+                      <Button onClick={handleClick}>
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontSize: 20,
+                            color: 'gray',
+                            fontWeight: 'solid',
+                          }}
+                        >
+                          {user.name}
+                        </Typography>
+                      </Button>
                     </Box>
                   </Stack>
                   <Menu

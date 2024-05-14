@@ -11,6 +11,7 @@ import InputDisplayBox from '@/components/InputDisplayBox';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
 
@@ -19,6 +20,8 @@ import { VocabularyData } from '@/types/VocabularyType';
 // export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
 
 const AddPage: NextPage = () => {
+  useRequireSignedIn();
+
   const router = useRouter();
   const { uuid } = router.query;
 
