@@ -72,7 +72,7 @@ const SignUp: NextPage = () => {
             message: '入力したメールアドレスへ確認メールを送信しました',
             severity: 'info',
             pathname: '/sign_in',
-          });
+          })
           router.push('/sign_in');
         })
         .catch((e: AxiosError<{ error: string }>) => {
