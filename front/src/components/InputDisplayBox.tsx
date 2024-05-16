@@ -35,8 +35,8 @@ const InputDisplayBox = (props: DisplayBoxType) => {
   const onSubmit = (data: VocabularyData) => {
     data['id'] = props.id;
     addInputValue(data);
+    handleClose();
   };
-  console.log('inputbox');
 
   return (
     <Grid container item xs={11} md={11} spacing={2}>

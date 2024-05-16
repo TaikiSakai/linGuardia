@@ -1,7 +1,8 @@
-import { Box, Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid, Paper } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
@@ -103,12 +104,14 @@ const EditVocabPage: NextPage = () => {
         router.push('/wordcards');
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
-        setSnackbar({
-          message: e.message,
-          severity: 'error',
-          pathname: '/wordcards/edit/[uuid]',
-        });
+        console.log(e.response);
+        if (e.response) {
+          setSnackbar({
+            message: e.response.data.error,
+            severity: 'error',
+            pathname: '/wordcards/edit/[uuid]',
+          });
+        }
       });
   };
 
@@ -139,9 +142,22 @@ const EditVocabPage: NextPage = () => {
               deleteValue={deleteInputValue}
             />
           ))}
-          <Button onClick={onSubmit}>保存</Button>
         </Grid>
       </Container>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
+          <Grid item>
+            <Link href="/wordcards">
+              <Button sx={{ width: 100 }}>キャンセル</Button>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Button onClick={onSubmit} sx={{ width: 100 }}>
+              保存
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
     </Box>
   );
 };
