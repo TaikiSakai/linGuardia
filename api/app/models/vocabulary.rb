@@ -3,11 +3,22 @@ class Vocabulary < ApplicationRecord
   has_many :word_roles, dependent: :destroy
   has_many :roles, through: :word_roles
 
-  validates :word, presence: true, length: { maximum: 80 }
+  # validates :word, presence: true, length: { maximum: 80 }
+  # on: :create, on: :updateを記述するとそれぞれのメソッド実行時に評価される
+  validate :validate_word 
   validates :meaning, allow_blank: true, length: { maximum: 80 }
   validates :card_id, presence: true
 
-  # クライエント側から見える値はuuidを使用する
+  def validate_word
+    errors.add(:word, "単語を入力してください") if word.present?
+    errors.add(:word, "80文字以下で入力してください") if word.length >= 80
+  end
+
+  def validate_meaning
+    errors.add(:meaning, "単語を入力してください") if word.present?
+    errors.add(:meaning, "80文字以下で入力してください") if word.length >= 80
+  end
+
   before_create -> { self.uuid = SecureRandom.uuid }
 
   scope :with_role, ->(role_name) { joins(:roles).where(roles: { name: role_name }) }
@@ -28,7 +39,7 @@ class Vocabulary < ApplicationRecord
     false
   end
 
-  def self.update_vocabulary_with_roles(card:, vocabularies_params:)
+  def self.update_vocabulary_with_roles!(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
@@ -44,8 +55,6 @@ class Vocabulary < ApplicationRecord
         vocabulary.save!
       end      
     end
-    true
   rescue ActiveRecord::Rollback
-    false
   end
 end
