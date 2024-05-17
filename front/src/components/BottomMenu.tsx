@@ -51,17 +51,15 @@ const BottomMenu = () => {
           </BottomNavigation>
         )}
         {!user.isSignedIn && (
-          <BottomNavigation showLabels>
-            <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
-              <Grid item>
-                <Link href="/sign_in">
-                  <Button variant="contained" sx={{ width: 100 }}>
-                    LogIn
-                  </Button>
-                </Link>
-              </Grid>
+          <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
+            <Grid item>
+              <Link href="/sign_in">
+                <Button variant="contained" sx={{ width: 100 }}>
+                  LogIn
+                </Button>
+              </Link>
             </Grid>
-          </BottomNavigation>
+          </Grid>
         )}
       </Paper>
     </>
