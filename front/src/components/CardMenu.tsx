@@ -11,6 +11,8 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import ModalCard from './ModalCard';
 import useModal from '@/hooks/ModalState';
+import { useSnackbarState } from '@/hooks/useGlobalState';
+import { WordcardData } from '@/types/WordcardType';
 
 // フォントの設定
 const fontSizeCss = css({
@@ -20,18 +22,24 @@ const fontSizeCss = css({
   },
 });
 
+// 新規登録フォーム用の型
 type cardForm = {
   title: string;
   status: string;
 };
 
-const CardMenu = () => {
+type newWordcardHandler = WordcardData & {
+  addValue: (newValue: WordcardData) => void;
+};
+
+const CardMenu = (props: newWordcardHandler) => {
   const { handleSubmit, control, reset } = useForm<cardForm>();
   const [open, handleOpen, handleClose] = useModal(reset);
+  const [, setSnackbar] = useSnackbarState();
+
+  const addToIndex = props.addValue;
 
   const onSubmit = (data: cardForm) => {
-    console.log(data);
-
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
 
     const newCardData = JSON.stringify({
@@ -51,12 +59,25 @@ const CardMenu = () => {
       data: newCardData,
     })
       .then((res: AxiosResponse) => {
-        console.log(res.data.message);
+        console.log(res.data);
+        setSnackbar({
+          message: '新しい単語帳を作成しました',
+          severity: 'success',
+          pathname: '/wordcards',
+        });
+        // res/dataは、uuid、 title、created_at
+        addToIndex(res.data);
+        handleClose();
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
+        if (e.response) {
+          setSnackbar({
+            message: e.response.data.error,
+            severity: 'error',
+            pathname: '/wordcards',
+          });
+        }
       });
-    handleClose();
   };
 
   return (

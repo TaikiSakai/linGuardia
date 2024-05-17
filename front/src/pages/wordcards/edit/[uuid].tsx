@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Paper } from '@mui/material';
+import { Box, Button, Container, Grid, Typography, Paper } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
@@ -120,6 +120,7 @@ const EditVocabPage: NextPage = () => {
       css={styles.pageMinHeight}
       sx={{
         backgroundColor: '#e6f2ff',
+        pb: 7,
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
@@ -131,6 +132,25 @@ const EditVocabPage: NextPage = () => {
           }}
           spacing={3.5}
         >
+          <Grid
+            container
+            item
+            sx={{
+              justifyContent: 'left',
+              alignItems: 'left',
+            }}
+          >
+            <Typography
+              component="h3"
+              sx={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#000040',
+              }}
+            >
+              単語編集
+            </Typography>
+          </Grid>
           {inputValues.map((item) => (
             <InputDisplayBox
               key={item.id}
@@ -148,7 +168,7 @@ const EditVocabPage: NextPage = () => {
         <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
           <Grid item>
             <Link href="/wordcards">
-              <Button sx={{ width: 100 }}>キャンセル</Button>
+              <Button sx={{ width: 100 }}>戻る</Button>
             </Link>
           </Grid>
           <Grid item>
