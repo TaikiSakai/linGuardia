@@ -39,7 +39,17 @@ const InputDisplayBox = (props: DisplayBoxType) => {
   };
 
   return (
-    <Grid container item xs={11} md={11} spacing={2}>
+    <Grid
+      container
+      item
+      xs={11}
+      md={11}
+      spacing={2}
+      sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Grid item xs={5} md={5}>
         <Card css={cardListCss} onClick={handleOpen}>
           <CardContent>
@@ -78,8 +88,8 @@ const InputDisplayBox = (props: DisplayBoxType) => {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={1} md={1}>
-        <Box sx={{ color: 'gray', py: 1 }} onClick={() => deleteMyself(props.id)}>
+      <Grid item>
+        <Box sx={{ color: 'gray' }} onClick={() => deleteMyself(props.id)}>
           <DeleteForeverIcon />
         </Box>
       </Grid>
