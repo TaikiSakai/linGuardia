@@ -19,19 +19,18 @@ const EditVocabPage: NextPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
 
-  const [, setSnackbar] = useSnackbarState();
-
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
   const [inputValues, setInputValue] = useState<VocabularyData[]>([]);
+  const [, setSnackbar] = useSnackbarState();
 
   if (error) {
     setSnackbar({
-      message: error.response.data.message,
+      message: error.response.data.error,
       severity: 'error',
-      pathname: '/wordcards/create/[uuid]',
+      pathname: '/vocabularies/create/[uuid]',
     });
-    router.push('/wordcards/create/' + uuid);
+    router.push('/vocabularies/create/' + uuid);
   }
 
   if (!data) return <div>Loading...</div>;

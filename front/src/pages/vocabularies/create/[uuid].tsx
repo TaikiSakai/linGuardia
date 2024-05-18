@@ -95,7 +95,7 @@ const AddPage: NextPage = () => {
           setSnackbar({
             message: e.response.data.error,
             severity: 'error',
-            pathname: '/wordcards/create/[uuid]',
+            pathname: '/vocabularies/create/[uuid]',
           });
         }
       });

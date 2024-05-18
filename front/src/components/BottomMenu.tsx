@@ -13,8 +13,8 @@ const BottomMenu = () => {
   const route = useRouter();
   const [user] = useUserState();
 
-  if (route.pathname == '/wordcards/create/[uuid]') return <></>;
-  if (route.pathname == '/wordcards/edit/[uuid]') return <></>;
+  if (route.pathname == '/vocabularies/create/[uuid]') return <></>;
+  if (route.pathname == '/vocabularies/edit/[uuid]') return <></>;
   if (route.pathname == '/wordcards/flashcard/[uuid]') return <></>;
   if (route.pathname == '/sign_in') return <></>;
   if (route.pathname == '/sign_up') return <></>;
