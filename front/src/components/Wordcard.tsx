@@ -87,8 +87,8 @@ const Wordcard = (props: wordcardProps) => {
             </ToggleButtonGroup>
           </Grid>
           <Grid item sx={{ p: 2 }}>
-            <Link href={'wordcards/create/' + props.uuid}>単語追加</Link>
-            <Link href={'wordcards/edit/' + props.uuid}>単語編集</Link>
+            <Link href={'/vocabularies/create/' + props.uuid}>単語追加</Link>
+            <Link href={'/vocabularies/edit/' + props.uuid}>単語編集</Link>
           </Grid>
           <Grid item sx={{ p: 2 }}>
             <Button variant="contained" sx={{ width: 300 }} onClick={startFlashcard}>
