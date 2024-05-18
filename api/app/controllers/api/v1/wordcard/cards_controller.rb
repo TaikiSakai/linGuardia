@@ -5,7 +5,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     cards = current_user.cards.all.order(created_at: :desc)
 
     if cards.empty?
-      render json: { error: "単語帳が登録されていません" }, status: :not_found
+      render json: { error: "単語帳が1つも登録されていません" }, status: :not_found
     else
       render json: cards, each_serializer: CardSerializer , status: :ok
     end
