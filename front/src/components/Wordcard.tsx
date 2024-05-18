@@ -10,7 +10,7 @@ import useModal from '@/hooks/ModalState';
 type wordcardProps = {
   uuid: string;
   title: string;
-  updatedAt: string;
+  createdAt: string;
 };
 
 const switchCss = css({
@@ -54,7 +54,7 @@ const Wordcard = (props: wordcardProps) => {
               </Grid>
               <Grid item xs={6} md={6}>
                 <Box sx={{ textAlign: 'right' }}>
-                  <Typography sx={{ fontSize: 12 }}>{props.updatedAt}</Typography>
+                  <Typography sx={{ fontSize: 12 }}>作成日: {props.createdAt}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -64,7 +64,7 @@ const Wordcard = (props: wordcardProps) => {
       <ModalCard title={props.title} open={open} handleClose={handleClose}>
         <Grid container item sx={{ justifyContent: 'center' }}>
           <Grid item>
-            <Typography>{props.updatedAt}</Typography>
+            <Typography>{props.createdAt}</Typography>
           </Grid>
           <Grid item sx={{ p: 2 }}>
             <ToggleButtonGroup color="primary" exclusive aria-label="Platform">
@@ -87,8 +87,8 @@ const Wordcard = (props: wordcardProps) => {
             </ToggleButtonGroup>
           </Grid>
           <Grid item sx={{ p: 2 }}>
-            <Link href={'wordcards/create/' + props.uuid}>単語追加</Link>
-            <Link href={'wordcards/edit/' + props.uuid}>単語編集</Link>
+            <Link href={'/vocabularies/create/' + props.uuid}>単語追加</Link>
+            <Link href={'/vocabularies/edit/' + props.uuid}>単語編集</Link>
           </Grid>
           <Grid item sx={{ p: 2 }}>
             <Button variant="contained" sx={{ width: 300 }} onClick={startFlashcard}>

@@ -13,7 +13,9 @@ const BottomMenu = () => {
   const route = useRouter();
   const [user] = useUserState();
 
-  if (route.pathname == '/wordcards/create/[uuid]') return <></>;
+  if (route.pathname == '/vocabularies/create/[uuid]') return <></>;
+  if (route.pathname == '/vocabularies/edit/[uuid]') return <></>;
+  if (route.pathname == '/wordcards/flashcard/[uuid]') return <></>;
   if (route.pathname == '/sign_in') return <></>;
   if (route.pathname == '/sign_up') return <></>;
 
@@ -49,17 +51,15 @@ const BottomMenu = () => {
           </BottomNavigation>
         )}
         {!user.isSignedIn && (
-          <BottomNavigation showLabels>
-            <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
-              <Grid item>
-                <Link href="/sign_in">
-                  <Button variant="contained" sx={{ width: 100 }}>
-                    LogIn
-                  </Button>
-                </Link>
-              </Grid>
+          <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
+            <Grid item>
+              <Link href="/sign_in">
+                <Button variant="contained" sx={{ width: 100 }}>
+                  LogIn
+                </Button>
+              </Link>
             </Grid>
-          </BottomNavigation>
+          </Grid>
         )}
       </Paper>
     </>

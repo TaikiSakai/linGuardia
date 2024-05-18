@@ -54,8 +54,9 @@ const Flashcard: NextPage = () => {
   };
 
   if (error) {
+    console.log(error);
     setSnackbar({
-      message: error.response.data.message,
+      message: error.response.data.error,
       severity: 'error',
       pathname: '/wordcards',
     });

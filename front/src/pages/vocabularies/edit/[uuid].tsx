@@ -1,7 +1,8 @@
-import { Box, Button, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid, Typography, Paper } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
@@ -18,19 +19,18 @@ const EditVocabPage: NextPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
 
-  const [, setSnackbar] = useSnackbarState();
-
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
   const [inputValues, setInputValue] = useState<VocabularyData[]>([]);
+  const [, setSnackbar] = useSnackbarState();
 
   if (error) {
     setSnackbar({
-      message: error.response.data.message,
+      message: error.response.data.error,
       severity: 'error',
-      pathname: '/wordcards/create/[uuid]',
+      pathname: '/vocabularies/create/[uuid]',
     });
-    router.push('/wordcards/create/' + uuid);
+    router.push('/vocabularies/create/' + uuid);
   }
 
   if (!data) return <div>Loading...</div>;
@@ -103,12 +103,14 @@ const EditVocabPage: NextPage = () => {
         router.push('/wordcards');
       })
       .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
-        setSnackbar({
-          message: e.message,
-          severity: 'error',
-          pathname: '/wordcards/edit/[uuid]',
-        });
+        console.log(e.response);
+        if (e.response) {
+          setSnackbar({
+            message: e.response.data.error,
+            severity: 'error',
+            pathname: '/wordcards/edit/[uuid]',
+          });
+        }
       });
   };
 
@@ -117,6 +119,7 @@ const EditVocabPage: NextPage = () => {
       css={styles.pageMinHeight}
       sx={{
         backgroundColor: '#e6f2ff',
+        pb: 7,
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
@@ -128,6 +131,25 @@ const EditVocabPage: NextPage = () => {
           }}
           spacing={3.5}
         >
+          <Grid
+            container
+            item
+            sx={{
+              justifyContent: 'left',
+              alignItems: 'left',
+            }}
+          >
+            <Typography
+              component="h3"
+              sx={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#000040',
+              }}
+            >
+              単語編集
+            </Typography>
+          </Grid>
           {inputValues.map((item) => (
             <InputDisplayBox
               key={item.id}
@@ -139,9 +161,22 @@ const EditVocabPage: NextPage = () => {
               deleteValue={deleteInputValue}
             />
           ))}
-          <Button onClick={onSubmit}>保存</Button>
         </Grid>
       </Container>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
+          <Grid item>
+            <Link href="/wordcards">
+              <Button sx={{ width: 100 }}>戻る</Button>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Button onClick={onSubmit} sx={{ width: 100 }}>
+              保存
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
     </Box>
   );
 };

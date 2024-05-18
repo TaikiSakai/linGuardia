@@ -1,4 +1,4 @@
-import { Grid, Container, Box, Typography } from '@mui/material';
+import { Grid, Container, Box } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
@@ -24,27 +24,30 @@ const Index: NextPage = () => {
       setSnackbar({
         message: error.response.data.error,
         severity: 'error',
-        pathname: '/wordcards',
+        pathname: '/wordcards/testindex',
       });
     }
   }, [error, setSnackbar]);
 
+  // wordcardsに変化があった場合に実行されてしまうので、この書き方はダメ
+  // カードを新規追加した時の挙動がおかしい
+  useEffect(() => {
+    const fetchedCards: WordcardData[] = camelcaseKeys(data);
+    if (data && wordcards.length === 0) {
+      setWordcard(fetchedCards);
+    }
+  }, [data, wordcards, setWordcard]);
+
+  // dataとerrorが未定義の時だけ表示する
+  // !dataのみだと、error時にdataが定義されることはないのでループしてしまう
   if (!data && !error) return <div>Loading...</div>;
-
-  const fetchedCards: WordcardData[] = camelcaseKeys(data);
-
-  // dataがないとエラーになる?
-  if (data && wordcards.length === 0) {
-    setWordcard(fetchedCards);
-  }
 
   // データの登録に成功したら、wordcard一覧を更新する
   const addToIndex = (newWordcard: WordcardData) => {
+    console.log(wordcards);
     const fetchedCards: WordcardData = camelcaseKeys(newWordcard);
     setWordcard((prevWordcards) => [fetchedCards, ...prevWordcards]);
   };
-
-  console.log(wordcards);
 
   return (
     <Box
@@ -64,30 +67,15 @@ const Index: NextPage = () => {
             alignItems: 'center',
           }}
         >
-          {wordcards.length === 0 ? (
-            <Box sx={{ pt: 5 }}>
-              <Typography
-                component="h3"
-                sx={{
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  color: '#000040',
-                }}
-              >
-                単語帳が登録されていません
-              </Typography>
-            </Box>
-          ) : (
-            wordcards.map((wordcard: WordcardData, i: number) => (
-              <Grid item key={i} xs={10} md={10}>
-                <Wordcard
-                  uuid={wordcard.uuid}
-                  title={wordcard.title}
-                  createdAt={wordcard.createdAt}
-                />
-              </Grid>
-            ))
-          )}
+          {wordcards.map((wordcard: WordcardData, i: number) => (
+            <Grid item key={i} xs={10} md={10}>
+              <Wordcard
+                uuid={wordcard.uuid}
+                title={wordcard.title}
+                createdAt={wordcard.createdAt}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Box>

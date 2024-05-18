@@ -1,5 +1,5 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Button, Container, Grid, TextField, Stack, Paper } from '@mui/material';
+import { Box, Button, Container, Grid, TextField, Typography, Stack, Paper } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import type { NextPage } from 'next';
@@ -91,11 +91,13 @@ const AddPage: NextPage = () => {
       })
       .catch((e: AxiosError<{ error: string }>) => {
         console.log(e);
-        setSnackbar({
-          message: e.message,
-          severity: 'error',
-          pathname: '/wordcards/create/[uuid]',
-        });
+        if (e.response) {
+          setSnackbar({
+            message: e.response.data.error,
+            severity: 'error',
+            pathname: '/vocabularies/create/[uuid]',
+          });
+        }
       });
   };
 
@@ -116,6 +118,25 @@ const AddPage: NextPage = () => {
           }}
           spacing={3.5}
         >
+          <Grid
+            container
+            item
+            sx={{
+              justifyContent: 'left',
+              alignItems: 'left',
+            }}
+          >
+            <Typography
+              component="h3"
+              sx={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#000040',
+              }}
+            >
+              単語新規登録
+            </Typography>
+          </Grid>
           {inputValues.map((item) => (
             <InputDisplayBox
               key={item.id}
@@ -128,7 +149,6 @@ const AddPage: NextPage = () => {
             />
           ))}
         </Grid>
-        <Button onClick={() => console.log(inputValues)}>show inputvalues</Button>
       </Container>
       <ModalCard title="単語新規登録" open={open} handleClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(addToIndex)} spacing={4}>
@@ -196,7 +216,7 @@ const AddPage: NextPage = () => {
         <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
           <Grid item>
             <Link href="/wordcards">
-              <Button sx={{ width: 100 }}>キャンセル</Button>
+              <Button sx={{ width: 100 }}>戻る</Button>
             </Link>
           </Grid>
           <Grid item>
