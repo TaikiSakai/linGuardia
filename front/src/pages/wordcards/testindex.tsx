@@ -58,7 +58,7 @@ const Index: NextPage = () => {
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
-        <CardMenu uuid="" title="" userId="" createdAt="" addValue={addToIndex} />
+        <CardMenu uuid="" title="" status="" createdAt="" addValue={addToIndex} />
         <Grid
           container
           spacing={3}
@@ -72,6 +72,7 @@ const Index: NextPage = () => {
               <Wordcard
                 uuid={wordcard.uuid}
                 title={wordcard.title}
+                status={wordcard.status}
                 createdAt={wordcard.createdAt}
               />
             </Grid>

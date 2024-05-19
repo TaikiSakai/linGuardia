@@ -11,6 +11,16 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     end
   end
 
+  def show
+    card = current_user.cards.find_by(uuid: params[:uuid])
+    
+    if card.nil?
+      render json: { error: "単語帳が見つかりません"}, status: :not_found
+    else
+      render json: card, each_serializer: CardSerializer , status: :ok
+    end
+  end
+
   def create
     card = current_user.cards.new(card_params)
 
@@ -21,7 +31,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
-  def update
+  def update    
     card = current_user.cards.find_by!(uuid: params[:uuid])
 
     if card.update(card_params)
@@ -35,8 +45,9 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def destroy    
     card = current_user.cards.find_by!(uuid: params[:uuid])
 
-    card.destroy!
-    render json: { message: "削除しました" }, status: :ok
+    if card.destroy!
+      render json: { message: "削除しました" }, status: :ok
+    end
   end
 
   private
