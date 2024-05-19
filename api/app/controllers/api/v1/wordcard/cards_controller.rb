@@ -25,7 +25,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     card = current_user.cards.new(card_params)
 
     card.save!
-      render json: card, serializer: CardSerializer, status: :ok
+      render json: {
+        card: CardSerializer.new(card),
+        message: "単語帳を作成しました"
+      }, status: :ok
 
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
