@@ -3,12 +3,12 @@ require "rails_helper"
 RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
   describe "GET api/v1/wordcard/cards" do
     subject { get(api_v1_wordcard_cards_path, headers:) }
-    
+
     let(:current_user) { create(:user) }
     let(:headers) { current_user.create_new_auth_token }
 
     context "ログインユーザーのcardが存在しない時" do
-      it "正常にエラーが返る"do
+      it "正常にエラーが返る" do
         subject
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["error"]
@@ -22,10 +22,10 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
         create_list(:card, 5, status: :open, user: current_user)
         subject
         res = JSON.parse(response.body)
-        expect(res[0].keys).to eq ["uuid", "title", "status", "created_at"]                                     
+        expect(res[0].keys).to eq ["uuid", "title", "status", "created_at"]
         expect(response).to have_http_status(:ok)
       end
-    end 
+    end
   end
 
   describe "POST api/v1/wordcard/cards" do
@@ -33,10 +33,9 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
 
     let(:headers) { current_user.create_new_auth_token }
     let(:current_user) { create(:user) }
-    
-  
+
     describe "ログインユーザーがcardを新規作成する時" do
-      let(:card_params) { {card: attributes_for(:card)} }
+      let(:card_params) { { card: attributes_for(:card) } }
 
       context "正しいパラメーターが渡された時" do
         it "cardを正常に作成できる" do
@@ -48,7 +47,7 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
       end
 
       context "cardのタイトルが空欄であった場合" do
-        let(:card_params) { {card: attributes_for(:card, title: "")} }
+        let(:card_params) { { card: attributes_for(:card, title: "") } }
 
         it "cardの作成に失敗する" do
           subject
@@ -56,7 +55,7 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
           expect(res.keys).to eq ["error"]
           expect(res["error"]).to eq [
             "タイトルを入力してください",
-            "タイトルは1文字以上で入力してください"
+            "タイトルは1文字以上で入力してください",
           ]
         end
       end

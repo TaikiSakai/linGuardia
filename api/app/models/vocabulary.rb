@@ -17,12 +17,13 @@ class Vocabulary < ApplicationRecord
         vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
 
         role_names = vocabulary_params[:roles]
-        vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+        vocabulary.roles = role_names.map {|name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
-      end      
+      end
     end
-  rescue ActiveRecord::Rollback 
+  rescue ActiveRecord::Rollback
+    false
   end
 
   def self.update_vocabulary_with_roles!(card:, vocabularies_params:)
@@ -30,17 +31,18 @@ class Vocabulary < ApplicationRecord
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
         vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
-        
+
         role_names = vocabulary_params[:roles]
 
-        if !role_names.nil?
+        unless role_names.nil?
           vocabulary.roles.clear
-          vocabulary.roles = role_names.map { |name| Role.find_or_initialize_by(name: name) }
+          vocabulary.roles = role_names.map {|name| Role.find_or_initialize_by(name: name) }
         end
 
         vocabulary.save!
-      end      
+      end
     end
   rescue ActiveRecord::Rollback
+    false
   end
 end

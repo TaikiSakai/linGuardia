@@ -6,7 +6,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     vocabularies = @card.vocabularies.includes(:roles)
 
     if vocabularies.empty?
-      render json: { error: "単語が登録されていません"}, status: :not_found
+      render json: { error: "単語が登録されていません" }, status: :not_found
     else
       render json: vocabularies, each_serializer: VocabularySerializer, status: :ok
     end
@@ -14,20 +14,18 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
 
   def create
     Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
-      render json: { message: "単語を登録しました" }, status: :ok
-
+    render json: { message: "単語を登録しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
     Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
-      render json: { message: "単語を更新しました" }, status: :ok
-
+    render json: { message: "単語を更新しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message}, status: :not_found
+    render json: { error: e.message }, status: :not_found
   end
 
   def destroy
@@ -40,7 +38,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   private
-  
+
     def vocabularies_params
       # paramsを単語ごとに取り出して配列に入れる
       # 単語をまとめて登録するために使用する
@@ -51,6 +49,6 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
 
     def set_card
       @card = current_user.cards.find_by(uuid: params[:card_uuid])
-      render json: { message: "単語帳が見つかりません"}, status: :not_found unless @card
+      render json: { message: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 end
