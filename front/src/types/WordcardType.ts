@@ -1,6 +1,6 @@
 export type WordcardData = {
   uuid: string;
   title: string;
-  userId: string;
+  status: string;
   createdAt: string;
 };

@@ -11,3 +11,8 @@ AllCops:
 
 Style/HashSyntax:
   Enabled: false
+
+Metrix/MethodLength:
+  Exclude:
+   - 'app/service/openai/*'
+   - 'app/models/vocabulary.rb'

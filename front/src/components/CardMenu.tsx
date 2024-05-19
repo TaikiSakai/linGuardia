@@ -61,15 +61,16 @@ const CardMenu = (props: newWordcardHandler) => {
       .then((res: AxiosResponse) => {
         console.log(res.data);
         setSnackbar({
-          message: '新しい単語帳を作成しました',
+          message: res.data.message,
           severity: 'success',
           pathname: '/wordcards',
         });
         // res/dataは、uuid、 title、created_at
-        addToIndex(res.data);
+        addToIndex(res.data.card);
         handleClose();
       })
       .catch((e: AxiosError<{ error: string }>) => {
+        console.log(e);
         if (e.response) {
           setSnackbar({
             message: e.response.data.error,
@@ -92,7 +93,7 @@ const CardMenu = (props: newWordcardHandler) => {
       >
         <Grid item xs={10} md={10}>
           <Box>
-            <Card sx={{ borderRadius: 5, height: 140 }}>
+            <Card sx={{ borderRadius: 3, height: 140 }}>
               <CardContent>
                 <Grid
                   container

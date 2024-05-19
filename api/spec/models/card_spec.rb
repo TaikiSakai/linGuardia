@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Card, type: :model do
   context "factoryのデフォルトに従った時" do
@@ -15,7 +15,6 @@ RSpec.describe Card, type: :model do
     let(:user) { create(:user) }
     let(:title) { Faker::Lorem.word }
     let(:status) { :open }
-    let(:user) { create(:user)}
     let(:card) { build(:card, title: title, status: status, user: user) }
 
     context "すべての値が正常な時" do
@@ -31,14 +30,14 @@ RSpec.describe Card, type: :model do
         expect(subject).to be_falsey
         expect(card.errors.full_messages).to eq [
           "タイトルを入力してください",
-          "タイトルは1文字以上で入力してください"
-          ]
+          "タイトルは1文字以上で入力してください",
+        ]
       end
     end
 
     context "ステータスが公開済みかつ、ステータスが空の時" do
       let(:status) { "" }
-      
+
       it "エラーメッセージが返る" do
         expect(subject).to be_falsey
         expect(card.errors.full_messages).to eq ["ステータスを入力してください"]
