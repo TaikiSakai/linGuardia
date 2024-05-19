@@ -92,7 +92,7 @@ const CardMenu = (props: newWordcardHandler) => {
       >
         <Grid item xs={10} md={10}>
           <Box>
-            <Card sx={{ borderRadius: 5, height: 140 }}>
+            <Card sx={{ borderRadius: 3, height: 140 }}>
               <CardContent>
                 <Grid
                   container
