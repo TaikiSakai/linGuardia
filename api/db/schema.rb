@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_141311) do
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["role_id", "vocabulary_id"], name: "index_word_roles_on_role_id_and_vocabulary_id", unique: true
     t.index ["role_id"], name: "index_word_roles_on_role_id"
     t.index ["vocabulary_id"], name: "index_word_roles_on_vocabulary_id"
   end
