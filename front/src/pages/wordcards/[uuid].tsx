@@ -11,36 +11,31 @@ import {
   Typography,
   Card,
   Stack,
-  TextField,
   CardContent,
   List,
   ListItem,
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, ReactNode } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
+import EditMenuForModal from '@/components/EditMenu';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
-import { WordcardData } from '@/types/WordcardType';
-import EditMenuForModal from '@/components/EditMenu';
 import { fetcher } from '@/utils';
 
 // 新規登録フォーム
-type cardForm = {
-  title: string;
-  status: string;
-};
+// type cardForm = {
+//   title: string;
+//   status: string;
+// };
 
 type wordcardProps = {
   uuid: string;
@@ -69,7 +64,7 @@ const WordcardDetail: NextPage = () => {
   });
 
   const [wordcard, setWordcard] = useState<wordcardProps | null>(null);
-  const { handleSubmit, control } = useForm<cardForm>();
+  // const { handleSubmit, control } = useForm<cardForm>();
   const [open, handleOpen, handleClose] = useModal();
   const [, setSnackbar] = useSnackbarState();
 
@@ -140,39 +135,39 @@ const WordcardDetail: NextPage = () => {
       });
   };
 
-  const onSubmit = (data: cardForm) => {
-    const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
+  // const onSubmit = (data: cardForm) => {
+  //   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
 
-    const newCardData = JSON.stringify({
-      card: data,
-    });
+  //   const newCardData = JSON.stringify({
+  //     card: data,
+  //   });
 
-    axios({
-      method: 'POST',
-      url: url,
-      headers: headers,
-      data: newCardData,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res);
-        setSnackbar({
-          message: '新しい単語帳を追加しました',
-          severity: 'success',
-          pathname: '/wordcards',
-        });
-        router.push('/wordcards');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        if (e.response) {
-          console.log(e);
-          setSnackbar({
-            message: e.response.data.error,
-            severity: 'error',
-            pathname: '/wordcards/create',
-          });
-        }
-      });
-  };
+  //   axios({
+  //     method: 'POST',
+  //     url: url,
+  //     headers: headers,
+  //     data: newCardData,
+  //   })
+  //     .then((res: AxiosResponse) => {
+  //       console.log(res);
+  //       setSnackbar({
+  //         message: '新しい単語帳を追加しました',
+  //         severity: 'success',
+  //         pathname: '/wordcards',
+  //       });
+  //       router.push('/wordcards');
+  //     })
+  //     .catch((e: AxiosError<{ error: string }>) => {
+  //       if (e.response) {
+  //         console.log(e);
+  //         setSnackbar({
+  //           message: e.response.data.error,
+  //           severity: 'error',
+  //           pathname: '/wordcards/create',
+  //         });
+  //       }
+  //     });
+  // };
 
   return (
     wordcard && (
@@ -419,7 +414,9 @@ const WordcardDetail: NextPage = () => {
                         <Divider />
                       </List>
                       <Grid item>
-                        <Button onClick={deleteWordcard} variant="contained" color="error">削除</Button>
+                        <Button onClick={deleteWordcard} variant="contained" color="error">
+                          削除
+                        </Button>
                       </Grid>
                     </Grid>
                   </Grid>
