@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "health_check", to: "health_check#index"
-      mount_devise_token_auth_for "User", at: "auth"
+
+      mount_devise_token_auth_for "User", at: "auth", controllers: {
+        # registrations: 'auth/registrations',
+        confirmations: 'auth/confirmations'
+      }
 
       namespace :current do
         resource :user, only: [:show]
@@ -15,7 +19,6 @@ Rails.application.routes.draw do
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
           post "chat/create", to: "chat#create"
-          # delete "vocabularies/delete", to: "vocabularies#destroy"
         end
       end
     end
