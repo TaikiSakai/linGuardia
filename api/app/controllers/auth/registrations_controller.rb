@@ -8,7 +8,7 @@ class Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
 
     def render_create_success
       render json: {
-        message: resource_data(resource_json: @resource.token_validation_response)
+        message: resource_data(resource_json: @resource.token_validation_response),
       }
     end
 end

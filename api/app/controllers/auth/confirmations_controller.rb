@@ -24,12 +24,12 @@ class Auth::ConfirmationsController < DeviseTokenAuth::ConfirmationsController
       # allow other host: trueで、onfirm success urlに設定したurlへの遷移を許可する
       redirect_to(redirect_to_link, allow_other_host: true)
     elsif redirect_url
-      redirect_to DeviseTokenAuth::Url.generate(redirect_url, 
+      redirect_to DeviseTokenAuth::Url.generate(redirect_url,
                                                 account_confirmation_success: false),
-                                                allow_other_host: true
-                    
+                  allow_other_host: true
+
     else
-      raise ActionController::RoutingError, 'Not Found'
+      raise ActionController::RoutingError, "Not Found"
     end
   end
 end
