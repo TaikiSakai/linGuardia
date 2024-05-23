@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         # registrations: 'auth/registrations',
-        confirmations: 'auth/confirmations'
+        confirmations: "auth/confirmations"
       }
 
       namespace :current do
@@ -18,7 +18,8 @@ Rails.application.routes.draw do
         resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
-          post "chat/create", to: "chat#create"
+          patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
+          post "conjugation/create", to: "chat#create"
         end
       end
     end

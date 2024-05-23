@@ -31,12 +31,6 @@ import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
 
-// 新規登録フォーム
-// type cardForm = {
-//   title: string;
-//   status: string;
-// };
-
 type wordcardProps = {
   uuid: string;
   title: string;
@@ -74,7 +68,7 @@ const WordcardDetail: NextPage = () => {
     if (error) {
       console.log(error);
       setSnackbar({
-        message: 'era',
+        message: 'エラーが発生しました',
         severity: 'error',
         pathname: '/wordcards/[uuid]',
       });
@@ -135,40 +129,6 @@ const WordcardDetail: NextPage = () => {
       });
   };
 
-  // const onSubmit = (data: cardForm) => {
-  //   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
-
-  //   const newCardData = JSON.stringify({
-  //     card: data,
-  //   });
-
-  //   axios({
-  //     method: 'POST',
-  //     url: url,
-  //     headers: headers,
-  //     data: newCardData,
-  //   })
-  //     .then((res: AxiosResponse) => {
-  //       console.log(res);
-  //       setSnackbar({
-  //         message: '新しい単語帳を追加しました',
-  //         severity: 'success',
-  //         pathname: '/wordcards',
-  //       });
-  //       router.push('/wordcards');
-  //     })
-  //     .catch((e: AxiosError<{ error: string }>) => {
-  //       if (e.response) {
-  //         console.log(e);
-  //         setSnackbar({
-  //           message: e.response.data.error,
-  //           severity: 'error',
-  //           pathname: '/wordcards/create',
-  //         });
-  //       }
-  //     });
-  // };
-
   return (
     wordcard && (
       <Box
@@ -223,15 +183,17 @@ const WordcardDetail: NextPage = () => {
                       divider={<Divider orientation="vertical" flexItem />}
                       spacing={2}
                     >
-                      <Button>
-                        <Stack direction="row" spacing={1}>
-                          <SellIcon css={fontSizeCss} sx={{ color: 'gray' }} />
-                          <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                            覚える
-                          </Typography>
-                        </Stack>
-                      </Button>
-                      <Button>
+                      <Link href={'/wordcards/flashcard/' + uuid}>
+                        <Button>
+                          <Stack direction="row" spacing={1}>
+                            <SellIcon css={fontSizeCss} sx={{ color: 'gray' }} />
+                            <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
+                              覚える
+                            </Typography>
+                          </Stack>
+                        </Button>
+                      </Link>
+                      <Button disabled>
                         <Stack direction="row" spacing={1}>
                           <BorderColorIcon css={fontSizeCss} sx={{ color: 'gray' }} />
                           <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
@@ -239,7 +201,7 @@ const WordcardDetail: NextPage = () => {
                           </Typography>
                         </Stack>
                       </Button>
-                      <Button>
+                      <Button disabled>
                         <Stack direction="row" spacing={1}>
                           <SearchIcon css={fontSizeCss} sx={{ color: 'gray' }} />
                           <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>

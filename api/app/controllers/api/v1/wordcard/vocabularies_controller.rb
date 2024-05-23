@@ -3,7 +3,11 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :set_card
 
   def index
-    vocabularies = @card.vocabularies.includes(:roles)
+    vocabularies = if (role_name = params[:role_name])
+                     @card.vocabularies.with_role(role_name)
+                   else
+                     @card.vocabularies.includes(:roles)
+                   end
 
     if vocabularies.empty?
       render json: { error: "単語が登録されていません" }, status: :not_found
@@ -21,6 +25,15 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
 
   def update
     Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    render json: { message: "単語を更新しました" }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { error: e.message }, status: :not_found
+  end
+
+  def update_conjugation
+    Vocabulary.update_verb_conjugation!(card: @card, vocabularies_params: vocabularies_params)
     render json: { message: "単語を更新しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity

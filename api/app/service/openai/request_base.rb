@@ -5,7 +5,7 @@ module Openai
 
       @request = Faraday.new(url: "https://api.openai.com") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["Authorization"] = "Bearer #{ENV["OPENAI_ACCESS_TOKEN"]}"
+        req.headers["Authorization"] = "Bearer #{Settings.api_key}"
         req.options[:timeout] = timeout
         req.adapter Faraday.default_adapter
       end
