@@ -8,7 +8,7 @@ class Api::V1::Wordcard::ChatController < Api::V1::BaseController
 
     openai = Openai::ConjugationService.new.chat([id_and_word])
     res = JSON.parse(openai.body)
-    
+
     render json: res["choices"][0]["message"]["content"], status: :ok
   rescue NoMethodError
     raise "エラーが発生しました。しばらくたってからやり直してください。"
