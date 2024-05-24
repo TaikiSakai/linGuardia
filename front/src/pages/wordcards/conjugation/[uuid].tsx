@@ -13,6 +13,7 @@ import {
   TableCell,
   Collapse,
   Paper,
+  Stack,
   Table,
   TableContainer,
   TableRow,
@@ -49,7 +50,7 @@ const WordConjugation: NextPage = () => {
   const [words, setWords] = useState<VocabularyData[]>([]);
   const [conjugations, setConjugations] = useState<ConjugationType[]>([]);
   const [, setSnackbar] = useSnackbarState();
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
 
   if (error) {
     setSnackbar({
@@ -109,7 +110,7 @@ const WordConjugation: NextPage = () => {
       .then((res: AxiosResponse) => {
         console.log(res.data);
         setSnackbar({
-          message: 'update',
+          message: '単語を更新しました',
           severity: 'success',
           pathname: '/wordcards',
         });
@@ -155,62 +156,115 @@ const WordConjugation: NextPage = () => {
                 color: '#000040',
               }}
             >
-              動詞の活用形自動生成
+              動詞活用形の自動生成
             </Typography>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Card sx={{ borderRadius: 3, p: 2 }}>
-              <CardContent>
-                <Grid
-                  container
-                  item
-                  sx={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    pt: 1,
-                  }}
-                >
-                  <Box>
-                    <Box>props.titleに登録されている動詞の活用形を生成します</Box>
-                    <Button onClick={getConjugations}>実行</Button>
-                    <Button
-                      onClick={() => {
-                        console.log(conjugations);
-                      }}
-                    >
-                      miru
-                    </Button>
-                    <Button onClick={updateWords}>update</Button>
-                  </Box>
-                </Grid>
-              </CardContent>
-            </Card>
-            <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
-              <TableRow>
-                <TableCell align="left">
-                  <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
-                </TableCell>
-                <TableCell align="left">以下の動詞の活用形が生成されます</TableCell>
-              </TableRow>
-              <Collapse in={open}>
-                <Box sx={{ m: 2 }}>
-                  <Table>
-                    <TableBody>
-                      {words.map((row_item: VocabularyData) => (
-                        <TableRow key={row_item.id}>
-                          <TableCell align="left">{row_item.word}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Box>
-              </Collapse>
-            </TableContainer>
-            <Card sx={{ borderRadius: 3, p: 2, mt: 6 }}>
-              <CardContent></CardContent>
-            </Card>
+            <Stack spacing={2}>
+              <Card sx={{ borderRadius: 3, p: 2 }}>
+                <CardContent>
+                  <Grid
+                    container
+                    item
+                    sx={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      pt: 1,
+                    }}
+                  >
+                    <Box>
+                      <Stack spacing={2}>
+                        <Box>
+                          <Typography>
+                            この単語帳に登録されている動詞の活用形を生成します
+                          </Typography>
+                          <Typography>※動詞のタグ付けがされている必要があります</Typography>
+                        </Box>
+                        <Box>
+                          <Button variant="contained" sx={{ width: 500 }} onClick={getConjugations}>
+                            活用形を生成する
+                          </Button>
+                        </Box>
+                      </Stack>
+                    </Box>
+                  </Grid>
+                </CardContent>
+              </Card>
+              <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={2} style={{ paddingBottom: 0, paddingTop: 0 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
+                          <IconButton size="small" onClick={() => setOpen(!open)}>
+                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                          </IconButton>
+                          <Typography sx={{ ml: 1 }}>以下の動詞の活用形が生成されます</Typography>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={2} style={{ paddingBottom: 0, paddingTop: 0 }}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                          <Box sx={{ m: 2 }}>
+                            <Table>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="left">活用前</TableCell>
+                                  <TableCell align="left">活用後</TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Box>
+                          <Box sx={{ display: 'flex', m: 2 }}>
+                            <Table>
+                              <TableBody>
+                                {words.map((row_item: VocabularyData) => (
+                                  <TableRow key={row_item.id}>
+                                    <TableCell align="left">{row_item.word}</TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                            {conjugations.length !== 0 && (
+                              <Table>
+                                <TableBody>
+                                  {conjugations.map((row_item: ConjugationType) => (
+                                    <TableRow key={row_item.id}>
+                                      <TableCell align="left">{row_item.word}</TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            )}
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                    {conjugations.length !== 0 && (
+                      <TableRow>
+                        <TableCell>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Stack spacing={1}>
+                              <Button variant="contained" sx={{ width: 500 }} onClick={updateWords}>
+                                更新する
+                              </Button>
+                              <Typography>※注意: 活用前の単語に上書きされます</Typography>
+                            </Stack>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
           </Grid>
         </Grid>
       </Container>
