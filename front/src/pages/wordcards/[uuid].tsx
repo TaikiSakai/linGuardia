@@ -31,12 +31,6 @@ import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
 
-// 新規登録フォーム
-// type cardForm = {
-//   title: string;
-//   status: string;
-// };
-
 type wordcardProps = {
   uuid: string;
   title: string;
@@ -74,7 +68,7 @@ const WordcardDetail: NextPage = () => {
     if (error) {
       console.log(error);
       setSnackbar({
-        message: 'era',
+        message: 'エラーが発生しました',
         severity: 'error',
         pathname: '/wordcards/[uuid]',
       });
@@ -135,40 +129,6 @@ const WordcardDetail: NextPage = () => {
       });
   };
 
-  // const onSubmit = (data: cardForm) => {
-  //   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
-
-  //   const newCardData = JSON.stringify({
-  //     card: data,
-  //   });
-
-  //   axios({
-  //     method: 'POST',
-  //     url: url,
-  //     headers: headers,
-  //     data: newCardData,
-  //   })
-  //     .then((res: AxiosResponse) => {
-  //       console.log(res);
-  //       setSnackbar({
-  //         message: '新しい単語帳を追加しました',
-  //         severity: 'success',
-  //         pathname: '/wordcards',
-  //       });
-  //       router.push('/wordcards');
-  //     })
-  //     .catch((e: AxiosError<{ error: string }>) => {
-  //       if (e.response) {
-  //         console.log(e);
-  //         setSnackbar({
-  //           message: e.response.data.error,
-  //           severity: 'error',
-  //           pathname: '/wordcards/create',
-  //         });
-  //       }
-  //     });
-  // };
-
   return (
     wordcard && (
       <Box
@@ -207,7 +167,7 @@ const WordcardDetail: NextPage = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Card sx={{ borderRadius: 3, p: 2 }}>
+              <Card sx={{ borderRadius: 3, p: 1 }}>
                 <CardContent>
                   <Grid
                     container
@@ -218,73 +178,45 @@ const WordcardDetail: NextPage = () => {
                       pt: 1,
                     }}
                   >
-                    <Stack
-                      direction="row"
-                      divider={<Divider orientation="vertical" flexItem />}
-                      spacing={2}
-                    >
-                      <Button>
-                        <Stack direction="row" spacing={1}>
-                          <SellIcon css={fontSizeCss} sx={{ color: 'gray' }} />
-                          <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                            覚える
-                          </Typography>
-                        </Stack>
-                      </Button>
-                      <Button>
-                        <Stack direction="row" spacing={1}>
-                          <BorderColorIcon css={fontSizeCss} sx={{ color: 'gray' }} />
-                          <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                            テスト
-                          </Typography>
-                        </Stack>
-                      </Button>
-                      <Button>
-                        <Stack direction="row" spacing={1}>
-                          <SearchIcon css={fontSizeCss} sx={{ color: 'gray' }} />
-                          <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                            単語検索
-                          </Typography>
-                        </Stack>
-                      </Button>
-                    </Stack>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <Card sx={{ borderRadius: 3, p: 2 }}>
-                <CardContent>
-                  <Grid container item>
-                    <Grid item>
-                      <Typography
-                        component="h3"
-                        sx={{
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                          color: '#000040',
-                        }}
+                    <Stack spacing={2}>
+                      <Stack
+                        direction="row"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
                       >
-                        動詞自動活用
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    sx={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Grid
-                      container
-                      item
-                      sx={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    ></Grid>
+                        <Link href={'/wordcards/flashcard/' + uuid}>
+                          <Button>
+                            <Stack direction="row" spacing={1}>
+                              <SellIcon css={fontSizeCss} sx={{ color: 'gray' }} />
+                              <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
+                                覚える
+                              </Typography>
+                            </Stack>
+                          </Button>
+                        </Link>
+                        <Button disabled>
+                          <Stack direction="row" spacing={1}>
+                            <BorderColorIcon css={fontSizeCss} sx={{ color: 'gray' }} />
+                            <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
+                              テスト
+                            </Typography>
+                          </Stack>
+                        </Button>
+                        <Button disabled>
+                          <Stack direction="row" spacing={1}>
+                            <SearchIcon css={fontSizeCss} sx={{ color: 'gray' }} />
+                            <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
+                              単語検索
+                            </Typography>
+                          </Stack>
+                        </Button>
+                      </Stack>
+                      <Link href={'/wordcards/conjugation/' + uuid}>
+                        <Button variant="contained" sx={{ width: 500 }}>
+                          動詞自動活用機能
+                        </Button>
+                      </Link>
+                    </Stack>
                   </Grid>
                 </CardContent>
               </Card>

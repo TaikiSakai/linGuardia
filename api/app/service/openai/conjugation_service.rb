@@ -21,7 +21,8 @@ module Openai
                 3. You have to select only one subject at random.
                 4. If the input is not a verb, you have to return it as it is.
                 5. If the input is conjugated, you have to convert it to other conjugation type.
-                6. Return datas in the json format.
+                6. Do not output the same tense as the input.
+                7. Return datas in the json format.
                   All you have to do is replace the word property value with the conjugated one.
                   Do not insert any additional property.
                   output example -> {id: number, word: string}

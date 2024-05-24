@@ -45,4 +45,14 @@ class Vocabulary < ApplicationRecord
   rescue ActiveRecord::Rollback
     false
   end
+
+  def self.update_verb_conjugation!(card:, vocabularies_params:)
+    ActiveRecord::Base.transaction do
+      vocabularies_params.each do |vocabulary_params|
+        vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
+        vocabulary.assign_attributes(vocabulary_params.permit(:word))
+        vocabulary.save!
+      end
+    end
+  end
 end

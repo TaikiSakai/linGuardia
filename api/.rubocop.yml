@@ -16,3 +16,4 @@ Metrix/MethodLength:
   Exclude:
    - 'app/service/openai/*'
    - 'app/models/vocabulary.rb'
+   - 'app/controllers/auth/*'
