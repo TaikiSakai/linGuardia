@@ -2,7 +2,6 @@ import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import useSWR from 'swr';
 import { styles } from '@/styles';
@@ -15,8 +14,7 @@ type VocabularyFormData = VocabularyData & {
 };
 
 const EditVocabPage: NextPage = () => {
-  const router = useRouter();
-  const { uuid } = router.query;
+  const uuid = 'f0c520c6-681b-45f6-9008-d27e77269303';
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
   const { data, error } = useSWR(uuid ? url + uuid + '/vocabularies' : null, fetcher);
@@ -26,7 +24,7 @@ const EditVocabPage: NextPage = () => {
   if (error) return <div>単語帳を取得できません</div>;
   if (!data) return <div>Loading...</div>;
 
-  const vocabularies: VocabularyData[] = camelcaseKeys(data.vocabularies);
+  const vocabularies: VocabularyData[] = camelcaseKeys(data);
 
   const onSubmit: SubmitHandler<VocabularyFormData> = (data) => {
     const vocabularies = [];
@@ -62,7 +60,6 @@ const EditVocabPage: NextPage = () => {
       vocabularies: vocabularies,
     });
 
-    // console.log(payload) // デバッグ用にコンソールに出力
     console.log(JSON.stringify(vocabularies, null, 2));
 
     const headers = {

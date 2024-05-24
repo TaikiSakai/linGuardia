@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import createEmotionServer from '@emotion/server/create-instance';
 import { RenderPageResult } from 'next/dist/shared/lib/utils';
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentInitialProps,
-} from 'next/document';
+import Document, { Html, Head, Main, NextScript, DocumentInitialProps } from 'next/document';
 import * as React from 'react';
 
 import createEmotionCache from '@/styles/createEmotionCache';
@@ -90,9 +84,6 @@ MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      ...emotionStyleTags,
-    ],
+    styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
   };
 };

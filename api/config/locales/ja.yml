@@ -4,3 +4,6 @@ ja:
       card:
         title: タイトル
         status: ステータス
+      vocabulary:
+        word: 単語
+        meaning: 意味

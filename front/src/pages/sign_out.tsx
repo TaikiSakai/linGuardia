@@ -15,9 +15,9 @@ const SignOut: NextPage = () => {
       const headers = {
         uid: localStorage.getItem('uid'),
         client: localStorage.getItem('client'),
-        access_token: localStorage.getItem('access-token'),
+        'access-token': localStorage.getItem('access-token'),
       };
-      console.log('userSignOut-inner');
+      console.log(headers);
       await axios({
         method: 'DELETE',
         url: url,

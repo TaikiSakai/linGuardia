@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
-import BottomMenu from '@/components/BottonMenu';
+import BottomMenu from '@/components/BottomMenu';
 import Header from '@/components/Header';
 import NotiSnackbar from '@/components/NotiSnackbar';
 import CurrentUserFetcher from '@/components/currentUserFetcher';

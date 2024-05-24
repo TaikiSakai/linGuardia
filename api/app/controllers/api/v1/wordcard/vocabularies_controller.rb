@@ -3,50 +3,65 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :set_card
 
   def index
-    vocabularies = @card.vocabularies.includes(:roles)
+    vocabularies = if (role_name = params[:role_name])
+                     @card.vocabularies.with_role(role_name)
+                   else
+                     @card.vocabularies.includes(:roles)
+                   end
 
     if vocabularies.empty?
-      render json: { message: "単語が登録されていません"}, status: :ok
+      render json: { error: "単語が登録されていません" }, status: :not_found
     else
-      render json: {vocabularies: vocabularies }, each_serializer: VocabularySerializer, status: :ok
+      render json: vocabularies, each_serializer: VocabularySerializer, status: :ok
     end
   end
 
   def create
-    if Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
-      render json: { message: "単語を登録しました" }, status: :ok
-    else
-      render json: { message: "単語の登録に失敗しました" }, status: :unprocessable_entity
-    end
+    Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    render json: { message: "単語を登録しました" }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
-    if Vocabulary.update_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
-      render json: { message: "単語を更新しました" }, status: :ok
+    Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    render json: { message: "単語を更新しました" }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { error: e.message }, status: :not_found
+  end
+
+  def update_conjugation
+    Vocabulary.update_verb_conjugation!(card: @card, vocabularies_params: vocabularies_params)
+    render json: { message: "単語を更新しました" }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { error: e.message }, status: :not_found
+  end
+
+  def destroy
+    vocabulary = @card.vocabularies.find(params[:id])
+    if vocabulary.destroy
+      render json: { message: "単語を削除しました" }, statu: :ok
     else
-      render json: { message: "単語の更新に失敗しました" }, status: :unprocessable_entity
+      render json: { message: vocabulary.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  
-  def destroy
-    vocabulary = @card.vocabularies.find(params[:id])
-    vocabulary.destroy!
-    render json: { message: "削除しました" }, statu: :ok    
-  end
-
   private
-  
+
     def vocabularies_params
       # paramsを単語ごとに取り出して配列に入れる
       # 単語をまとめて登録するために使用する
       params.require(:vocabularies).map do |vocabulary_params|
-        vocabulary_params.permit(:id, :word, :meaning, role: [])
+        vocabulary_params.permit(:id, :word, :meaning, roles: [])
       end
     end
 
     def set_card
       @card = current_user.cards.find_by(uuid: params[:card_uuid])
-      render json: { message: "単語帳が見つかりません"}, status: :not_found unless @card
+      render json: { message: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 end

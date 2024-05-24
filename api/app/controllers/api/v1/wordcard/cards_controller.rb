@@ -2,24 +2,35 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    cards = current_user.cards.all
+    cards = current_user.cards.all.order(created_at: :desc)
 
     if cards.empty?
-      render json: { message: "単語帳が登録されていません" }, status: :ok
+      render json: { error: "単語帳が1つも登録されていません" }, status: :not_found
     else
-      render json: { cards: cards } , status: :ok
+      render json: cards, each_serializer: CardSerializer, status: :ok
+    end
+  end
+
+  def show
+    card = current_user.cards.find_by(uuid: params[:uuid])
+
+    if card.nil?
+      render json: { error: "単語帳が見つかりません" }, status: :not_found
+    else
+      render json: card, each_serializer: CardSerializer, status: :ok
     end
   end
 
   def create
     card = current_user.cards.new(card_params)
 
-    if card.save
-      render json: { message: "単語帳を作成しました" }, status: :ok
-    else
-      render json: { errors: card.errors.full_messages,
-                     message: "単語帳を作成できません" }, status: :bad_request
-    end
+    card.save!
+    render json: {
+      card: CardSerializer.new(card),
+      message: "単語帳を作成しました",
+    }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
@@ -33,11 +44,12 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     end
   end
 
-  def destroy    
+  def destroy
     card = current_user.cards.find_by!(uuid: params[:uuid])
 
-    card.destroy!
-    render json: { message: "削除しました" }, status: :ok
+    if card.destroy!
+      render json: { message: "削除しました" }, status: :ok
+    end
   end
 
   private

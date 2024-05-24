@@ -14,22 +14,25 @@ const NotiSnackbar = () => {
     }
   }, [snackbar, router]);
 
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => {
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setOpen(false);
-    setSnackbar({ message: null, severity: null, pathname: null });
+    setSnackbar({ message: null, severity: 'success', pathname: null });
   };
 
   return (
     <>
       {snackbar.message != null && (
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        <Snackbar
+          open={open}
+          onClose={handleClose}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          sx={{ mt: '60px' }}
+        >
           <Alert
             onClose={handleClose}
             severity={snackbar.severity}

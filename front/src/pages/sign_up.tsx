@@ -1,10 +1,12 @@
 import { LoadingButton } from '@mui/lab';
-import { Grid, Card, TextField, Typography, Stack, Box } from '@mui/material';
+import { Grid, Card, TextField, Typography, Stack, Box, Button } from '@mui/material';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 
 type SignUpFormData = {
@@ -15,10 +17,22 @@ type SignUpFormData = {
 
 const SignUp: NextPage = () => {
   const router = useRouter();
+  const [user] = useUserState();
+
+  const [, setSnackbar] = useSnackbarState();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, control } = useForm<SignUpFormData>({
     defaultValues: { email: '', password: '' },
   });
+
+  if (user.isSignedIn) {
+    setSnackbar({
+      message: 'ログイン済みです',
+      severity: 'info',
+      pathname: '/',
+    });
+    router.push('/');
+  }
 
   const validationRules = {
     name: {
@@ -51,18 +65,23 @@ const SignUp: NextPage = () => {
         headers: headers,
       })
         .then((res: AxiosResponse) => {
-          localStorage.setItem(
-            'access-token',
-            res.headers['access-token'] || '',
-          );
+          localStorage.setItem('access-token', res.headers['access-token'] || '');
           localStorage.setItem('client', res.headers['client'] || '');
           localStorage.setItem('uid', res.headers['uid'] || '');
-          // snackbar
+          setSnackbar({
+            message: '入力したメールアドレスへ確認メールを送信しました',
+            severity: 'info',
+            pathname: '/sign_in',
+          });
           router.push('/sign_in');
         })
         .catch((e: AxiosError<{ error: string }>) => {
           console.log(e.message);
-          // snackbar
+          setSnackbar({
+            message: 'エラーが発生しました。しばらく経ってからやり直してください',
+            severity: 'error',
+            pathname: '/sign_up',
+          });
           router.push('/sign_up');
         });
       setIsLoading(false);
@@ -78,14 +97,8 @@ const SignUp: NextPage = () => {
         backgroundColor: '#e6f2ff',
       }}
     >
-      <Grid container columns={20}>
-        <Grid
-          item
-          xs={15}
-          md={18}
-          sx={{ margin: 'auto', pt: 20 }}
-          style={{ maxWidth: '500px' }}
-        >
+      <Grid container columns={18}>
+        <Grid item xs={15} md={18} sx={{ margin: 'auto', pt: 15 }} style={{ maxWidth: '500px' }}>
           <Card sx={{ p: 2 }}>
             <Typography
               component="h2"
@@ -96,13 +109,9 @@ const SignUp: NextPage = () => {
                 py: 3,
               }}
             >
-              ユーザー登録
+              新規ユーザー登録
             </Typography>
-            <Stack
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              spacing={4}
-            >
+            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
               <Controller
                 name="name"
                 control={control}
@@ -112,6 +121,7 @@ const SignUp: NextPage = () => {
                     {...field}
                     type="text"
                     label="ユーザー名"
+                    size="small"
                     helperText={fieldState.error?.message}
                     sx={{ backgroundColor: 'white' }}
                   />
@@ -126,6 +136,7 @@ const SignUp: NextPage = () => {
                     {...field}
                     type="text"
                     label="メールアドレス"
+                    size="small"
                     helperText={fieldState.error?.message}
                     sx={{ backgroundColor: 'white' }}
                   />
@@ -140,6 +151,7 @@ const SignUp: NextPage = () => {
                     {...field}
                     type="password"
                     label="パスワード"
+                    size="small"
                     helperText={fieldState.error?.message}
                     sx={{ backgroundColor: 'white' }}
                   />
@@ -154,10 +166,35 @@ const SignUp: NextPage = () => {
                   color: 'white',
                 }}
               >
-                登録する
+                登録
               </LoadingButton>
             </Stack>
           </Card>
+          <Grid
+            container
+            item
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              pt: 3,
+            }}
+          >
+            <Link href="/sign_in">
+              <Button
+                color="primary"
+                variant="text"
+                sx={{
+                  textTransform: 'none',
+                  fontSize: 16,
+                  borderRadius: 1,
+                  boxShadow: 'none',
+                  ml: 2,
+                }}
+              >
+                ログインはこちらから
+              </Button>
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

@@ -8,3 +8,12 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 3.1.2
+
+Style/HashSyntax:
+  Enabled: false
+
+Metrix/MethodLength:
+  Exclude:
+   - 'app/service/openai/*'
+   - 'app/models/vocabulary.rb'
+   - 'app/controllers/auth/*'
