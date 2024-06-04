@@ -3,7 +3,7 @@ class Auth::RegistrationsController < DeviseTokenAuth::RegistrationsController
 
     # サインアップ時に許可するパラメータを記述する
     def sign_up_params
-      params.permit(:name, :email, :password)
+      params.permit(:name, :email, :password, :password_confirmation)
     end
 
     def render_create_success
