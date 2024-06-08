@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab';
 import { Grid, Card, TextField, Typography, Stack, Box, Button } from '@mui/material';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios from 'axios';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller, FieldValues } from 'react-hook-form';
 import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 
@@ -13,6 +13,7 @@ type SignUpFormData = {
   name: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
 };
 
 const SignUp: NextPage = () => {
@@ -49,6 +50,15 @@ const SignUp: NextPage = () => {
     password: {
       required: 'パスワードを入力してください',
     },
+    passwordConfirmation: {
+      required: 'パスワードを確認してください',
+      validate: (value: string, context: FieldValues) => {
+        if (value !== context.password) {
+          return 'パスワードが一致しません';
+        }
+        return true;
+      },
+    },
   };
 
   const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
@@ -58,32 +68,28 @@ const SignUp: NextPage = () => {
       const headers = { 'Content-Type': 'application/json' };
       const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/sign_in';
 
-      await axios({
-        method: 'POST',
-        url: url,
-        data: { ...data, confirm_success_url: confirmSuccessUrl },
-        headers: headers,
-      })
-        .then((res: AxiosResponse) => {
-          localStorage.setItem('access-token', res.headers['access-token'] || '');
-          localStorage.setItem('client', res.headers['client'] || '');
-          localStorage.setItem('uid', res.headers['uid'] || '');
-          setSnackbar({
-            message: '入力したメールアドレスへ確認メールを送信しました',
-            severity: 'info',
-            pathname: '/sign_in',
-          });
-          router.push('/sign_in');
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-          console.log(e.message);
-          setSnackbar({
-            message: 'エラーが発生しました。しばらく経ってからやり直してください',
-            severity: 'error',
-            pathname: '/sign_up',
-          });
-          router.push('/sign_up');
+      try {
+        await axios({
+          method: 'POST',
+          url: url,
+          data: { ...data, confirm_success_url: confirmSuccessUrl },
+          headers: headers,
         });
+        setSnackbar({
+          message: '入力したメールアドレスへ確認メールを送信しました',
+          severity: 'info',
+          pathname: '/sign_in',
+        });
+        router.push('/sign_in');
+      } catch (e) {
+        console.log(e);
+        setSnackbar({
+          message: 'エラーが発生しました。しばらく経ってからやり直してください',
+          severity: 'error',
+          pathname: '/sign_up',
+        });
+        router.push('/sign_up');
+      }
       setIsLoading(false);
     };
 
@@ -151,6 +157,21 @@ const SignUp: NextPage = () => {
                     {...field}
                     type="password"
                     label="パスワード"
+                    size="small"
+                    helperText={fieldState.error?.message}
+                    sx={{ backgroundColor: 'white' }}
+                  />
+                )}
+              />
+              <Controller
+                name="passwordConfirmation"
+                control={control}
+                rules={validationRules.passwordConfirmation}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    type="password"
+                    label="パスワード確認"
                     size="small"
                     helperText={fieldState.error?.message}
                     sx={{ backgroundColor: 'white' }}

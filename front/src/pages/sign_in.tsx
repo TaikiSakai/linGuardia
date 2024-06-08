@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Grid, Card, TextField, Typography, Stack, Box, Button } from '@mui/material';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios from 'axios';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -46,35 +46,38 @@ const SignIn: NextPage = () => {
     },
   };
 
-  const onSubmit: SubmitHandler<SignInFormData> = (data) => {
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_in';
     const headers = { 'Content-Type': 'application/json' };
-    setIsLoading(true);
 
-    axios({ method: 'POST', url: url, data: data, headers: headers })
-      .then((res: AxiosResponse) => {
-        localStorage.setItem('access-token', res.headers['access-token']);
-        localStorage.setItem('client', res.headers['client']);
-        localStorage.setItem('uid', res.headers['uid']);
-        setUser({
-          ...user,
-          isFetched: false,
-        });
-        setSnackbar({
-          message: 'ログインしました',
-          severity: 'success',
-          pathname: '/',
-        });
-        router.push('/');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
-        setSnackbar({
-          message: 'ログインに失敗しました',
-          severity: 'error',
-          pathname: '/sign_in',
-        });
+    try {
+      setIsLoading(true);
+      const res = await axios({
+        method: 'POST',
+        url: url,
+        data: data,
+        headers: headers,
+        withCredentials: true,
       });
+      console.log(res);
+      setUser({
+        ...user,
+        isFetched: false,
+      });
+      setSnackbar({
+        message: 'ログインしました',
+        severity: 'success',
+        pathname: '/',
+      });
+      router.push('/');
+    } catch (e) {
+      console.log(e);
+      setSnackbar({
+        message: 'ログインに失敗しました',
+        severity: 'error',
+        pathname: '/sign_in',
+      });
+    }
     setIsLoading(false);
   };
 
@@ -164,7 +167,7 @@ const SignIn: NextPage = () => {
                   ml: 2,
                 }}
               >
-                新規ユーザー登録はこちらから
+                新規ユーザー登録
               </Button>
             </Link>
           </Grid>
