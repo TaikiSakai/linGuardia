@@ -4,6 +4,7 @@ import { useUserState } from '@/hooks/useGlobalState';
 
 const CurrentUserFetcher = () => {
   const [user, setUser] = useUserState();
+
   console.log(user);
 
   useEffect(() => {
