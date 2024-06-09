@@ -37,18 +37,24 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     card = current_user.cards.find_by!(uuid: params[:uuid])
 
     if card.update(card_params)
-      render json: { message: "更新しました" }, status: :ok
+      render json: { message: "単語帳を更新しました" }, status: :ok
     else
       render json: { errors: card.errors,
-                     message: "更新に失敗しました" }, status: :bad_request
+                     message: "単語帳を更新できません" }, status: :bad_request
     end
   end
 
   def destroy
-    card = current_user.cards.find_by!(uuid: params[:uuid])
+    card = current_user.cards.find_by(uuid: params[:uuid])
 
-    if card.destroy!
-      render json: { message: "削除しました" }, status: :ok
+    if card.nil? 
+      return render json: { error: "単語帳が見つかりません" }, status: :not_found
+    end
+
+    if card.destroy
+      render json: { message: "単語帳を削除しました" }, status: :ok
+    else
+      render json: { error: "単語帳を削除できません" }, status: :internal_server_error
     end
   end
 
