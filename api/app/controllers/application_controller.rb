@@ -15,7 +15,8 @@ class ApplicationController < ActionController::API
     request.headers['access-token'] = token['access-token']
     request.headers['client'] = token['client']
     request.headers['uid'] = token['uid']
-    
+
+    # レスポンスヘッダーから認証情報を削除する
     response.headers.delete_if { |key| auth_headers_data.include?(key) }
   end
 
