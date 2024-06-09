@@ -16,13 +16,13 @@ import {
   ListItem,
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, ReactNode } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import EditMenuForModal from '@/components/EditMenu';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
@@ -96,37 +96,34 @@ const WordcardDetail: NextPage = () => {
 
   const headers = {
     'Content-Type': 'application/json',
-    'access-token': localStorage.getItem('access-token'),
-    client: localStorage.getItem('client'),
-    uid: localStorage.getItem('uid'),
   };
 
-  const deleteWordcard = () => {
-    axios({
-      method: 'DELETE',
-      url: url + uuid,
-      headers: headers,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res);
+  const deleteWordcard = async () => {
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'DELETE',
+        url: url + uuid,
+        headers: headers,
+        withCredentials: true,
+      });
+      mutate(process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards');
+      setSnackbar({
+        message: res.data.message,
+        severity: 'success',
+        pathname: '/wordcards',
+      });
+      router.push('/wordcards');
+    } catch (e) {
+      if (isAxiosError(e)) {
+        console.log(e);
         setSnackbar({
-          message: res.data.message,
-          severity: 'success',
+          message: e.response?.data.error,
+          severity: 'error',
           pathname: '/wordcards',
         });
-        router.push('/wordcards');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        if (e.response) {
-          console.log(e);
-          setSnackbar({
-            message: e.response.data.error,
-            severity: 'error',
-            pathname: '/wordcards',
-          });
-          router.push('/wordcards');
-        }
-      });
+      }
+      router.push('/wordcards');
+    }
   };
 
   return (
