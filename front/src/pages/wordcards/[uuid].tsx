@@ -31,13 +31,6 @@ import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
 
-type wordcardProps = {
-  uuid: string;
-  title: string;
-  status: string;
-  createdAt: string;
-};
-
 // フォントの設定
 const fontSizeCss = css({
   fontSize: 25,
@@ -46,23 +39,27 @@ const fontSizeCss = css({
   },
 });
 
+type wordcardProps = {
+  uuid: string;
+  title: string;
+  status: string;
+  createdAt: string;
+};
+
 const WordcardDetail: NextPage = () => {
   useRequireSignedIn();
 
   const router = useRouter();
   const { uuid } = router.query;
-
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
+
   const { data, error } = useSWR(uuid ? url + uuid : null, fetcher, {
     revalidateOnFocus: false,
   });
 
-  const [wordcard, setWordcard] = useState<wordcardProps | null>(null);
-  // const { handleSubmit, control } = useForm<cardForm>();
   const [open, handleOpen, handleClose] = useModal();
-  const [, setSnackbar] = useSnackbarState();
-
   const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [, setSnackbar] = useSnackbarState();
 
   useEffect(() => {
     if (error) {
@@ -77,12 +74,9 @@ const WordcardDetail: NextPage = () => {
 
   if (!data && !error) return <div>Loading...</div>;
 
-  if (data && !wordcard) {
-    const fetchedCards: wordcardProps = camelcaseKeys(data);
-    setWordcard(fetchedCards);
-  }
+  const fetchedCard: wordcardProps = camelcaseKeys(data);
 
-  console.log(wordcard);
+  console.log(fetchedCard);
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);
@@ -94,9 +88,7 @@ const WordcardDetail: NextPage = () => {
     handleClose();
   };
 
-  const headers = {
-    'Content-Type': 'application/json',
-  };
+  const headers = { 'Content-Type': 'application/json' };
 
   const deleteWordcard = async () => {
     try {
@@ -106,7 +98,7 @@ const WordcardDetail: NextPage = () => {
         headers: headers,
         withCredentials: true,
       });
-      mutate(process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards');
+      mutate(url);
       setSnackbar({
         message: res.data.message,
         severity: 'success',
@@ -127,7 +119,7 @@ const WordcardDetail: NextPage = () => {
   };
 
   return (
-    wordcard && (
+    fetchedCard && (
       <Box
         css={styles.pageMinHeight}
         sx={{
@@ -160,7 +152,7 @@ const WordcardDetail: NextPage = () => {
                   color: '#000040',
                 }}
               >
-                {wordcard?.title}
+                {fetchedCard?.title}
               </Typography>
             </Grid>
             <Grid item xs={12} md={8}>
@@ -262,17 +254,17 @@ const WordcardDetail: NextPage = () => {
                           <Typography>タイトル:</Typography>
                           <Stack direction="row" sx={{ alignItems: 'center' }}>
                             <Box>
-                              <Typography>{wordcard?.title}</Typography>
+                              <Typography>{fetchedCard?.title}</Typography>
                             </Box>
                             <Box
                               onClick={() => {
                                 handleOpenModal(
                                   <EditMenuForModal
-                                    uuid={wordcard?.uuid}
-                                    title={wordcard?.title}
-                                    status={wordcard?.status}
-                                    createdAt={wordcard?.createdAt}
-                                    changeValue={setWordcard}
+                                    uuid={fetchedCard?.uuid}
+                                    title={fetchedCard?.title}
+                                    status={fetchedCard?.status}
+                                    createdAt={fetchedCard?.createdAt}
+                                    // changeValue={setWordcard}
                                     closeModal={handleClose}
                                   />,
                                 );
@@ -293,17 +285,17 @@ const WordcardDetail: NextPage = () => {
                           <Typography>ステータス:</Typography>
                           <Stack direction="row" sx={{ alignItems: 'center' }}>
                             <Box>
-                              <Typography>{wordcard?.status}</Typography>
+                              <Typography>{fetchedCard?.status}</Typography>
                             </Box>
                             <Box
                               onClick={() => {
                                 handleOpenModal(
                                   <EditMenuForModal
-                                    uuid={wordcard?.uuid}
-                                    title={wordcard?.title}
-                                    status={wordcard?.status}
-                                    createdAt={wordcard?.createdAt}
-                                    changeValue={setWordcard}
+                                    uuid={fetchedCard?.uuid}
+                                    title={fetchedCard?.title}
+                                    status={fetchedCard?.status}
+                                    createdAt={fetchedCard?.createdAt}
+                                    // changeValue={setWordcard}
                                     closeModal={handleClose}
                                   />,
                                 );
@@ -324,7 +316,7 @@ const WordcardDetail: NextPage = () => {
                           <Typography>作成日:</Typography>
                           <Stack direction="row" sx={{ alignItems: 'center' }}>
                             <Box>
-                              <Typography>{wordcard?.createdAt}</Typography>
+                              <Typography>{fetchedCard?.createdAt}</Typography>
                             </Box>
                           </Stack>
                         </ListItem>
