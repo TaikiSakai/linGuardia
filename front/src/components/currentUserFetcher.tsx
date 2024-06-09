@@ -1,48 +1,42 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useUserState } from '@/hooks/useGlobalState';
 
 const CurrentUserFetcher = () => {
   const [user, setUser] = useUserState();
 
+  console.log(user);
+
   useEffect(() => {
-    if (user.isFetched) {
-      return;
-    }
+    const fetchCurrentUser = async () => {
+      if (user.isFetched) {
+        console.log(user);
+        return;
+      } else {
+        const url = process.env.NEXT_PUBLIC_API_URL + '/current/user';
 
-    if (localStorage.getItem('access-token')) {
-      const url = process.env.NEXT_PUBLIC_API_URL + '/current/user';
-
-      axios
-        .get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-            'access-token': localStorage.getItem('access-token'),
-            client: localStorage.getItem('client'),
-            uid: localStorage.getItem('uid'),
-          },
-        })
-        .then((res: AxiosResponse) => {
+        try {
+          const res = await axios({
+            method: 'GET',
+            url: url,
+            withCredentials: true,
+          });
           setUser({
             ...user,
             ...res.data,
             isSignedIn: true,
             isFetched: true,
           });
-        })
-        .catch((err: AxiosError<{ error: string }>) => {
-          console.log(err.message);
+        } catch (e) {
           setUser({
             ...user,
             isFetched: true,
           });
-        });
-    } else {
-      setUser({
-        ...user,
-        isFetched: true,
-      });
-    }
+        }
+      }
+    };
+
+    fetchCurrentUser();
   }, [user, setUser]);
 
   return <></>;

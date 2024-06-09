@@ -4,10 +4,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
 import BottomMenu from '@/components/BottomMenu';
+import CurrentUserFetcher from '@/components/currentUserFetcher';
 import Header from '@/components/Header';
 import NotiSnackbar from '@/components/NotiSnackbar';
-import CurrentUserFetcher from '@/components/currentUserFetcher';
-
 import createEmotionCache from '@/styles/createEmotionCache';
 import theme from '@/styles/theme';
 

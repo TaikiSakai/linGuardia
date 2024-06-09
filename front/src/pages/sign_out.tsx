@@ -1,51 +1,52 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useUserState } from '@/hooks/useGlobalState';
+import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 
 const SignOut: NextPage = () => {
   const router = useRouter();
   const [, setUser] = useUserState();
-  console.log('logout imported');
+  const [, setSnackbar] = useSnackbarState();
 
   useEffect(() => {
     const userSignOut = async () => {
       const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_out';
-      const headers = {
-        uid: localStorage.getItem('uid'),
-        client: localStorage.getItem('client'),
-        'access-token': localStorage.getItem('access-token'),
-      };
-      console.log(headers);
-      await axios({
-        method: 'DELETE',
-        url: url,
-        headers: headers,
-      })
-        .then((res: AxiosResponse) => {
-          localStorage.clear();
-          setUser({
-            id: 0,
-            name: '',
-            email: '',
-            isSignedIn: false,
-            isFetched: false,
-          });
-          console.log(res);
-          console.log('logout しました');
-          console.log('------fin request-------');
-          router.push('/');
-        })
-        .catch((e: AxiosError<{ error: string }>) => {
-          console.log('erroe catched');
-          console.log(e);
-          router.push('/');
+
+      try {
+        const res = await axios({
+          method: 'DELETE',
+          url: url,
+          withCredentials: true,
         });
+        setUser({
+          id: 0,
+          name: '',
+          email: '',
+          isSignedIn: false,
+          isFetched: false,
+        });
+        console.log(res);
+        console.log('logout しました');
+        setSnackbar({
+          message: 'ログアウトしました',
+          severity: 'success',
+          pathname: '/',
+        });
+        router.push('/');
+      } catch (e) {
+        setSnackbar({
+          message: 'ログアウトに失敗しました',
+          severity: 'error',
+          pathname: '/',
+        });
+        router.push('/');
+        console.log(e);
+      }
     };
+
     userSignOut();
-  }, [router, setUser]);
-  console.log('userSignOut-outer');
+  }, [router, setSnackbar, setUser]);
 
   return <></>;
 };

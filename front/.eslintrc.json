@@ -12,7 +12,7 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
-      "import/order": [2, { "alphabetize": { "order": "asc" } }],
+      "import/order": [2, { "alphabetize": { "order": "asc", "caseInsensitive": true } }],
       "import/no-unresolved": "off",
       "prettier/prettier": [
         "error",
