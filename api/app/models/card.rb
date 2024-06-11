@@ -8,4 +8,9 @@ class Card < ApplicationRecord
 
   # front側から見える値はuuidを使用する
   before_create -> { self.uuid = SecureRandom.uuid }
+
+  # 単語帳の所有者でないユーザーが単語帳にアクセスしたら、アクセス数をカウントアップする
+  def count_access_number
+    increment!(:number_of_access, 1)    
+  end
 end

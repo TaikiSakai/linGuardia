@@ -14,6 +14,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
   def show
     if @card
+      @card.count_access_number unless @card.user == current_user
       render json: @card, each_serializer: CardSerializer, status: :ok
     end
   end
