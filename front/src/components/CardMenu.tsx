@@ -9,10 +9,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
+import { mutate } from 'swr';
 import ModalCard from './ModalCard';
 import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
-import { WordcardData } from '@/types/WordcardType';
 
 // フォントの設定
 const fontSizeCss = css({
@@ -22,22 +22,15 @@ const fontSizeCss = css({
   },
 });
 
-// 新規登録フォーム用の型
 type cardForm = {
   title: string;
   status: string;
 };
 
-type newWordcardHandler = WordcardData & {
-  addValue: (newValue: WordcardData) => void;
-};
-
-const CardMenu = (props: newWordcardHandler) => {
+const CardMenu = () => {
   const { handleSubmit, control, reset } = useForm<cardForm>();
   const [open, handleOpen, handleClose] = useModal(reset);
   const [, setSnackbar] = useSnackbarState();
-
-  const addToIndex = props.addValue;
 
   const onSubmit = (data: cardForm) => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
@@ -57,16 +50,17 @@ const CardMenu = (props: newWordcardHandler) => {
       url: url,
       headers: headers,
       data: newCardData,
+      withCredentials: true,
     })
       .then((res: AxiosResponse) => {
         console.log(res.data);
+        mutate(process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards');
         setSnackbar({
           message: res.data.message,
           severity: 'success',
           pathname: '/wordcards',
         });
-        // res/dataは、uuid、 title、created_at
-        addToIndex(res.data.card);
+
         handleClose();
       })
       .catch((e: AxiosError<{ error: string }>) => {

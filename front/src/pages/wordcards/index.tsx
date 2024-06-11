@@ -1,7 +1,7 @@
 import { Grid, Container, Box, Typography } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 import CardMenu from '@/components/CardMenu';
 import Wordcard from '@/components/Wordcard';
@@ -16,7 +16,6 @@ const Index: NextPage = () => {
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards';
   const { data, error } = useSWR(url ? url : null, fetcher, { revalidateOnFocus: false });
-  const [wordcards, setWordcard] = useState<WordcardData[]>([]);
   const [, setSnackbar] = useSnackbarState();
 
   useEffect(() => {
@@ -33,18 +32,7 @@ const Index: NextPage = () => {
 
   const fetchedCards: WordcardData[] = camelcaseKeys(data);
 
-  // dataがないとエラーになる?
-  if (data && wordcards.length === 0) {
-    setWordcard(fetchedCards);
-  }
-
-  // データの登録に成功したら、wordcard一覧を更新する
-  const addToIndex = (newWordcard: WordcardData) => {
-    const fetchedCards: WordcardData = camelcaseKeys(newWordcard);
-    setWordcard((prevWordcards) => [fetchedCards, ...prevWordcards]);
-  };
-
-  console.log(wordcards);
+  console.log('fetchedCards', fetchedCards);
 
   return (
     <Box
@@ -55,7 +43,7 @@ const Index: NextPage = () => {
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
-        <CardMenu uuid="" title="" status="" createdAt="" addValue={addToIndex} />
+        <CardMenu />
         <Grid
           container
           spacing={3}
@@ -64,7 +52,7 @@ const Index: NextPage = () => {
             alignItems: 'center',
           }}
         >
-          {wordcards.length === 0 ? (
+          {fetchedCards.length === 0 ? (
             <Box sx={{ pt: 5 }}>
               <Typography
                 component="h3"
@@ -78,7 +66,7 @@ const Index: NextPage = () => {
               </Typography>
             </Box>
           ) : (
-            wordcards.map((wordcard: WordcardData, i: number) => (
+            fetchedCards.map((wordcard: WordcardData, i: number) => (
               <Grid item key={i} xs={10} md={10}>
                 <Wordcard
                   uuid={wordcard.uuid}

@@ -3,68 +3,53 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
+import { mutate } from 'swr';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { WordcardData } from '@/types/WordcardType';
 
 type newWordcardHandler = WordcardData & {
-  changeValue: (newValue: WordcardData) => void;
   closeModal: () => void;
 };
 
 const EditMenuForModal = (props: newWordcardHandler) => {
   const { handleSubmit, control } = useForm<WordcardData>();
   const [, setSnackbar] = useSnackbarState();
-
-  const changeCardValue = props.changeValue;
   const handleClose = props.closeModal;
 
-  console.log(props.uuid);
-
-  const onSubmit = (data: WordcardData) => {
-    console.log(data);
-
-    const newCardData = JSON.stringify({
-      card: data,
-    });
-
+  const onSubmit = async (data: WordcardData) => {
+    const newCardData = JSON.stringify({ card: data });
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
+    const headers = { 'Content-Type': 'application/json' };
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid'),
-    };
-    axios({
-      method: 'PATCH',
-      url: url + props.uuid,
-      headers: headers,
-      data: newCardData,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res.data);
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'PATCH',
+        url: url + props.uuid,
+        headers: headers,
+        data: newCardData,
+        withCredentials: true,
+      });
+
+      console.log(res.data);
+      mutate(url + props.uuid);
+      setSnackbar({
+        message: '更新しました',
+        severity: 'success',
+        pathname: '/wordcards/[uuid]',
+      });
+      handleClose();
+    } catch (e) {
+      if (isAxiosError(e)) {
+        console.log(e);
         setSnackbar({
-          message: '更新しました',
-          severity: 'success',
+          message: e.response?.data.error,
+          severity: 'error',
           pathname: '/wordcards/[uuid]',
         });
-
-        data['uuid'] = props.uuid;
-        data['createdAt'] = props.createdAt;
-        changeCardValue(data);
-        handleClose();
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        if (e.response) {
-          setSnackbar({
-            message: e.response.data.error,
-            severity: 'error',
-            pathname: '/wordcards/[uuid]',
-          });
-        }
-      });
+      }
+    }
   };
 
   return (
