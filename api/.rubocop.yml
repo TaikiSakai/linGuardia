@@ -14,6 +14,8 @@ Style/HashSyntax:
 
 Metrix/MethodLength:
   Exclude:
+   - 'app/controllers/concerns/assign_token.rb'
    - 'app/service/openai/*'
    - 'app/models/vocabulary.rb'
    - 'app/controllers/auth/*'
+  
