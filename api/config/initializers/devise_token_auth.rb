@@ -43,12 +43,12 @@ DeviseTokenAuth.setup do |config|
 
   # Makes it possible to change the headers names
   config.headers_names = {
-    :'authorization' => 'Authorization',
-    :'access-token' => 'access-token',
-    :'client' => 'client',
-    :'expiry' => 'expiry',
-    :'uid' => 'uid',
-    :'token-type' => 'token-type'
+    :authorization => "Authorization",
+    :'access-token' => "access-token",
+    :client => "client",
+    :expiry => "expiry",
+    :uid => "uid",
+    :'token-type' => "token-type",
   }
 
   # Makes it possible to use custom uid column
@@ -67,6 +67,6 @@ DeviseTokenAuth.setup do |config|
   config.cookie_enabled = true
   config.cookie_attributes = {
     httponly: true,
-    secure: true
+    secure: true,
   }
 end

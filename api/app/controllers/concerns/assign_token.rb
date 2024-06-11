@@ -8,27 +8,29 @@ module AssignToken
 
   private
 
-  def assign_cookies_token
-    return if response.headers['access-token'].nil?
-    
-    cookies[:token] = {
-      value: encode_access_token,
-      httponly: true,
-      expires: 30.days
-    }
+    # include先のcreateのafter_actionとして使う
+    # レスポンスヘッダーにあるaccess-tokenをcookieに書き換える
+    def assign_cookies_token
+      return if response.headers["access-token"].nil?
 
-    response.headers.delete_if { |key| auth_headers_data.include?(key) } 
-  end
+      cookies[:token] = {
+        value: encode_access_token,
+        httponly: true,
+        expires: 30.days,
+      }
 
-  def auth_headers_data
-    {
-      'access-token' => response.headers['access-token'],
-      'client' => response.headers['client'],
-      'uid' => response.headers['uid']
-    }
-  end
+      response.headers.delete_if {|key| auth_headers_data.include?(key) }
+    end
 
-  def encode_access_token
-    CGI.escape(Base64.encode64(JSON.dump(auth_headers_data)))
-  end
+    def auth_headers_data
+      {
+        "access-token" => response.headers["access-token"],
+        "client" => response.headers["client"],
+        "uid" => response.headers["uid"],
+      }
+    end
+
+    def encode_access_token
+      CGI.escape(Base64.encode64(JSON.dump(auth_headers_data)))
+    end
 end
