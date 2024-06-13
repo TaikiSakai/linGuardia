@@ -3,10 +3,7 @@ class Api::V1::DashboardsController < Api::V1::BaseController
 
   def index
     # ランキングで上位10を選出する
-    cards = Card.where(status: "open").includes(:user)
-    
-    # binding.pry
-    
-    render json: cards, each_serializer: RankingSerializer, status: :ok
+    cards = Card.where(status: "open").includes(:user).order(number_of_access: "DESC").limit(5)
+    render json: cards, each_serializer: CardListSerializer, status: :ok
   end
 end
