@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
           post "conjugation/create", to: "chat#create"
         end
+        resources :card_lists, only: [:index]
       end
     end
   end
