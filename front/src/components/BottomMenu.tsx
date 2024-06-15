@@ -28,7 +28,7 @@ const BottomMenu = () => {
               label="ホーム"
               icon={<HomeIcon />}
               LinkComponent={Link}
-              href={'/'}
+              href={'/dashboard'}
             />
             <BottomNavigationAction
               label="単語帳"
