@@ -1,6 +1,6 @@
 class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card, only: [:show, :update, :destroy]
+  before_action :set_card, only: [:update, :destroy]
 
   def index
     cards = current_user.cards.all.order(created_at: :desc)
@@ -13,10 +13,12 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   end
 
   def show
-    if @card
+    card = Card.find_by(uuid: params[:uuid])
+
+    if card
       # 自分以外のユーザーがアクセスしたらアクセス数をカウントする
-      @card.count_access_number unless @card.user == current_user
-      render json: @card, each_serializer: CardSerializer, status: :ok
+      card.count_access_number unless card.user == current_user
+      render json: card, each_serializer: CardSerializer, status: :ok
     end
   end
 
