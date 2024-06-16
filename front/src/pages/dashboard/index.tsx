@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { Box, Container, Typography, Stack, Grid } from '@mui/material';
+import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
 import RankingCard from '@/components/RankingCard';
 import { styles } from '@/styles';
-import { fetcher } from '@/utils';
 import { RankedCard } from '@/types/RankedCardType';
-import camelcaseKeys from 'camelcase-keys';
+import { fetcher } from '@/utils';
 
 
 const Index: NextPage = () => {
@@ -23,13 +23,8 @@ const Index: NextPage = () => {
 
   return (
     <>
-      <Box
-        css={styles.pageMinHeight}
-        sx={{
-          backgroundColor: '#e6f2ff',
-        }}
-      >
-        <Container maxWidth="md" sx={{ pt: 3, pb: 6 }}>
+      <Box css={styles.baseLayout}>
+        <Container maxWidth="md">
           <Grid
             container
             sx={{
@@ -57,11 +52,7 @@ const Index: NextPage = () => {
               </Box>
               {fetchedRankings.map((card: RankedCard, i: number) => (
                 <Box sx={{ mb: 2 }} key={i}>
-                  <RankingCard
-                    uuid={card.uuid}
-                    title={card.title}
-                    user={card.user.name}
-                  />
+                  <RankingCard uuid={card.uuid} title={card.title} userName={card.userName} />
                 </Box>
               ))}
             </Grid>
