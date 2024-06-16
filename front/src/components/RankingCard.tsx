@@ -1,19 +1,17 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { Button, Card, CardContent, Typography, Stack, Grid, Box } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { RankedCard } from '@/types/RankedCardType';
 
 const RankingCard = (props: RankedCard) => {
-  const router = useRouter();
+  const url = process.env.NEXT_PUBLIC_FRONT_URL + '/wordcards';
 
   return (
-    <Link href="/">
+    <Link href={url + '/' + props.uuid}>
       <Box>
         <Card sx={{ borderRadius: 3, height: 80 }}>
-          <CardContent sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
             <Grid container sx={{ alignItems: 'center', height: '100%' }}>
               <Grid
                 item
@@ -53,10 +51,9 @@ const RankingCard = (props: RankedCard) => {
                       sx={{
                         fontSize: 15,
                         color: '#000040',
-                        fontWeight: 'bold',
                       }}
                     >
-                      {props.user}
+                      {props.userName}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
