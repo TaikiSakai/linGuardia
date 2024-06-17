@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import { Box, Container, Typography, Stack, Grid } from '@mui/material';
+import { Box, Container, Typography, Grid } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
@@ -7,7 +6,6 @@ import RankingCard from '@/components/RankingCard';
 import { styles } from '@/styles';
 import { RankedCard } from '@/types/RankedCardType';
 import { fetcher } from '@/utils';
-
 
 const Index: NextPage = () => {
   const url = process.env.NEXT_PUBLIC_API_URL;
@@ -34,20 +32,20 @@ const Index: NextPage = () => {
             spacing={3}
           >
             <Grid container item>
-              <Box sx={{ justifyContent: 'left', textAlign: 'left'}}>
+              <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.pageTitle}>DashBoard</Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left'}}>
+              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>学習実績</Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <RankingCard />
+                <RankingCard uuid={'/'} title={'Title'} userName={'Username'}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left'}}>
+              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>人気の単語帳</Typography>
               </Box>
               {fetchedRankings.map((card: RankedCard, i: number) => (
