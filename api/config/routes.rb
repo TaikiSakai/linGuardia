@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       get "health_check", to: "health_check#index"
 
       mount_devise_token_auth_for "User", at: "auth", controllers: {
-        # registrations: 'auth/registrations',
         confirmations: "auth/confirmations",
         sessions: "auth/sessions",
       }
@@ -23,6 +22,8 @@ Rails.application.routes.draw do
           patch "vocabularies/update", to: "vocabularies#update"
           patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
           post "conjugation/create", to: "chat#create"
+
+          resource :like, only: [:create, :destroy]
         end
         resources :ranked_cards, only: [:index]
       end

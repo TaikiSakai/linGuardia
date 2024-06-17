@@ -17,7 +17,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
     if card
       # 自分以外のユーザーがアクセスしたらアクセス数をカウントする
-      card.count_access_number unless card.user == current_user
+      card.count_access_number(card) unless card.user == current_user
       render json: card, each_serializer: CardSerializer, status: :ok
     end
   end
