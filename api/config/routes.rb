@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           post "conjugation/create", to: "chat#create"
 
           resource :like, only: [:create, :destroy]
+          resources :comments, only: [:create, :destroy]
         end
         resources :ranked_cards, only: [:index]
       end

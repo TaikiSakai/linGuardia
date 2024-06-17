@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_16_041352) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_17_023152) do
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "title", null: false
@@ -22,6 +22,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_16_041352) do
     t.index ["title", "user_id"], name: "index_cards_on_title_and_user_id", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
     t.index ["uuid"], name: "index_cards_on_uuid"
+  end
+
+  create_table "comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "card_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_comments_on_card_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -88,6 +98,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_16_041352) do
   end
 
   add_foreign_key "cards", "users"
+  add_foreign_key "comments", "cards"
+  add_foreign_key "comments", "users"
   add_foreign_key "likes", "cards"
   add_foreign_key "likes", "users"
   add_foreign_key "vocabularies", "cards"
