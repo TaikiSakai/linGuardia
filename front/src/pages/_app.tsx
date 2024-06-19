@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import NotiSnackbar from '@/components/NotiSnackbar';
 import createEmotionCache from '@/styles/createEmotionCache';
 import theme from '@/styles/theme';
+import '@/styles/destyle.css';
 
 const clientSideEmotionCache = createEmotionCache();
 
