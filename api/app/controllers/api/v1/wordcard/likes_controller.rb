@@ -22,6 +22,7 @@ class Api::V1::Wordcard::LikesController < Api::V1::BaseController
   end
 
   private
+
     def set_card
       @card = Card.find_by(uuid: params[:card_uuid])
       render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card

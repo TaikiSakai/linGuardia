@@ -5,7 +5,6 @@ class Card < ApplicationRecord
   has_many :liked_users, through: :likes, source: :user
   has_many :comments, dependent: :destroy
 
-
   validates :title, presence: true, length: { minimum: 1, maximum: 20 }, uniqueness: { scope: :user_id }
   validates :status, presence: true
   enum :status, { close: 0, open: 1 }
