@@ -1,7 +1,7 @@
 class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card
-  
+  before_action :set_card, only: [:create]
+
   def create
     comment = current_user.comments.new(comment_params)
 
@@ -13,7 +13,7 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
   end
 
   def destroy
-    comment = @card.comments.find(params[:id])
+    comment = current_user.comments.find(params[:id])
 
     if comment.destroy
       render json: { message: "OK" }, status: :ok
@@ -24,12 +24,12 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
 
   private
 
-  def comment_params
-    params.require(:comment).permit(:body).merge(card_id: @card.id)
-  end
+    def comment_params
+      params.require(:comment).permit(:body).merge(card_id: @card.id)
+    end
 
-  def set_card
-    @card = Card.find_by(uuid: params[:card_uuid])
-    render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
-  end
+    def set_card
+      @card = Card.find_by(uuid: params[:card_uuid])
+      render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
+    end
 end
