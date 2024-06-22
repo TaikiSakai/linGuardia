@@ -1,5 +1,6 @@
-export type RankedCard = {
+export type RankedCardData = {
   uuid: string;
   title: string;
   userName: string;
+  like: boolean;
 };
