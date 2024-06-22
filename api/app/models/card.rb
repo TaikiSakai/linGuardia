@@ -17,4 +17,8 @@ class Card < ApplicationRecord
     object.number_of_access << object.number_of_access += 1
     object.save!
   end
+
+  def how_many_likes(object)
+    object.likes.count
+  end
 end
