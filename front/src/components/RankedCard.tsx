@@ -1,10 +1,11 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 import Link from 'next/link';
-import { RankedCard } from '@/types/RankedCardType';
+import { RankedCardData } from '@/types/RankedCardType';
 
-const RankingCard = (props: RankedCard) => {
+const RankedCard = (props: RankedCardData) => {
   const url = process.env.NEXT_PUBLIC_FRONT_URL + '/wordcards';
 
   return (
@@ -57,7 +58,7 @@ const RankingCard = (props: RankedCard) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <StarIcon />
+                    {props.like ? <StarIcon sx={{ color: '#f0950c' }} /> : <StarOutlineIcon />}
                   </Grid>
                 </Grid>
               </Grid>
@@ -69,4 +70,4 @@ const RankingCard = (props: RankedCard) => {
   );
 };
 
-export default RankingCard;
+export default RankedCard;

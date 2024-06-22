@@ -2,20 +2,20 @@ import { Box, Container, Typography, Grid } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
-import RankingCard from '@/components/RankingCard';
+import RankedCard from '@/components/RankedCard';
 import { styles } from '@/styles';
-import { RankedCard } from '@/types/RankedCardType';
+import { RankedCardData } from '@/types/RankedCardType';
 import { fetcher } from '@/utils';
 
 const Index: NextPage = () => {
   const url = process.env.NEXT_PUBLIC_API_URL;
   console.log(url);
-  const { data, error } = useSWR(url + '/dashboards', fetcher);
+  const { data, error } = useSWR(url + '/wordcard/ranked_cards', fetcher);
 
   if (error) return <div>An error has occurred.</div>;
   if (!data) return <div>Loading...</div>;
 
-  const fetchedRankings: RankedCard[] = camelcaseKeys(data);
+  const fetchedRankings: RankedCardData[] = camelcaseKeys(data);
 
   console.log(data);
 
@@ -41,16 +41,21 @@ const Index: NextPage = () => {
                 <Typography css={styles.subTitle}>学習実績</Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <RankingCard uuid={'/'} title={'Title'} userName={'Username'}/>
+                <RankedCard uuid={''} title={'Title'} userName={'Username'} />
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>人気の単語帳</Typography>
               </Box>
-              {fetchedRankings.map((card: RankedCard, i: number) => (
+              {fetchedRankings.map((card: RankedCardData, i: number) => (
                 <Box sx={{ mb: 2 }} key={i}>
-                  <RankingCard uuid={card.uuid} title={card.title} userName={card.userName} />
+                  <RankedCard
+                    uuid={card.uuid}
+                    title={card.title}
+                    userName={card.userName}
+                    like={card.like}
+                  />
                 </Box>
               ))}
             </Grid>
