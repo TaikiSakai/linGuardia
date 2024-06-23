@@ -1,6 +1,12 @@
 class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card, only: [:create]
+  before_action :set_card, only: [:index, :create]
+
+  def index
+    comments = @card.comments.includes(:user).all.order(created_at: :DESC)
+
+    render json: comments,each_serializer: CommentSerializer, status: :ok
+  end
 
   def create
     comment = current_user.comments.new(comment_params)
@@ -14,7 +20,6 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
 
   def destroy
     comment = current_user.comments.find(params[:id])
-
     if comment.destroy
       render json: { message: "OK" }, status: :ok
     else
