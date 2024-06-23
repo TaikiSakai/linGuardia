@@ -1,9 +1,20 @@
+import { css } from '@emotion/react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 import Link from 'next/link';
 import { RankedCardData } from '@/types/RankedCardType';
+
+const cardTextCss = css({
+  component: 'h4',
+  fontSize: '20px',
+  '@media (max-width: 600px)': {
+    fontSize: '18px',
+  },
+  fontWeight: 'bold',
+  color: '#000060',
+});
 
 const RankedCard = (props: RankedCardData) => {
   const url = process.env.NEXT_PUBLIC_FRONT_URL + '/wordcards';
@@ -28,16 +39,7 @@ const RankedCard = (props: RankedCardData) => {
                 md={9}
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
               >
-                <Typography
-                  component="h3"
-                  sx={{
-                    fontSize: 20,
-                    color: '#000040',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {props.title}
-                </Typography>
+                <Typography css={cardTextCss}>{props.title}</Typography>
               </Grid>
               <Grid
                 item

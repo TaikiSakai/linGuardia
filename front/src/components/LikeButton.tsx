@@ -46,13 +46,13 @@ const LikeButton = (props: likeButtonType) => {
   };
 
   return (
-    <Stack sx={{ justifyContent: 'center', alignItems: 'center' }}>
+    <Stack sx={{ justifyContent: 'center', alignItems: 'center' }} direction="row">
       <Box>
-        <IconButton onClick={handleLikeState} sx={{ p: 0 }}>
+        <IconButton onClick={handleLikeState} sx={{ p: 0, backgroundColor: 'white' }}>
           {isLike ? (
-            <StarIcon sx={{ color: '#f0950c', fontSize: 40 }} />
+            <StarIcon sx={{ color: '#f0950c', fontSize: 30 }} />
           ) : (
-            <StarOutlineIcon sx={{ fontSize: 40 }} />
+            <StarOutlineIcon sx={{ fontSize: 30 }} />
           )}
         </IconButton>
       </Box>
