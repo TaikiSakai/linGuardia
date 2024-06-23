@@ -16,7 +16,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     card = Card.find_by(uuid: params[:uuid])
 
     if card
-      # 自分以外のユーザーがアクセスしたらアクセス数をカウントする
+      # 所有者以外のユーザーがアクセスしたらアクセス数をカウントする
       card.count_access_number(card) unless card.user == current_user
       render json: card, each_serializer: CardSerializer, status: :ok
     end
