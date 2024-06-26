@@ -1,5 +1,28 @@
 class CardSerializer < ActiveModel::Serializer
-  attributes :uuid, :title, :status, :user_name, :like, :number_of_likes, :created_at
+  # attributes :uuid, :title, :status, :user_id, :user_name, :like, :number_of_likes, :created_at
+
+  attribute :card do
+    {
+      uuid: object.uuid,
+      title: object.title, 
+      status: object.status,
+      created_at: created_at,
+    }
+  end
+
+  attribute :user do
+    {
+      user_id: object.user_id,
+      user_name: object.user.name,
+    }
+  end
+
+  attribute :like do
+    {
+      current_user_liked: like,
+      number_of_likes: number_of_likes
+    }
+  end
 
   def user_name
     object.user.name
