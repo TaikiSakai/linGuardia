@@ -7,12 +7,14 @@ import ListItemText from '@mui/material/ListItemText';
 import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { mutate } from 'swr';
+import { useUserState } from '@/hooks/useGlobalState';
 import { CommentData } from '@/types/CommentType';
 
 const CommentCard = (props: CommentData) => {
   const router = useRouter();
   const { uuid } = router.query;
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
+  const [user] = useUserState();
   const headers = { 'Content-Type': 'application/json' };
 
   const deleteMyself = async () => {
@@ -36,9 +38,12 @@ const CommentCard = (props: CommentData) => {
     <ListItem
       sx={{ height: 60 }}
       secondaryAction={
-        <IconButton sx={{ p: 0 }} onClick={deleteMyself}>
-          <DeleteIcon />
-        </IconButton>
+        // ログイン中のユーザーIDとコメントのユーザーIDが一致する場合、削除できる
+        user.id === props.userId && (
+          <IconButton sx={{ p: 0 }} onClick={deleteMyself}>
+            <DeleteIcon />
+          </IconButton>
+        )
       }
     >
       <ListItemAvatar>
