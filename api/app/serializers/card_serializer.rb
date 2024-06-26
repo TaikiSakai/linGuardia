@@ -19,7 +19,7 @@ class CardSerializer < ActiveModel::Serializer
 
   attribute :like do
     {
-      current_user_liked: like,
+      like: like,
       number_of_likes: number_of_likes
     }
   end
