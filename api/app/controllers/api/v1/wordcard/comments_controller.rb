@@ -20,6 +20,7 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
 
   def destroy
     comment = current_user.comments.find(params[:id])
+
     if comment.destroy
       render json: { message: "OK" }, status: :ok
     else
