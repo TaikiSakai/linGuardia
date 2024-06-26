@@ -34,7 +34,9 @@ import useModal from '@/hooks/ModalState';
 import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
+import { AuthorData } from '@/types/AuthorType';
 import { CommentData } from '@/types/CommentType';
+import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
 
@@ -74,13 +76,15 @@ const WordcardDetail: NextPage = () => {
   const [open, handleOpen, handleClose] = useModal();
   const [modalContent, setModalContent] = useState<ReactNode>(null);
   const [, setSnackbar] = useSnackbarState();
-  const [user, setUser] = useUserState();
-  console.log(user);
+  const [user] = useUserState();
 
-  const { data: cards, error: cardFetchError } = useSWR(uuid ? url + uuid : null, fetcher, {
+  const { data: card, error: cardFetchError } = useSWR(uuid ? url + uuid : null, fetcher, {
     revalidateOnFocus: false,
   });
-  const { data: comments, error: commentFetchError } = useSWR(url + uuid + '/comments', fetcher);
+  const { data: comments, error: commentFetchError } = useSWR(
+    uuid ? url + uuid + '/comments' : null,
+    fetcher,
+  );
 
   useEffect(() => {
     if (cardFetchError | commentFetchError) {
@@ -92,10 +96,12 @@ const WordcardDetail: NextPage = () => {
     }
   }, [cardFetchError, commentFetchError, setSnackbar]);
 
-  const fetchedCard: WordcardData = camelcaseKeys(cards);
+  const fetchedCard: WordcardData = card ? camelcaseKeys(card.card) : null;
+  const fetchedAuthor: AuthorData = card ? camelcaseKeys(card.user) : null;
+  const fetchedLike: LikeData = card ? camelcaseKeys(card.like) : null;
   const fetchedComments: CommentData[] = camelcaseKeys(comments);
 
-  if (!cards && !cardFetchError && !comments && !commentFetchError) return <div>Loading...</div>;
+  if (!card && !cardFetchError && !comments && !commentFetchError) return <div>Loading...</div>;
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);
@@ -109,6 +115,7 @@ const WordcardDetail: NextPage = () => {
 
   const headers = { 'Content-Type': 'application/json' };
 
+  console.log(fetchedLike);
   const deleteWordcard = async () => {
     try {
       const res: AxiosResponse = await axios({
@@ -165,12 +172,12 @@ const WordcardDetail: NextPage = () => {
                       </IconButton>
                     </Grid>
                     <Grid item>
-                      <Typography css={cardTextCss}>{fetchedCard.userName}</Typography>
+                      <Typography css={cardTextCss}>{fetchedAuthor.userName}</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <LikeButton like={fetchedCard.like} numberOfLikes={fetchedCard.numberOfLikes} />
+                  <LikeButton like={fetchedLike.like} numberOfLikes={fetchedLike.numberOfLikes} />
                 </Grid>
               </Grid>
               <Grid item xs={4} md={4}>
@@ -228,6 +235,7 @@ const WordcardDetail: NextPage = () => {
                 </Link>
               </Grid>
             </Grid>
+
             <Grid item xs={12} md={8}>
               <Card sx={{ borderRadius: 3, p: 1 }}>
                 <CardContent>
@@ -240,7 +248,7 @@ const WordcardDetail: NextPage = () => {
                           </IconButton>
                         </Grid>
                         <Grid item>
-                          <Typography css={cardTextCss}>{fetchedCard.userName}</Typography>
+                          <Typography css={cardTextCss}>{fetchedAuthor.userName}</Typography>
                         </Grid>
                       </Grid>
                       <Grid container item>
@@ -313,31 +321,24 @@ const WordcardDetail: NextPage = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} md={8}>
-              <Card sx={{ borderRadius: 3, p: 2 }}>
-                <CardContent>
-                  <Grid container item>
-                    <Grid item>
-                      <Typography
-                        component="h3"
-                        sx={{
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                          color: '#000040',
-                        }}
-                      >
-                        カード設定
-                      </Typography>
+            {user.id === fetchedAuthor.userId && (
+              <Grid item xs={12} md={8}>
+                <Card sx={{ borderRadius: 3, p: 2 }}>
+                  <CardContent>
+                    <Grid container item>
+                      <Grid item>
+                        <Typography
+                          component="h3"
+                          sx={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            color: '#000040',
+                          }}
+                        >
+                          カード設定
+                        </Typography>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    sx={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
                     <Grid
                       container
                       item
@@ -346,107 +347,116 @@ const WordcardDetail: NextPage = () => {
                         alignItems: 'center',
                       }}
                     >
-                      <List sx={{ width: '100%' }}>
-                        <ListItem
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Typography>タイトル:</Typography>
-                          <Stack direction="row" sx={{ alignItems: 'center' }}>
-                            <Box>
-                              <Typography>{fetchedCard?.title}</Typography>
-                            </Box>
-                            <Box
-                              onClick={() => {
-                                handleOpenModal(
-                                  // モーダル要素
-                                  <EditMenuForModal
-                                    uuid={fetchedCard?.uuid}
-                                    title={fetchedCard?.title}
-                                    status={fetchedCard?.status}
-                                    createdAt={fetchedCard?.createdAt}
-                                    closeModal={handleClose}
-                                  />,
-                                );
-                              }}
-                            >
-                              <EditIcon sx={{ ml: 1, fontSize: 20, color: 'gray' }} />
-                            </Box>
-                          </Stack>
-                        </ListItem>
-                        <Divider />
-                        <ListItem
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Typography>ステータス:</Typography>
-                          <Stack direction="row" sx={{ alignItems: 'center' }}>
-                            <Box>
-                              <Typography>{fetchedCard?.status}</Typography>
-                            </Box>
-                            <Box
-                              onClick={() => {
-                                handleOpenModal(
-                                  // モーダル要素
-                                  <EditMenuForModal
-                                    uuid={fetchedCard?.uuid}
-                                    title={fetchedCard?.title}
-                                    status={fetchedCard?.status}
-                                    createdAt={fetchedCard?.createdAt}
-                                    closeModal={handleClose}
-                                  />,
-                                );
-                              }}
-                            >
-                              <EditIcon sx={{ ml: 1, fontSize: 20, color: 'gray' }} />
-                            </Box>
-                          </Stack>
-                        </ListItem>
-                        <Divider />
-                        <ListItem
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Typography>作成日:</Typography>
-                          <Stack direction="row" sx={{ alignItems: 'center' }}>
-                            <Box>
-                              <Typography>{fetchedCard?.createdAt}</Typography>
-                            </Box>
-                          </Stack>
-                        </ListItem>
-                        <Divider />
-                        <Link href={'/vocabularies/create/' + uuid}>
-                          <ListItem>
-                            <Typography>単語追加</Typography>
+                      <Grid
+                        container
+                        item
+                        sx={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <List sx={{ width: '100%' }}>
+                          <ListItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Typography>タイトル:</Typography>
+                            <Stack direction="row" sx={{ alignItems: 'center' }}>
+                              <Box>
+                                <Typography>{fetchedCard?.title}</Typography>
+                              </Box>
+                              <Box
+                                onClick={() => {
+                                  handleOpenModal(
+                                    // モーダル要素
+                                    <EditMenuForModal
+                                      uuid={fetchedCard.uuid}
+                                      title={fetchedCard.title}
+                                      status={fetchedCard.status}
+                                      createdAt={fetchedCard.createdAt}
+                                      closeModal={handleClose}
+                                    />,
+                                  );
+                                }}
+                              >
+                                <EditIcon sx={{ ml: 1, fontSize: 20, color: 'gray' }} />
+                              </Box>
+                            </Stack>
                           </ListItem>
-                        </Link>
-                        <Divider />
-                        <Link href={'/vocabularies/edit/' + uuid}>
-                          <ListItem>
-                            <Typography>単語編集</Typography>
+                          <Divider />
+                          <ListItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Typography>ステータス:</Typography>
+                            <Stack direction="row" sx={{ alignItems: 'center' }}>
+                              <Box>
+                                <Typography>{fetchedCard?.status}</Typography>
+                              </Box>
+                              <Box
+                                onClick={() => {
+                                  handleOpenModal(
+                                    // モーダル要素
+                                    <EditMenuForModal
+                                      uuid={fetchedCard.uuid}
+                                      title={fetchedCard.title}
+                                      status={fetchedCard.status}
+                                      createdAt={fetchedCard.createdAt}
+                                      closeModal={handleClose}
+                                    />,
+                                  );
+                                }}
+                              >
+                                <EditIcon sx={{ ml: 1, fontSize: 20, color: 'gray' }} />
+                              </Box>
+                            </Stack>
                           </ListItem>
-                        </Link>
-                        <Divider />
-                      </List>
-                      <Grid item>
-                        <Button onClick={deleteWordcard} variant="contained" color="error">
-                          削除
-                        </Button>
+                          <Divider />
+                          <ListItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Typography>作成日:</Typography>
+                            <Stack direction="row" sx={{ alignItems: 'center' }}>
+                              <Box>
+                                <Typography>{fetchedCard?.createdAt}</Typography>
+                              </Box>
+                            </Stack>
+                          </ListItem>
+                          <Divider />
+                          <Link href={'/vocabularies/create/' + uuid}>
+                            <ListItem>
+                              <Typography>単語追加</Typography>
+                            </ListItem>
+                          </Link>
+                          <Divider />
+                          <Link href={'/vocabularies/edit/' + uuid}>
+                            <ListItem>
+                              <Typography>単語編集</Typography>
+                            </ListItem>
+                          </Link>
+                          <Divider />
+                        </List>
+                        <Grid item>
+                          <Button onClick={deleteWordcard} variant="contained" color="error">
+                            削除
+                          </Button>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
           </Grid>
         </Container>
         {/* setModalContentにReactNode型でコンポーネントを渡す */}
