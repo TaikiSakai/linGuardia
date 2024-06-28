@@ -30,9 +30,9 @@ const Index: NextPage = () => {
 
   if (!data && !error) return <div>Loading...</div>;
 
-  const fetchedCards: WordcardData[] = data.map((cardData) =>
-    camelcaseKeys(cardData.card, { deep: true }),
-  );
+  const fetchedCards: WordcardData[] | null = data
+    ? data.map((cardData) => camelcaseKeys(cardData.card, { deep: true }))
+    : null;
 
   return (
     fetchedCards && (
