@@ -14,8 +14,6 @@ Rails.application.routes.draw do
         resource :user, only: [:show]
       end
 
-      resources :dashboards, only: [:index]
-
       namespace :wordcard do
         resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
           resources :vocabularies, only: [:index, :create, :destroy]
