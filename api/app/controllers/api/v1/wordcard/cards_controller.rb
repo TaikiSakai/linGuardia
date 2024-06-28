@@ -27,7 +27,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
     card.save!
     render json: {
-      card: CardSerializer.new(card),
+      card: card,
       message: "単語帳を作成しました",
     }, status: :ok
   rescue ActiveRecord::RecordInvalid => e

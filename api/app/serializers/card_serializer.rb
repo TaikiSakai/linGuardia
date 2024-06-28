@@ -4,7 +4,7 @@ class CardSerializer < ActiveModel::Serializer
   attribute :card do
     {
       uuid: object.uuid,
-      title: object.title, 
+      title: object.title,
       status: object.status,
       created_at: created_at,
     }
@@ -20,7 +20,7 @@ class CardSerializer < ActiveModel::Serializer
   attribute :like do
     {
       like: like,
-      number_of_likes: number_of_likes
+      number_of_likes: number_of_likes,
     }
   end
 
@@ -33,7 +33,7 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def number_of_likes
-    object.how_many_likes(object)    
+    object.how_many_likes(object)
   end
 
   def created_at
