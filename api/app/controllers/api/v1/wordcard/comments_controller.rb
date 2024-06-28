@@ -19,7 +19,11 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
   end
 
   def destroy
-    comment = current_user.comments.find(params[:id])
+    comment = current_user.comments.find_by(id: params[:id])
+    
+    unless comment
+      return render json: { error: "不正な操作です" }, status: :bad_request
+    end
 
     if comment.destroy
       render json: { message: "OK" }, status: :ok
