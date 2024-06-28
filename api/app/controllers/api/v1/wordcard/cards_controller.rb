@@ -1,6 +1,6 @@
 class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card, only: [:update, :destroy]
+  before_action :set_card, only: [:show, :update, :destroy]
 
   def index
     cards = current_user.cards.all.order(created_at: :desc)
@@ -13,12 +13,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   end
 
   def show
-    card = Card.find_by(uuid: params[:uuid])
-
-    if card
-      # 所有者以外のユーザーがアクセスしたらアクセス数をカウントする
-      card.count_access_number(card) unless card.user == current_user
-      render json: card, each_serializer: CardSerializer, status: :ok
+    if @card
+      # 所有者以外のユーザーがアクセスしたら。アクセス数をカウントする
+      @card.count_access_number(@card) unless @card.user == current_user
+      render json: @card, each_serializer: CardSerializer, status: :ok
     end
   end
 
@@ -61,7 +59,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     end
 
     def set_card
-      @card = current_user.cards.find_by(uuid: params[:uuid])
+      @card = Card.find_by(uuid: params[:uuid])
       render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 end
