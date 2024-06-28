@@ -5,7 +5,7 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
   def index
     comments = @card.comments.includes(:user).all.order(created_at: :DESC)
 
-    render json: comments,each_serializer: CommentSerializer, status: :ok
+    render json: comments, each_serializer: CommentSerializer, status: :ok
   end
 
   def create
@@ -20,7 +20,7 @@ class Api::V1::Wordcard::CommentsController < Api::V1::BaseController
 
   def destroy
     comment = current_user.comments.find_by(id: params[:id])
-    
+
     unless comment
       return render json: { error: "不正な操作です" }, status: :bad_request
     end
