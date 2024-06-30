@@ -25,7 +25,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def create
     card = current_user.cards.new(card_params)
 
-    if card.save
+    if Card.save_with_categories!(card: card, category_params: category_params)
       render json: { card: card, message: "単語帳を作成しました" }, status: :ok
     else
       render json: { error: card.errors.full_messages }, status: :bad_request
@@ -37,7 +37,9 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   end
 
   def update
-    if @card.update(card_params)
+    @card.assign_attributes(card_params)
+    
+    if Card.save_with_categories!(card: @card, category_params: category_params)
       render json: { message: "単語帳を更新しました" }, status: :ok
     else
       render json: { error: @card.errors.full_messages }, status: :bad_request
@@ -60,6 +62,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
     def card_params
       params.require(:card).permit(:title, :status)
+    end
+
+    def category_params
+      params.require(:categories).permit(name: [])
     end
 
     def set_card
