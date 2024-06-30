@@ -21,4 +21,10 @@ class Card < ApplicationRecord
   def how_many_likes(object)
     object.likes.count
   end
+
+  private
+
+    def self.ransackable_attributes(auth_object=nil)
+      ["title"]
+    end
 end
