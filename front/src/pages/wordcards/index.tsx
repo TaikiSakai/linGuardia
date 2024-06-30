@@ -8,8 +8,16 @@ import Wordcard from '@/components/Wordcard';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
+import { AuthorData } from '@/types/AuthorType';
+import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
+
+type ApiResponse = {
+  card: WordcardData;
+  user: AuthorData;
+  like: LikeData;
+};
 
 const Index: NextPage = () => {
   useRequireSignedIn();
@@ -31,7 +39,7 @@ const Index: NextPage = () => {
   if (!data && !error) return <div>Loading...</div>;
 
   const fetchedCards: WordcardData[] | null = data
-    ? data.map((cardData) => camelcaseKeys(cardData.card, { deep: true }))
+    ? data.map((cardData: ApiResponse) => camelcaseKeys(cardData.card, { deep: true }))
     : null;
 
   return (
