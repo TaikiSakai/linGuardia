@@ -12,7 +12,7 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
         subject
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["error"]
-        expect(res["error"]).to eq "単語帳が1つも登録されていません"
+        expect(res["error"]).to eq "単語帳が登録されていません"
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -22,7 +22,10 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
         create_list(:card, 5, status: :open, user: current_user)
         subject
         res = JSON.parse(response.body)
-        expect(res[0].keys).to eq ["uuid", "title", "status", "created_at"]
+        expect(res[0].keys).to eq ["card", "user", "like"]
+        expect(res[0]["card"].keys).to eq ["uuid", "title", "status", "created_at"]
+        expect(res[0]["like"].keys).to eq ["like", "number_of_likes"]
+        expect(res[0]["user"].keys).to eq ["user_id", "user_name"]
         expect(response).to have_http_status(:ok)
       end
     end
