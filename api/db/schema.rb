@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_30_080056) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_30_081835) do
+  create_table "card_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "card_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id", "category_id"], name: "index_card_categories_on_card_id_and_category_id", unique: true
+    t.index ["card_id"], name: "index_card_categories_on_card_id"
+    t.index ["category_id"], name: "index_card_categories_on_category_id"
+  end
+
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "title", null: false
@@ -104,6 +114,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_30_080056) do
     t.index ["vocabulary_id"], name: "index_word_roles_on_vocabulary_id"
   end
 
+  add_foreign_key "card_categories", "cards"
+  add_foreign_key "card_categories", "categories"
   add_foreign_key "cards", "users"
   add_foreign_key "comments", "cards"
   add_foreign_key "comments", "users"
