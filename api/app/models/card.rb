@@ -4,6 +4,8 @@ class Card < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
   has_many :comments, dependent: :destroy
+  has_many :card_categories, dependent: :destroy
+  has_many :categorirs, through: :card_categories
 
   validates :title, presence: true, length: { minimum: 1, maximum: 20 }, uniqueness: { scope: :user_id }
   validates :status, presence: true
