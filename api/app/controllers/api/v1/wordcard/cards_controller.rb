@@ -77,10 +77,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
     def category_params
       params.require(:categories).permit(name: [])
+    end
 
     def search_params
       params.require(:q).permit(:title_cont)
-
     end
 
     def set_card

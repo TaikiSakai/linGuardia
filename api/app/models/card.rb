@@ -35,6 +35,7 @@ class Card < ApplicationRecord
     self.number_of_access += 1
 
     return if self.save
+
     logger.error "アクセス数の更新に失敗しました (card_id: #{self.id})"
   end
 
@@ -42,9 +43,7 @@ class Card < ApplicationRecord
     self.likes.count
   end
 
-  private
-
-    def self.ransackable_attributes(auth_object=nil)
-      ["title"]
-    end
+  def self.ransackable_attributes(auth_object=nil)
+    ["title"]
+  end
 end
