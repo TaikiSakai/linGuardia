@@ -23,7 +23,7 @@ class Card < ApplicationRecord
       if categories.empty?
         self.categories = []
       else
-        new_categories = categories.map {|name| Category.find_or_initialize_by(name: name)}
+        new_categories = categories.map {|name| Category.find_or_initialize_by(name: name) }
         self.categories = new_categories
       end
       self.save!
@@ -33,7 +33,9 @@ class Card < ApplicationRecord
   # 単語帳の所有者でないユーザーが単語帳にアクセスしたら、アクセス数をカウントアップする
   def count_access_number
     self.number_of_access += 1
-    self.save
+
+    return if self.save
+    logger.error "アクセス数の更新に失敗しました (card_id: #{self.id})"
   end
 
   def how_many_likes
