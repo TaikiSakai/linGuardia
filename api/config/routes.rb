@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       namespace :wordcard do
         resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
+          get "search", on: :collection
+
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
           patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
