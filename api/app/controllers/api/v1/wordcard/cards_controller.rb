@@ -17,7 +17,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
     if card
       # 所有者以外のユーザーがアクセスしたらアクセス数をカウントする
-      card.count_access_number(card) unless card.user == current_user
+      card.count_access_number unless card.user == current_user
       render json: card, each_serializer: CardSerializer, status: :ok
     end
   end
@@ -25,7 +25,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def create
     card = current_user.cards.new(card_params)
 
-    if Card.save_with_categories!(card: card, category_params: category_params)
+    if card.save_with_categories!(category_params: category_params)
       render json: { card: card, message: "単語帳を作成しました" }, status: :ok
     else
       render json: { error: card.errors.full_messages }, status: :bad_request
@@ -38,8 +38,8 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
   def update
     @card.assign_attributes(card_params)
-    
-    if Card.save_with_categories!(card: @card, category_params: category_params)
+
+    if @card.save_with_categories!(category_params: category_params)
       render json: { message: "単語帳を更新しました" }, status: :ok
     else
       render json: { error: @card.errors.full_messages }, status: :bad_request
