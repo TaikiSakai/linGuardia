@@ -25,29 +25,21 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def create
     card = current_user.cards.new(card_params)
 
-    if card.save_with_categories!(category_params: category_params)
+    if card.save_with_categories(category_params: category_params)
       render json: { card: card, message: "単語帳を作成しました" }, status: :ok
     else
       render json: { error: card.errors.full_messages }, status: :bad_request
     end
-
-  # statusのenumに範囲外の値が渡された場合の例外メッセージ
-  rescue ArgumentError
-    render json: { error: "ステータスが無効です" }, status: :bad_request
   end
 
   def update
     @card.assign_attributes(card_params)
 
-    if @card.save_with_categories!(category_params: category_params)
+    if @card.save_with_categories(category_params: category_params)
       render json: { message: "単語帳を更新しました" }, status: :ok
     else
       render json: { error: @card.errors.full_messages }, status: :bad_request
     end
-
-  # statusのenumに範囲外の値が渡された場合の例外メッセージ
-  rescue ArgumentError
-    render json: { error: "ステータスが無効です" }, status: :bad_request
   end
 
   def destroy
