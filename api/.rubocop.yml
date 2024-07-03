@@ -2,6 +2,7 @@ require:
   - rubocop-rails
 
 inherit_from:
+  - .rubocop_todo.yml
   - config/rubocop/rubocop.yml
   - config/rubocop/rails.yml
   - config/rubocop/rspec.yml
@@ -10,12 +11,13 @@ AllCops:
   TargetRubyVersion: 3.1.2
 
 Style/HashSyntax:
-  Enabled: false
+  Enabled: false  
 
 Metrix/MethodLength:
+  CountComments: false
+  Max: 15
   Exclude:
    - 'app/controllers/concerns/assign_token.rb'
    - 'app/service/openai/*'
-   - 'app/models/vocabulary.rb'
    - 'app/controllers/auth/*'
   
