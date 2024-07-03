@@ -15,7 +15,7 @@ class Card < ApplicationRecord
   # front側から見える値はuuidを使用する
   before_create -> { self.uuid = SecureRandom.uuid }
 
-  def save_with_categories!(category_params:)
+  def save_with_categories(category_params:)
     categories = category_params[:name]
 
     ActiveRecord::Base.transaction do
@@ -26,8 +26,12 @@ class Card < ApplicationRecord
         new_categories = categories.map {|name| Category.find_or_initialize_by(name: name) }
         self.categories = new_categories
       end
+
       self.save!
+      true
     end
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 
   # 単語帳の所有者でないユーザーが単語帳にアクセスしたら、アクセス数をカウントアップする
@@ -35,6 +39,7 @@ class Card < ApplicationRecord
     self.number_of_access += 1
 
     return if self.save
+
     logger.error "アクセス数の更新に失敗しました (card_id: #{self.id})"
   end
 
