@@ -25,7 +25,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def create
     card = current_user.cards.new(card_params)
 
-    if card.save_with_categories!(category_params: category_params)
+    if card.save_with_categories(category_params: category_params)
       render json: { card: card, message: "単語帳を作成しました" }, status: :ok
     else
       render json: { error: card.errors.full_messages }, status: :bad_request
@@ -39,7 +39,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def update
     @card.assign_attributes(card_params)
 
-    if @card.save_with_categories!(category_params: category_params)
+    if @card.save_with_categories(category_params: category_params)
       render json: { message: "単語帳を更新しました" }, status: :ok
     else
       render json: { error: @card.errors.full_messages }, status: :bad_request
@@ -60,7 +60,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
   def search
     q = Card.ransack(search_params)
-    cards = q.result(distinct: true).includes(:user).order(created_at: :desc) 
+    cards = q.result(distinct: true).includes(:user).order(created_at: :desc)
 
     if cards.empty?
       render json: { message: "単語帳が見つかりません" }, status: :not_found
