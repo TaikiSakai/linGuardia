@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Card, type: :model do
-  context "factoryのデフォルトに従った時" do
+  context "factoryのデフォルトに従い、カードを作成した場合" do
     subject { create(:card) }
 
     it "正常にレコードを新規作成できる" do
@@ -15,6 +15,7 @@ RSpec.describe Card, type: :model do
     let(:user) { create(:user) }
     let(:title) { Faker::Lorem.word }
     let(:status) { :open }
+    let(:category_name) { Faker::Lorem.word }
     let(:card) { build(:card, title: title, status: status, user: user) }
 
     context "すべての値が正常な時" do
@@ -35,7 +36,18 @@ RSpec.describe Card, type: :model do
       end
     end
 
-    context "ステータスが公開済みかつ、ステータスが空の時" do
+    context "タイトルが20文字以上で入力された場合" do
+      let(:title) { Faker::Lorem.paragraph(sentence_count: 10) }
+
+      it "エラーメッセージが返る" do
+        expect(subject).to be_falsey
+        expect(card.errors.full_messages).to eq [
+          "タイトルは20文字以内で入力してください",
+        ]
+      end
+    end
+
+    context "ステータスが空の時" do
       let(:status) { "" }
 
       it "エラーメッセージが返る" do
