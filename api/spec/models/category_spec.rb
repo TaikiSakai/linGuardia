@@ -32,7 +32,7 @@ RSpec.describe Category, type: :model do
     end
 
     context "nameに値が渡されなかった場合" do
-    let(:name) { [] }
+      let(:name) { [] }
       it "エラーメッセージが返る" do
         expect(subject).to be_truthy
       end

@@ -60,8 +60,8 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
         let(:params) do
           {
             card: attributes_for(:card),
-            categories: attributes_for(:category, 
-            name: [Faker::Lorem.word, Faker::Lorem.word]),
+            categories: attributes_for(:category,
+                                       name: [Faker::Lorem.word, Faker::Lorem.word]),
           }
         end
 
@@ -118,7 +118,7 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
           }
         end
 
-        it "カードを正常に作成できる" do        
+        it "カードを正常に作成できる" do
           subject
           res = JSON.parse(response.body)
           expect(res.keys).to eq ["card", "message"]
@@ -126,7 +126,6 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
           expect(response).to have_http_status(:ok)
         end
       end
-
     end
   end
 end
