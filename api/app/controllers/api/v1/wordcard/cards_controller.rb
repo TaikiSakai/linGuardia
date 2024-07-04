@@ -30,6 +30,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     else
       render json: { error: card.errors.full_messages }, status: :bad_request
     end
+
+  # statusのenumに範囲外の値が渡された場合の例外メッセージ
+  rescue ArgumentError
+    render json: { error: "ステータスが無効です" }, status: :bad_request
   end
 
   def update
@@ -40,6 +44,10 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     else
       render json: { error: @card.errors.full_messages }, status: :bad_request
     end
+
+  # statusのenumに範囲外の値が渡された場合の例外メッセージ
+  rescue ArgumentError
+    render json: { error: "ステータスが無効です" }, status: :bad_request
   end
 
   def destroy
