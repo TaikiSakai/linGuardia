@@ -15,6 +15,14 @@ class Card < ApplicationRecord
   # front側から見える値はuuidを使用する
   before_create -> { self.uuid = SecureRandom.uuid }
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["title"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["categories"]
+  end
+
   def save_with_categories(category_params:)
     categories = category_params[:name]
 
@@ -45,9 +53,5 @@ class Card < ApplicationRecord
 
   def how_many_likes
     self.likes.count
-  end
-
-  def self.ransackable_attributes(auth_object=nil)
-    ["title"]
   end
 end
