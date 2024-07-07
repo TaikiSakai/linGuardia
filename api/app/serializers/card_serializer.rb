@@ -22,7 +22,7 @@ class CardSerializer < ActiveModel::Serializer
     }
   end
 
-  attribute :category do
+  attribute :categories do
     { name: object.categories.map(&:name) }
   end
 
