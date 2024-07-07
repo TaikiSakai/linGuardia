@@ -35,6 +35,7 @@ import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { AuthorData } from '@/types/AuthorType';
+import { CategoryData } from '@/types/CategoryType';
 import { CommentData } from '@/types/CommentType';
 import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
@@ -98,6 +99,7 @@ const WordcardDetail: NextPage = () => {
 
   const fetchedCard: WordcardData = card ? camelcaseKeys(card.card) : null;
   const fetchedAuthor: AuthorData = card ? camelcaseKeys(card.user) : null;
+  const fetchedCategories: CategoryData = card ? camelcaseKeys(card.categories) : null;
   const fetchedLike: LikeData = card ? camelcaseKeys(card.like) : null;
   const fetchedComments: CommentData[] = camelcaseKeys(comments);
 
@@ -373,10 +375,8 @@ const WordcardDetail: NextPage = () => {
                                   handleOpenModal(
                                     // モーダル要素
                                     <EditMenuForModal
-                                      uuid={fetchedCard.uuid}
-                                      title={fetchedCard.title}
-                                      status={fetchedCard.status}
-                                      createdAt={fetchedCard.createdAt}
+                                      card={fetchedCard}
+                                      categories={fetchedCategories}
                                       closeModal={handleClose}
                                     />,
                                   );
@@ -404,10 +404,8 @@ const WordcardDetail: NextPage = () => {
                                   handleOpenModal(
                                     // モーダル要素
                                     <EditMenuForModal
-                                      uuid={fetchedCard.uuid}
-                                      title={fetchedCard.title}
-                                      status={fetchedCard.status}
-                                      createdAt={fetchedCard.createdAt}
+                                      card={fetchedCard}
+                                      categories={fetchedCategories}
                                       closeModal={handleClose}
                                     />,
                                   );
