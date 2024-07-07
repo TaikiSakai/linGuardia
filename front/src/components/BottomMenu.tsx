@@ -1,5 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StyleIcon from '@mui/icons-material/Style';
 import { Grid, Button, Paper } from '@mui/material';
@@ -37,10 +37,10 @@ const BottomMenu = () => {
               href={'/wordcards'}
             />
             <BottomNavigationAction
-              label="お知らせ"
-              icon={<NotificationsIcon />}
+              label="検索"
+              icon={<SearchIcon />}
               LinkComponent={Link}
-              href={'/'}
+              href={'/wordcards/search'}
             />
             <BottomNavigationAction
               label="設定"
