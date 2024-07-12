@@ -61,7 +61,6 @@ const CommentBoxForModal = (props: commentModalHandler) => {
             size="small"
             multiline
             rows={5}
-            css={styles.textField}
           />
         )}
       />
