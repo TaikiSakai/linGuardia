@@ -1,10 +1,20 @@
-import { Box, Button, Typography, Stack, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useState } from 'react';
+import { useRef } from 'react';
 import axios, { AxiosResponse, isAxiosError } from 'axios';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { mutate } from 'swr';
 import CategoryBox from './CategoryBox';
@@ -19,31 +29,32 @@ type newWordcardData = {
 };
 
 const EditMenuForModal = (props: newWordcardData) => {
-  const { handleSubmit, control } = useForm<WordcardData>();
+  const { handleSubmit, control } = useForm<newWordcardData>();
   const [categories, setCategory] = useState<string[]>(props.categories.name);
+  const newCategory = useRef<HTMLInputElement | null>(null);
+
   const [, setSnackbar] = useSnackbarState();
-
   const handleClose = props.closeModal;
-  // setCategoryData(props.categories.name);
 
-  console.log(props);
-  console.log(categories);
+  const addCategoryValue = () => {
+    const newval = newCategory.current?.value;
 
-  const addCategoryValue = () => {};
+    if (newval) {
+      setCategory([...categories, newval]);
+    }
+  };
 
   const deleteCategoryValue = (valueId: number) => {
     console.log(valueId);
-    setCategory(categories.filter((_, idx: number) => idx !== valueId));
+    setCategory(props.categories.name.filter((_, idx: number) => idx !== valueId));
   };
 
   const onSubmit = async (data: newWordcardData) => {
-    // console.log('categories', data.categories.name);
-    console.log(data);
     const newCardData = JSON.stringify({
       card: data.card,
-      // categories: { name: data.categories.name },
+      categories: { name: categories },
     });
-    console.log('new', newCardData);
+
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
     const headers = { 'Content-Type': 'application/json' };
 
@@ -79,7 +90,7 @@ const EditMenuForModal = (props: newWordcardData) => {
   return (
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={3}>
       <Controller
-        name={'title'}
+        name={'card.title'}
         defaultValue={props.card.title}
         control={control}
         render={({ field, fieldState }) => (
@@ -98,23 +109,7 @@ const EditMenuForModal = (props: newWordcardData) => {
         )}
       />
       <Controller
-        name={'categories.name'}
-        control={control}
-        defaultValue={props.categories.name || []}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            type="text"
-            label="カテゴリー"
-            fullWidth
-            size="small"
-            rows={1}
-            sx={{ backgroundColor: 'white' }}
-          />
-        )}
-      />
-      <Controller
-        name={'status'}
+        name={'card.status'}
         control={control}
         defaultValue={props.card.status}
         render={({ field }) => (
@@ -127,11 +122,36 @@ const EditMenuForModal = (props: newWordcardData) => {
           </FormControl>
         )}
       />
-      <Box>
+      <TextField
+        type="text"
+        label="カテゴリー"
+        size="small"
+        rows={1}
+        inputRef={newCategory}
+        sx={{ backgroundColor: 'white' }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={addCategoryValue}>
+                <Box sx={{ display: 'flex' }}>
+                  <AddIcon />
+                  <Typography>追加</Typography>
+                </Box>
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+      <Box sx={{ display: 'inline-flex', flexWrap: 'wrap' }}>
         {categories.length !== 0 &&
           categories.map((category, i) => (
-            <Box key={i} onClick={() => {deleteCategoryValue(i)}}>
-              <CategoryBox name={[category]} deletable={true} deleteMyself={deleteCategoryValue} />
+            <Box
+              key={i}
+              onClick={() => {
+                deleteCategoryValue(i);
+              }}
+            >
+              <CategoryBox name={[category]} deletable={true} />
             </Box>
           ))}
       </Box>
