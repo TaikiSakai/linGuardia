@@ -13,7 +13,7 @@ const boxShape = css({
   border: '2px solid',
   borderColor: '#657ef7',
   padding: '0 10px',
-  margin: '5px 1px',
+  margin: '5px 3px',
 });
 
 type CategoryBoxData = CategoryData & {

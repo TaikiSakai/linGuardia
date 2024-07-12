@@ -12,44 +12,44 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useRef } from 'react';
 import axios, { AxiosResponse, isAxiosError } from 'axios';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { mutate } from 'swr';
 import CategoryBox from './CategoryBox';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { styles } from '@/styles';
 import { CategoryData } from '@/types/CategoryType';
 import { WordcardData } from '@/types/WordcardType';
 
-type newWordcardData = {
+type NewWordcardData = {
   card: WordcardData;
-  categories: CategoryData;
+  category: CategoryData;
   closeModal: () => void;
 };
 
-const EditMenuForModal = (props: newWordcardData) => {
-  const { handleSubmit, control } = useForm<newWordcardData>();
-  const [categories, setCategory] = useState<string[]>(props.categories.name);
+const EditMenuForModal = (props: NewWordcardData) => {
+  const { handleSubmit, control } = useForm<NewWordcardData>();
+  const [categories, setCategories] = useState<string[]>(props.category.name);
   const newCategory = useRef<HTMLInputElement | null>(null);
 
   const [, setSnackbar] = useSnackbarState();
   const handleClose = props.closeModal;
 
   const addCategoryValue = () => {
-    const newval = newCategory.current?.value;
+    if (newCategory.current?.value) {
+      const newval = newCategory.current.value;
+      setCategories([...categories, newval]);
 
-    if (newval) {
-      setCategory([...categories, newval]);
+      newCategory.current.value = '';
     }
   };
 
   const deleteCategoryValue = (valueId: number) => {
-    console.log(valueId);
-    setCategory(props.categories.name.filter((_, idx: number) => idx !== valueId));
+    setCategories(categories.filter((_, idx: number) => idx !== valueId));
   };
 
-  const onSubmit = async (data: newWordcardData) => {
+  const onSubmit = async (data: NewWordcardData) => {
     const newCardData = JSON.stringify({
       card: data.card,
       categories: { name: categories },
@@ -89,6 +89,9 @@ const EditMenuForModal = (props: newWordcardData) => {
 
   return (
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={3}>
+      <Typography component="h3" css={styles.modalTitle}>
+        カード設定
+      </Typography>
       <Controller
         name={'card.title'}
         defaultValue={props.card.title}
@@ -156,10 +159,10 @@ const EditMenuForModal = (props: newWordcardData) => {
           ))}
       </Box>
       <Box>
-        <Typography component="h3" sx={{ fontWeight: 'bold' }}>
+        <Typography component="h3" css={styles.subTitle}>
           ※公開設定について
         </Typography>
-        <Typography component="p">
+        <Typography component="p" css={styles.modalText}>
           <code>&quot;公開&quot;</code>
           を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
         </Typography>
