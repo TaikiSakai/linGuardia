@@ -56,7 +56,6 @@ export const styles = {
     '@media (max-width: 600px)': {
       fontSize: '15px',
     },
-    fontWeight: 'bold',
     color: '#000040',
   }),
   styledButton: css({
