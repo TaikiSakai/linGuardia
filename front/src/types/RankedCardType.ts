@@ -3,4 +3,5 @@ export type RankedCardData = {
   title: string;
   userName: string;
   like: boolean;
+  numberOfLikes: number;
 };
