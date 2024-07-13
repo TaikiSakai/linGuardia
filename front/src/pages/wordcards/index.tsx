@@ -13,7 +13,7 @@ import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
 
-type ApiResponse = {
+type WordcardDetail = {
   card: WordcardData;
   user: AuthorData;
   like: LikeData;
@@ -38,12 +38,12 @@ const Index: NextPage = () => {
 
   if (!data && !error) return <div>Loading...</div>;
 
-  const fetchedCards: WordcardData[] | null = data
-    ? data.map((cardData: ApiResponse) => camelcaseKeys(cardData.card, { deep: true }))
+  const fetchedWordcards: WordcardDetail[] | null = data
+    ? data.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
     : null;
 
   return (
-    fetchedCards && (
+    fetchedWordcards && (
       <Box
         css={styles.pageMinHeight}
         sx={{
@@ -61,7 +61,7 @@ const Index: NextPage = () => {
               alignItems: 'center',
             }}
           >
-            {fetchedCards.length === 0 ? (
+            {fetchedWordcards.length === 0 ? (
               <Box sx={{ pt: 5 }}>
                 <Typography
                   component="h3"
@@ -75,13 +75,13 @@ const Index: NextPage = () => {
                 </Typography>
               </Box>
             ) : (
-              fetchedCards.map((wordcard: WordcardData, i: number) => (
-                <Grid item key={i} xs={10} md={10}>
+              fetchedWordcards.map((wordcard: WordcardDetail, i: number) => (
+                <Grid item key={i} xs={12} md={8}>
                   <Wordcard
-                    uuid={wordcard.uuid}
-                    title={wordcard.title}
-                    status={wordcard.status}
-                    createdAt={wordcard.createdAt}
+                    uuid={wordcard.card.uuid}
+                    title={wordcard.card.title}
+                    status={wordcard.card.status}
+                    createdAt={wordcard.card.createdAt}
                   />
                 </Grid>
               ))
