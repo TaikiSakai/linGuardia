@@ -74,7 +74,7 @@ const Index: NextPage = () => {
         >
           <Grid container item>
             <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
-              <Typography css={styles.pageTitle}>検索</Typography>
+              <Typography css={styles.pageTitle}>単語帳を検索</Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={8}>
