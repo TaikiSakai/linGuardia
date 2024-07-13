@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Button, Stack, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
 import { CategoryData } from '@/types/CategoryType';
 
 const boxShape = css({
@@ -13,17 +13,15 @@ const boxShape = css({
   border: '2px solid',
   borderColor: '#657ef7',
   padding: '0 10px',
-  margin: '5px 1px',
+  margin: '5px 3px',
 });
 
 type CategoryBoxData = CategoryData & {
   deletable: boolean;
-  deleteMyself: (valueId: number) => void;
 };
 
 const CategoryBox = (props: CategoryBoxData) => {
   const label = props.name;
-  const deleteMyself = props.deleteMyself;
 
   return (
     <Box css={boxShape}>
@@ -38,7 +36,6 @@ const CategoryBox = (props: CategoryBoxData) => {
             height: '20px',
             alignItems: 'center',
           }}
-          onClick={() => { deleteMyself }}
         >
           <ClearIcon sx={{ fontSize: '15px' }} />
         </IconButton>
