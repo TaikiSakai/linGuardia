@@ -135,10 +135,9 @@ const EditMenuForModal = (props: NewWordcardData) => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={addCategoryValue}>
+              <IconButton onClick={addCategoryValue} sx={{ p: 0 }}>
                 <Box sx={{ display: 'flex' }}>
                   <AddIcon />
-                  <Typography>追加</Typography>
                 </Box>
               </IconButton>
             </InputAdornment>

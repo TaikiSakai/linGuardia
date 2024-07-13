@@ -7,6 +7,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { mutate } from 'swr';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { styles } from '@/styles';
 
 type modalHandler = {
   closeModal: () => void;
@@ -19,7 +20,6 @@ type cardForm = {
 
 const NewCardMenuForModal = (props: modalHandler) => {
   const { handleSubmit, control } = useForm<cardForm>();
-  // const [open, handleOpen, handleClose] = useModal(reset);
   const [, setSnackbar] = useSnackbarState();
   const handleClose = props.closeModal;
   console.log(handleClose);
@@ -66,6 +66,9 @@ const NewCardMenuForModal = (props: modalHandler) => {
   return (
     <Box>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Typography component="h3" css={styles.modalTitle}>
+          単語帳を追加
+        </Typography>
         <Controller
           name={'title'}
           control={control}
@@ -100,10 +103,8 @@ const NewCardMenuForModal = (props: modalHandler) => {
           )}
         />
         <Box>
-          <Typography component="h3" sx={{ fontWeight: 'bold' }}>
-            ※公開設定について
-          </Typography>
-          <Typography component="p">
+          <Typography css={styles.subTitle}>※公開設定について</Typography>
+          <Typography css={styles.modalText}>
             <code>&quot;公開&quot;</code>
             を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
           </Typography>
