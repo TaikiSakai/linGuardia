@@ -1,11 +1,22 @@
-import { Box, Button, Typography, TextField, Stack } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import {
+  Box,
+  Button,
+  Typography,
+  TextField,
+  Stack,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { mutate } from 'swr';
+import CategoryBox from './CategoryBox';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 
@@ -20,15 +31,31 @@ type cardForm = {
 
 const NewCardMenuForModal = (props: modalHandler) => {
   const { handleSubmit, control } = useForm<cardForm>();
+  const [categories, setCategories] = useState<string[]>([]);
+  const newCategory = useRef<HTMLInputElement | null>(null);
+
   const [, setSnackbar] = useSnackbarState();
   const handleClose = props.closeModal;
-  console.log(handleClose);
+
+  const addCategoryValue = () => {
+    if (newCategory.current?.value) {
+      const newval = newCategory.current.value;
+      setCategories([...categories, newval]);
+
+      newCategory.current.value = '';
+    }
+  };
+
+  const deleteCategoryValue = (valueId: number) => {
+    setCategories(categories.filter((_, idx: number) => idx !== valueId));
+  };
 
   const onSubmit = (data: cardForm) => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
 
     const newCardData = JSON.stringify({
       card: data,
+      categories: { name: categories },
     });
 
     const headers = { 'Content-Type': 'application/json' };
@@ -95,13 +122,45 @@ const NewCardMenuForModal = (props: modalHandler) => {
           render={({ field }) => (
             <FormControl>
               <InputLabel id="status-label">公開設定</InputLabel>
-              <Select {...field} required labelId="status-label" label="公開設定">
+              <Select {...field} required size="small" labelId="status-label" label="公開設定">
                 <MenuItem value={'open'}>公開</MenuItem>
                 <MenuItem value={'close'}>非公開</MenuItem>
               </Select>
             </FormControl>
           )}
         />
+        <TextField
+          type="text"
+          label="カテゴリー"
+          size="small"
+          rows={1}
+          inputRef={newCategory}
+          sx={{ backgroundColor: 'white' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={addCategoryValue} sx={{ p: 0 }}>
+                  <Box sx={{ display: 'flex' }}>
+                    <AddIcon />
+                  </Box>
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Box sx={{ display: 'inline-flex', flexWrap: 'wrap' }}>
+          {categories.length !== 0 &&
+            categories.map((category, i) => (
+              <Box
+                key={i}
+                onClick={() => {
+                  deleteCategoryValue(i);
+                }}
+              >
+                <CategoryBox name={[category]} deletable={true} />
+              </Box>
+            ))}
+        </Box>
         <Box>
           <Typography css={styles.subTitle}>※公開設定について</Typography>
           <Typography css={styles.modalText}>
