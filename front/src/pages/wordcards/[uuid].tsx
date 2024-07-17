@@ -25,9 +25,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, ReactNode } from 'react';
 import useSWR, { mutate } from 'swr';
+import CategoryBox from '@/components/CategoryBox';
 import CommentBox from '@/components/CommentBox';
 import CommentCard from '@/components/CommentCard';
-import EditMenuForModal from '@/components/EditMenu';
+import EditMenuForModal from '@/components/EditMenuBox';
 import LikeButton from '@/components/LikeButton';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
@@ -35,6 +36,7 @@ import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { AuthorData } from '@/types/AuthorType';
+import { CategoryData } from '@/types/CategoryType';
 import { CommentData } from '@/types/CommentType';
 import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
@@ -98,6 +100,7 @@ const WordcardDetail: NextPage = () => {
 
   const fetchedCard: WordcardData = card ? camelcaseKeys(card.card) : null;
   const fetchedAuthor: AuthorData = card ? camelcaseKeys(card.user) : null;
+  const fetchedCategories: CategoryData = card ? camelcaseKeys(card.categories) : null;
   const fetchedLike: LikeData = card ? camelcaseKeys(card.like) : null;
   const fetchedComments: CommentData[] = camelcaseKeys(comments);
 
@@ -236,34 +239,31 @@ const WordcardDetail: NextPage = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={12} md={8}>
-              <Card sx={{ borderRadius: 3, p: 1 }}>
-                <CardContent>
-                  <Grid container sx={{ alignItems: 'center' }}>
-                    <Grid container item xs={10} md={10} spacing={1}>
-                      <Grid container item sx={{ alignItems: 'center' }} spacing={1}>
-                        <Grid item>
-                          <IconButton sx={{ p: 0 }}>
-                            <AccountCircle sx={{ fontSize: '30px' }} />
-                          </IconButton>
-                        </Grid>
-                        <Grid item>
-                          <Typography css={cardTextCss}>{fetchedAuthor.userName}</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container item>
-                        <Grid item>
-                          <Typography css={cardTextCss}>{fetchedCard.title}</Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={2} md={2}>
-                      like
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
+            {fetchedCategories.name.length !== 0 && (
+              <Grid item xs={12} md={8}>
+                <Grid container item>
+                  <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
+                    <Typography css={styles.subTitle}>カテゴリー</Typography>
+                  </Box>
+                </Grid>
+                <Card sx={{ borderRadius: 3, p: 1 }}>
+                  <CardContent>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        px: 5,
+                      }}
+                    >
+                      {fetchedCategories.name.map((category: string, i: number) => (
+                        <CategoryBox name={[category]} deletable={false} key={i} />
+                      ))}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
 
             <Grid item xs={12} md={8}>
               <Grid container item>
@@ -323,22 +323,13 @@ const WordcardDetail: NextPage = () => {
 
             {user.id === fetchedAuthor.userId && (
               <Grid item xs={12} md={8}>
+                <Grid container item>
+                  <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
+                    <Typography css={styles.subTitle}>カード設定</Typography>
+                  </Box>
+                </Grid>
                 <Card sx={{ borderRadius: 3, p: 2 }}>
                   <CardContent>
-                    <Grid container item>
-                      <Grid item>
-                        <Typography
-                          component="h3"
-                          sx={{
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            color: '#000040',
-                          }}
-                        >
-                          カード設定
-                        </Typography>
-                      </Grid>
-                    </Grid>
                     <Grid
                       container
                       item
@@ -373,10 +364,8 @@ const WordcardDetail: NextPage = () => {
                                   handleOpenModal(
                                     // モーダル要素
                                     <EditMenuForModal
-                                      uuid={fetchedCard.uuid}
-                                      title={fetchedCard.title}
-                                      status={fetchedCard.status}
-                                      createdAt={fetchedCard.createdAt}
+                                      card={fetchedCard}
+                                      category={fetchedCategories}
                                       closeModal={handleClose}
                                     />,
                                   );
@@ -404,10 +393,8 @@ const WordcardDetail: NextPage = () => {
                                   handleOpenModal(
                                     // モーダル要素
                                     <EditMenuForModal
-                                      uuid={fetchedCard.uuid}
-                                      title={fetchedCard.title}
-                                      status={fetchedCard.status}
-                                      createdAt={fetchedCard.createdAt}
+                                      card={fetchedCard}
+                                      category={fetchedCategories}
                                       closeModal={handleClose}
                                     />,
                                   );

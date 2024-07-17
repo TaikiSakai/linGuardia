@@ -7,3 +7,5 @@ ja:
       vocabulary:
         word: 単語
         meaning: 意味
+      category:
+        name: カテゴリー名

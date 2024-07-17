@@ -1,50 +1,65 @@
-import { css } from '@emotion/react';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import SearchIcon from '@mui/icons-material/Search';
-import SellIcon from '@mui/icons-material/Sell';
-import { Grid, Box, Button, Card, CardContent, Typography, TextField, Stack } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import {
+  Box,
+  Button,
+  Typography,
+  TextField,
+  Stack,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { mutate } from 'swr';
-import ModalCard from './ModalCard';
-import useModal from '@/hooks/ModalState';
+import CategoryBox from './CategoryBox';
 import { useSnackbarState } from '@/hooks/useGlobalState';
+import { styles } from '@/styles';
 
-// フォントの設定
-const fontSizeCss = css({
-  fontSize: 25,
-  '@media (max-width: 600px)': {
-    fontSize: 12,
-  },
-});
+type modalHandler = {
+  closeModal: () => void;
+};
 
 type cardForm = {
   title: string;
   status: string;
 };
 
-const CardMenu = () => {
-  const { handleSubmit, control, reset } = useForm<cardForm>();
-  const [open, handleOpen, handleClose] = useModal(reset);
+const NewCardMenuForModal = (props: modalHandler) => {
+  const { handleSubmit, control } = useForm<cardForm>();
+  const [categories, setCategories] = useState<string[]>([]);
+  const newCategory = useRef<HTMLInputElement | null>(null);
+
   const [, setSnackbar] = useSnackbarState();
+  const handleClose = props.closeModal;
+
+  const addCategoryValue = () => {
+    if (newCategory.current?.value) {
+      const newval = newCategory.current.value;
+      setCategories([...categories, newval]);
+
+      newCategory.current.value = '';
+    }
+  };
+
+  const deleteCategoryValue = (valueId: number) => {
+    setCategories(categories.filter((_, idx: number) => idx !== valueId));
+  };
 
   const onSubmit = (data: cardForm) => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
 
     const newCardData = JSON.stringify({
       card: data,
+      categories: { name: categories },
     });
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid'),
-    };
+    const headers = { 'Content-Type': 'application/json' };
+
     axios({
       method: 'POST',
       url: url,
@@ -77,130 +92,88 @@ const CardMenu = () => {
 
   return (
     <Box>
-      <Grid
-        container
-        sx={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          pb: 5,
-        }}
-      >
-        <Grid item xs={10} md={10}>
-          <Box>
-            <Card sx={{ borderRadius: 3, height: 140 }}>
-              <CardContent>
-                <Grid
-                  container
-                  item
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Grid item xs={4} md={4}>
-                    <Button onClick={handleOpen}>
-                      <Stack
-                        sx={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                        spacing={1}
-                      >
-                        <SellIcon sx={{ fontSize: 40, color: 'gray' }} />
-                        <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                          カードを作成
-                        </Typography>
-                      </Stack>
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4} md={4}>
-                    <Button>
-                      <Stack
-                        sx={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <BorderColorIcon sx={{ fontSize: 40, color: 'gray' }} />
-                        <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                          テスト
-                        </Typography>
-                      </Stack>
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4} md={4}>
-                    <Button>
-                      <Stack
-                        sx={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <SearchIcon sx={{ fontSize: 40, color: 'gray' }} />
-                        <Typography component="h3" css={fontSizeCss} sx={{ color: 'gray' }}>
-                          単語検索
-                        </Typography>
-                      </Stack>
-                    </Button>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Box>
-        </Grid>
-      </Grid>
-      <ModalCard title="カード新規作成" open={open} handleClose={handleClose}>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-          <Controller
-            name={'title'}
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="text"
-                required
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                label="タイトル"
-                fullWidth
-                size="small"
-                multiline
-                rows={1}
-                sx={{ backgroundColor: 'white' }}
-              />
-            )}
-          />
-          <Controller
-            name={'status'}
-            control={control}
-            defaultValue={'close'}
-            render={({ field }) => (
-              <FormControl>
-                <InputLabel id="status-label">公開設定</InputLabel>
-                <Select {...field} required labelId="status-label" label="公開設定">
-                  <MenuItem value={'open'}>公開</MenuItem>
-                  <MenuItem value={'close'}>非公開</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-          />
-          <Box>
-            <Typography component="h3" sx={{ fontWeight: 'bold' }}>
-              ※公開設定について
-            </Typography>
-            <Typography component="p">
-              <code>&quot;公開&quot;</code>
-              を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
-            </Typography>
-          </Box>
-          <Button variant="contained" type="submit">
-            登録
-          </Button>
-        </Stack>
-      </ModalCard>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Typography component="h3" css={styles.modalTitle}>
+          単語帳を追加
+        </Typography>
+        <Controller
+          name={'title'}
+          control={control}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              type="text"
+              required
+              error={fieldState.invalid}
+              helperText={fieldState.error?.message}
+              label="タイトル"
+              fullWidth
+              size="small"
+              multiline
+              rows={1}
+              sx={{ backgroundColor: 'white' }}
+            />
+          )}
+        />
+        <Controller
+          name={'status'}
+          control={control}
+          defaultValue={'close'}
+          render={({ field }) => (
+            <FormControl>
+              <InputLabel id="status-label">公開設定</InputLabel>
+              <Select {...field} required size="small" labelId="status-label" label="公開設定">
+                <MenuItem value={'open'}>公開</MenuItem>
+                <MenuItem value={'close'}>非公開</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        />
+        <TextField
+          type="text"
+          label="カテゴリー"
+          size="small"
+          rows={1}
+          inputRef={newCategory}
+          sx={{ backgroundColor: 'white' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={addCategoryValue} sx={{ p: 0 }}>
+                  <Box sx={{ display: 'flex' }}>
+                    <AddIcon />
+                  </Box>
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Box sx={{ display: 'inline-flex', flexWrap: 'wrap' }}>
+          {categories.length !== 0 &&
+            categories.map((category, i) => (
+              <Box
+                key={i}
+                onClick={() => {
+                  deleteCategoryValue(i);
+                }}
+              >
+                <CategoryBox name={[category]} deletable={true} />
+              </Box>
+            ))}
+        </Box>
+        <Box>
+          <Typography css={styles.subTitle}>※公開設定について</Typography>
+          <Typography css={styles.modalText}>
+            <code>&quot;公開&quot;</code>
+            を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
+          </Typography>
+        </Box>
+        <Button variant="contained" type="submit">
+          登録
+        </Button>
+      </Stack>
     </Box>
   );
 };
 
-export default CardMenu;
+export default NewCardMenuForModal;

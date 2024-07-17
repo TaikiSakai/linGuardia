@@ -6,11 +6,11 @@ import { mutate } from 'swr';
 import { styles } from '@/styles';
 import { CommentData } from '@/types/CommentType';
 
-type commentModalHandler = {
+type  modalHandler = {
   closeModal: () => void;
 };
 
-const CommentBoxForModal = (props: commentModalHandler) => {
+const CommentBoxForModal = (props: modalHandler) => {
   // コメントが属するカードのuuidを取得する
   const router = useRouter();
   const { uuid } = router.query;
@@ -61,7 +61,6 @@ const CommentBoxForModal = (props: commentModalHandler) => {
             size="small"
             multiline
             rows={5}
-            css={styles.textField}
           />
         )}
       />

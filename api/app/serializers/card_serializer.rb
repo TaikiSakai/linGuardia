@@ -1,6 +1,4 @@
 class CardSerializer < ActiveModel::Serializer
-  # attributes :uuid, :title, :status, :user_id, :user_name, :like, :number_of_likes, :created_at
-
   attribute :card do
     {
       uuid: object.uuid,
@@ -24,6 +22,10 @@ class CardSerializer < ActiveModel::Serializer
     }
   end
 
+  attribute :categories do
+    { name: object.categories.map(&:name) }
+  end
+
   def user_name
     object.user.name
   end
@@ -33,7 +35,7 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def number_of_likes
-    object.how_many_likes(object)
+    object.how_many_likes
   end
 
   def created_at

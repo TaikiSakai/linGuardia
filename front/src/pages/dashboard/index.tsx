@@ -9,7 +9,7 @@ import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
 
-type ApiResponse = {
+type WordcardDetail = {
   card: WordcardData;
   user: AuthorData;
   like: LikeData;
@@ -23,9 +23,8 @@ const Index: NextPage = () => {
   if (error) return <div>An error has occurred.</div>;
   if (!data) return <div>Loading...</div>;
 
-  // const fetchedRankings: RankedCardData[] = camelcaseKeys(data);
-  const fetchedRankings: ApiResponse[] | null = data
-    ? data.map((cardData: ApiResponse) => camelcaseKeys(cardData, { deep: true }))
+  const fetchedRankings: WordcardDetail[] | null = data
+    ? data.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
     : null;
 
   return (
@@ -50,20 +49,27 @@ const Index: NextPage = () => {
                 <Typography css={styles.subTitle}>学習実績</Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <RankedCard uuid={''} title={'Title'} userName={'Username'} like={true} />
+                <RankedCard
+                  uuid={''}
+                  title={'Title'}
+                  userName={'Username'}
+                  like={true}
+                  numberOfLikes={0}
+                />
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.subTitle}>人気の単語帳</Typography>
+                <Typography css={styles.subTitle}>トレンド</Typography>
               </Box>
-              {fetchedRankings.map((card: ApiResponse, i: number) => (
+              {fetchedRankings.map((card: WordcardDetail, i: number) => (
                 <Box sx={{ mb: 2 }} key={i}>
                   <RankedCard
                     uuid={card.card.uuid}
                     title={card.card.title}
                     userName={card.user.userName}
                     like={card.like.like}
+                    numberOfLikes={card.like.numberOfLikes}
                   />
                 </Box>
               ))}
