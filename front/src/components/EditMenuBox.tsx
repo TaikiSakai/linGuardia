@@ -158,10 +158,8 @@ const EditMenuForModal = (props: NewWordcardData) => {
           ))}
       </Box>
       <Box>
-        <Typography component="h3" css={styles.subTitle}>
-          ※公開設定について
-        </Typography>
-        <Typography component="p" css={styles.modalText}>
+        <Typography css={styles.subTitle}>※公開設定について</Typography>
+        <Typography css={styles.modalText}>
           <code>&quot;公開&quot;</code>
           を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
         </Typography>
