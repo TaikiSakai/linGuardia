@@ -80,7 +80,7 @@ const Index: NextPage = () => {
           <Grid item xs={12} md={8}>
             <Box component="form" onBlur={handleSubmit(onBlur)}>
               <Grid container item>
-                <Grid item xs={3} md={3}>
+                <Grid item xs={4} md={3}>
                   <Controller
                     name="matcher"
                     control={control}
@@ -98,7 +98,7 @@ const Index: NextPage = () => {
                     )}
                   />
                 </Grid>
-                <Grid item xs={9} md={9}>
+                <Grid item xs={8} md={9}>
                   <Controller
                     name="searchValue"
                     control={control}
