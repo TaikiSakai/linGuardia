@@ -60,7 +60,7 @@ const Index: NextPage = () => {
             </Grid>
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.subTitle}>人気の単語帳</Typography>
+                <Typography css={styles.subTitle}>トレンド</Typography>
               </Box>
               {fetchedRankings.map((card: WordcardDetail, i: number) => (
                 <Box sx={{ mb: 2 }} key={i}>
