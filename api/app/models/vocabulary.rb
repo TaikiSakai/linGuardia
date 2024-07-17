@@ -12,6 +12,7 @@ class Vocabulary < ApplicationRecord
   scope :with_role, ->(role_name) { joins(:roles).where(roles: { name: role_name }) }
 
   def self.save_vocabulary_with_roles!(card:, vocabularies_params:)
+    binding.pry
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
@@ -27,6 +28,9 @@ class Vocabulary < ApplicationRecord
   end
 
   def self.update_vocabulary_with_roles!(card:, vocabularies_params:)
+    
+    binding.pry
+    
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
@@ -38,6 +42,29 @@ class Vocabulary < ApplicationRecord
           vocabulary.roles.clear
           vocabulary.roles = role_names.map {|name| Role.find_or_initialize_by(name: name) }
         end
+
+        vocabulary.save!
+      end
+    end
+  rescue ActiveRecord::Rollback
+    false
+  end
+
+  def save_vocabulary_with_roles_test(card:, vocabularies_params:)
+    ActiveRecord::Base.transaction do
+      vocabularies_params.each do |vocabulary_params|
+        if vocabulary_params[:id].present?
+          vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
+          vocabulary.assign_attributes(vocabulary_params.permit(:word))
+        else
+          vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
+        end
+        
+        
+        # binding.pry
+        
+        roles = vocabulary_params[:roles]
+        vocabulary.roles = roles.map {|name| Role.find_or_initialize_by(name: name) }
 
         vocabulary.save!
       end

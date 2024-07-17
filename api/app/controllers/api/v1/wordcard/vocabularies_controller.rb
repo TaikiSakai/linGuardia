@@ -17,14 +17,18 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    vocabulary = Vocabulary.new
+    vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+    # Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
     render json: { message: "単語を登録しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
-    Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    vocabulary = Vocabulary.new
+    vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+    # Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
     render json: { message: "単語を更新しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
@@ -62,6 +66,6 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
 
     def set_card
       @card = current_user.cards.find_by(uuid: params[:card_uuid])
-      render json: { message: "単語帳が見つかりません" }, status: :not_found unless @card
+      render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 end
