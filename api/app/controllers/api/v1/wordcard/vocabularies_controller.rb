@@ -17,20 +17,23 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    if Vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
+
+    if status
       render json: { message: "単語を登録しました" }, status: :ok
+    else
+      render json: { error: error_message }, status: :internal_server_error
     end
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
-    Vocabulary.update_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を更新しました" }, status: :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
+    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
+
+    if status
+      render json: { message: "単語を更新しました" }, status: :ok
+    else
+      render json: { error: error_message }, status: :internal_server_error
+    end
   end
 
   def update_conjugation
