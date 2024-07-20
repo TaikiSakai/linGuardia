@@ -18,12 +18,12 @@ import {
   TableContainer,
   TableRow,
 } from '@mui/material';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
@@ -48,9 +48,20 @@ const WordConjugation: NextPage = () => {
   });
 
   const [words, setWords] = useState<VocabularyData[]>([]);
-  const [conjugations, setConjugations] = useState<ConjugationType[]>([]);
+  const [conjugations, setConjugations] = useState<VocabularyData[]>([]);
   const [, setSnackbar] = useSnackbarState();
   const [open, setOpen] = useState<boolean>(true);
+
+  const updateConjugations = (newValues: ConjugationType[]) => {
+    const newConjugations = words.map((word) => ({ ...word }));
+
+    newValues.map((newValue: ConjugationType) => {
+      const index = newConjugations.findIndex((item) => item.id === newValue.id);
+      newConjugations[index].word = newValue.word;
+    });
+
+    setConjugations(newConjugations);
+  };
 
   if (error) {
     setSnackbar({
@@ -68,59 +79,55 @@ const WordConjugation: NextPage = () => {
     setWords(fetchedWords);
   }
 
-  // console.log(words);
+  console.log(words);
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'access-token': localStorage.getItem('access-token'),
-    client: localStorage.getItem('client'),
-    uid: localStorage.getItem('uid'),
-  };
+  const headers = { 'Content-Type': 'application/json' };
 
-  const getConjugations = () => {
-    axios({
-      method: 'POST',
-      url: url + uuid + '/conjugation/create',
-      headers: headers,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res.data);
-        setConjugations(res.data);
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        if (e.response) {
-          console.log(e);
-        }
+  const getConjugations = async () => {
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'POST',
+        url: url + uuid + '/conjugation/create',
+        headers: headers,
+        withCredentials: true,
       });
+
+      console.log(res.data);
+      updateConjugations(res.data);
+    } catch (e) {
+      if (isAxiosError(e)) {
+        console.log(e);
+      }
+    }
   };
 
-  const updateWords = () => {
+  const updateWords = async () => {
     const data = JSON.stringify({
       vocabularies: conjugations,
     });
 
-    console.log(data);
-
-    axios({
-      method: 'PATCH',
-      url: url + uuid + '/vocabularies/update_conjugation',
-      headers: headers,
-      data: data,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res.data);
-        setSnackbar({
-          message: '単語を更新しました',
-          severity: 'success',
-          pathname: '/wordcards',
-        });
-        router.push('/wordcards');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        if (e.response) {
-          console.log(e);
-        }
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'PATCH',
+        url: url + uuid + '/vocabularies/update',
+        headers: headers,
+        data: data,
+        withCredentials: true,
       });
+
+      console.log(res.data);
+      mutate(url + uuid + url_params);
+      setSnackbar({
+        message: '単語を更新しました',
+        severity: 'success',
+        pathname: '/wordcards/[uuid]',
+      });
+      router.push('/wordcards/' + uuid);
+    } catch (e) {
+      if (isAxiosError(e)) {
+        console.log(e);
+      }
+    }
   };
 
   return (
