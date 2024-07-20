@@ -1,11 +1,11 @@
 import { Box, Button, Container, Grid, Typography, Paper } from '@mui/material';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import InputDisplayBox from '@/components/InputDisplayBox';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
@@ -47,71 +47,71 @@ const EditVocabPage: NextPage = () => {
     setInputValue(updatedInputValues);
   };
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'access-token': localStorage.getItem('access-token'),
-    client: localStorage.getItem('client'),
-    uid: localStorage.getItem('uid'),
-  };
+  const headers = { 'Content-Type': 'application/json' };
 
-  const deleteInputValue = (valueId: number) => {
+  const deleteInputValue = async (valueId: number) => {
     console.log(valueId);
 
-    // deleteはURLに削除する単語のidを含んでいるので、dataは送らない
-    axios({
-      method: 'DELETE',
-      url: url + uuid + '/vocabularies/' + valueId,
-      headers: headers,
-    })
-      .then((res: AxiosResponse) => {
-        setInputValue((prevInputValue) => prevInputValue.filter((item) => item.id !== valueId));
-        console.log(res.data.message);
-        setSnackbar({
-          message: res.data.message,
-          severity: 'success',
-          pathname: '/wordcards/edit/[uuid]',
-        });
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message);
+    // deleteはURLに削除する単語のidを含んでいるので、dataは送信しない
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'DELETE',
+        url: url + uuid + '/vocabularies/' + valueId,
+        headers: headers,
+        withCredentials: true,
       });
+      setInputValue((prevInputValue) => prevInputValue.filter((item) => item.id !== valueId));
+      console.log(res.data.message);
+      setSnackbar({
+        message: res.data.message,
+        severity: 'success',
+        pathname: '/vocabularies/edit/[uuid]',
+      });
+    } catch (e) {
+      if (isAxiosError(e)) {
+        console.log(e.message);
+        setSnackbar({
+          message: e.response?.data.error,
+          severity: 'success',
+          pathname: '/vocabularies/edit/[uuid]',
+        });
+      }
+    }
   };
 
-  const onSubmit = () => {
-    console.log(inputValues);
-
+  const onSubmit = async () => {
     const data = JSON.stringify({
       vocabularies: inputValues,
     });
 
-    console.log(data);
-    console.log(JSON.stringify(inputValues, null, 2));
+    // console.log(data);
+    // console.log(JSON.stringify(inputValues, null, 2));
 
-    axios({
-      method: 'PATCH',
-      url: url + uuid + '/vocabularies/update',
-      headers: headers,
-      data: data,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res.data.message);
-        setSnackbar({
-          message: res.data.message,
-          severity: 'success',
-          pathname: '/wordcards',
-        });
-        router.push('/wordcards');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.response);
-        if (e.response) {
-          setSnackbar({
-            message: e.response.data.error,
-            severity: 'error',
-            pathname: '/wordcards/edit/[uuid]',
-          });
-        }
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'PATCH',
+        url: url + uuid + '/vocabularies/update',
+        headers: headers,
+        data: data,
+        withCredentials: true,
       });
+      console.log(res.data.message);
+      mutate(url + uuid + '/vocabularies');
+      setSnackbar({
+        message: res.data.message,
+        severity: 'success',
+        pathname: '/wordcards',
+      });
+      router.push('/wordcards');
+    } catch (e) {
+      if (isAxiosError(e)) {
+        setSnackbar({
+          message: e.response?.data.error,
+          severity: 'error',
+          pathname: '/wordcards/edit/[uuid]',
+        });
+      }
+    }
   };
 
   return (

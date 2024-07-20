@@ -17,28 +17,23 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を登録しました" }, status: :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
+    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
+
+    if status
+      render json: { message: "単語を登録しました" }, status: :ok
+    else
+      render json: { error: error_message }, status: :internal_server_error
+    end
   end
 
   def update
-    Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を更新しました" }, status: :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
-  end
+    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
 
-  def update_conjugation
-    Vocabulary.update_verb_conjugation!(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を更新しました" }, status: :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
+    if status
+      render json: { message: "単語を更新しました" }, status: :ok
+    else
+      render json: { error: error_message }, status: :internal_server_error
+    end
   end
 
   def destroy
@@ -62,6 +57,6 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
 
     def set_card
       @card = current_user.cards.find_by(uuid: params[:card_uuid])
-      render json: { message: "単語帳が見つかりません" }, status: :not_found unless @card
+      render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 end

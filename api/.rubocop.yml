@@ -15,7 +15,7 @@ Style/HashSyntax:
 
 Metrix/MethodLength:
   CountComments: false
-  Max: 15
+  Max: 20
   Exclude:
    - 'app/controllers/concerns/assign_token.rb'
    - 'app/service/openai/*'
