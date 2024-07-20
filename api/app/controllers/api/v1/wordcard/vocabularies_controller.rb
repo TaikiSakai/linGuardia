@@ -36,15 +36,6 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     end
   end
 
-  def update_conjugation
-    Vocabulary.update_verb_conjugation!(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を更新しました" }, status: :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
-  end
-
   def destroy
     vocabulary = @card.vocabularies.find(params[:id])
     if vocabulary.destroy

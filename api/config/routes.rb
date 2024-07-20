@@ -20,7 +20,6 @@ Rails.application.routes.draw do
 
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
-          patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
           post "conjugation/create", to: "chat#create"
 
           resource :like, only: [:create, :destroy]
