@@ -17,18 +17,15 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    vocabulary = Vocabulary.new
-    vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
-    # Vocabulary.save_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
-    render json: { message: "単語を登録しました" }, status: :ok
+    if Vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
+      render json: { message: "単語を登録しました" }, status: :ok
+    end
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
-    vocabulary = Vocabulary.new
-    vocabulary.save_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
-    # Vocabulary.update_vocabulary_with_roles!(card: @card, vocabularies_params: vocabularies_params)
+    Vocabulary.update_vocabulary_with_roles_test(card: @card, vocabularies_params: vocabularies_params)
     render json: { message: "単語を更新しました" }, status: :ok
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
