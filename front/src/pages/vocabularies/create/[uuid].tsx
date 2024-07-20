@@ -1,7 +1,7 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Box, Button, Container, Grid, TextField, Typography, Stack, Paper } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,10 +14,6 @@ import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { VocabularyData } from '@/types/VocabularyType';
-
-// export const InputContext = createContext<VocabularyData[]>([]);
-// export const AddInputContext = createContext<(newValue: VocabularyData) => void>(() => {});
-// export const DeleteInputContext = createContext<(valueId: number) => void>(() => {});
 
 const AddPage: NextPage = () => {
   useRequireSignedIn();
@@ -62,43 +58,38 @@ const AddPage: NextPage = () => {
     handleClose();
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/' + uuid + '/vocabularies/';
     const data = JSON.stringify({
       vocabularies: inputValues,
     });
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid'),
-    };
-    axios({
-      method: 'POST',
-      url: url,
-      headers: headers,
-      data: data,
-    })
-      .then((res: AxiosResponse) => {
-        console.log(res.data.message);
-        setSnackbar({
-          message: res.data.message,
-          severity: 'success',
-          pathname: '/wordcards',
-        });
-        router.push('/wordcards');
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e);
-        if (e.response) {
-          setSnackbar({
-            message: e.response.data.error,
-            severity: 'error',
-            pathname: '/vocabularies/create/[uuid]',
-          });
-        }
+    const headers = { 'Content-Type': 'application/json' };
+
+    try {
+      const res: AxiosResponse = await axios({
+        method: 'POST',
+        url: url,
+        headers: headers,
+        data: data,
+        withCredentials: true,
       });
+      console.log(res.data.message);
+      setSnackbar({
+        message: res.data.message,
+        severity: 'success',
+        pathname: '/wordcards/[uuid]',
+      });
+      router.push('/wordcards/' + uuid);
+    } catch (e) {
+      if (isAxiosError(e)) {
+        setSnackbar({
+          message: e.response?.data.error,
+          severity: 'error',
+          pathname: '/vocabularies/create/[uuid]',
+        });
+      }
+    }
   };
 
   return (
