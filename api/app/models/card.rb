@@ -6,6 +6,7 @@ class Card < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :card_categories, dependent: :destroy
   has_many :categories, through: :card_categories
+  has_many :study_records, dependent: :destroy
 
   validates :title, presence: true, length: { minimum: 1, maximum: 20 },\
                     uniqueness: { scope: :user_id }
