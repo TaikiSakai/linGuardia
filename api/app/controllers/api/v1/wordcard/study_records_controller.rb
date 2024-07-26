@@ -1,31 +1,25 @@
 class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card
-  # before_action :record_already_exists, only: [:create]
+  before_action :set_card, only: [:create]
+  before_action :record_already_exists, only: [:create]
 
   def index
-    records = current_user.study_records.all
-    
-    binding.pry
-    
-    render json: { message: "okkkkk" }, status: :ok
+    records = current_user.study_records.where(
+      date: (Time.zone.today.beginning_of_week)..
+      (Time.zone.today.end_of_week),
+    )
+
+    render json: { study_records: records }, status: :ok
   end
 
   def create
     record = current_user.study_records.new(study_record_params)
-    
-    # binding.pry
-    
-    # これだと正常系エラーとして処理されてしまう
+
     if record.save
-      render json: { message: "登録しました"}, status: :ok
+      render json: { message: "登録しました" }, status: :ok
     else
       render json: { error: record.errors.full_messages }, status: :internal_server_error
     end
-  end
-
-  def show
-
   end
 
   private
@@ -39,8 +33,9 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
       render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
     end
 
-    # def record_already_exists
-    #   record = current_user.study_records.find_by(card_id: @card.id, date: Date.today)
-    #   render json: { message: "今日は学習済みです" }, status: :ok unless record.nil?
-    # end
+    # 今日の学習レコードが存在するか確認し、存在する場合はステータスコード(OK)で処理を終了する
+    def record_already_exists
+      record = current_user.study_records.find_by(card_id: @card.id, date: Time.zone.today)
+      render json: { message: "今日は学習済みです" }, status: :ok unless record.nil?
+    end
 end

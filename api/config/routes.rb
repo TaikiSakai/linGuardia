@@ -27,7 +27,7 @@ Rails.application.routes.draw do
           resources :study_records, only: [:index, :show, :create]
         end
         resources :ranked_cards, only: [:index]
-      end      
+      end
     end
   end
 end
