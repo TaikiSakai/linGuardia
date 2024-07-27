@@ -4,12 +4,17 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
   before_action :record_already_exists, only: [:create]
 
   def index
+    date_range = Time.zone.today.beginning_of_week..Time.zone.today.end_of_week
+  
     records = current_user.study_records.where(
-      date: (Time.zone.today.beginning_of_week)..
-      (Time.zone.today.end_of_week),
-    )
+      date: date_range,
+    ).includes(:card)
 
-    render json: { study_records: records }, status: :ok
+    date_list = date_range.to_a
+    serializer = StudyRecordService.new(records, date_list)
+    records = serializer.prepare_response
+
+    render json: { records: records, date_list: date_list }, status: :ok
   end
 
   def create
