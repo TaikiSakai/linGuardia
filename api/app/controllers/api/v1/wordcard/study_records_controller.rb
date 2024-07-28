@@ -13,6 +13,7 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
     date_list = date_range.to_a
     serializer = StudyRecordService.new(records, date_list)
     records = serializer.prepare_response
+    date_list = date_list.map { |d| d.strftime("%a-%d")}
 
     render json: { records: records, date_list: date_list }, status: :ok
   end
