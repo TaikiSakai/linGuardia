@@ -3,9 +3,11 @@ import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
 import RankedCard from '@/components/RankedCard';
+import StudyRecordChart from '@/components/StudyRecordChart';
 import { styles } from '@/styles';
 import { AuthorData } from '@/types/AuthorType';
 import { LikeData } from '@/types/LikeType';
+import { StudyRecordData } from '@/types/StudyRecordType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
 
@@ -17,15 +19,25 @@ type WordcardDetail = {
 
 const Index: NextPage = () => {
   const url = process.env.NEXT_PUBLIC_API_URL;
-  console.log(url);
-  const { data, error } = useSWR(url + '/wordcard/ranked_cards', fetcher);
 
-  if (error) return <div>An error has occurred.</div>;
-  if (!data) return <div>Loading...</div>;
+  const { data: cards, error: cardFetchError } = useSWR(url + '/wordcard/ranked_cards', fetcher);
+  const { data: studyRecs, error: studyRecFetchError } = useSWR(
+    url + '/wordcard/study_records',
+    fetcher,
+  );
 
-  const fetchedRankings: WordcardDetail[] | null = data
-    ? data.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
+  if (cardFetchError || studyRecFetchError) return <div>An error has occurred.</div>;
+  if (!cards || !studyRecs) return <div>Loading...</div>;
+
+  const fetchedRankings: WordcardDetail[] = cards
+    ? cards.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
     : null;
+
+  const fetchedStudyRecs: StudyRecordData = studyRecs
+    ? camelcaseKeys(studyRecs, { deep: true })
+    : null;
+
+  console.log(fetchedStudyRecs);
 
   return (
     fetchedRankings && (
@@ -46,15 +58,12 @@ const Index: NextPage = () => {
             </Grid>
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.subTitle}>学習実績</Typography>
+                <Typography css={styles.subTitle}>今週の学習実績</Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <RankedCard
-                  uuid={''}
-                  title={'Title'}
-                  userName={'Username'}
-                  like={true}
-                  numberOfLikes={0}
+                <StudyRecordChart
+                  records={fetchedStudyRecs.records}
+                  dateList={fetchedStudyRecs.dateList}
                 />
               </Box>
             </Grid>
