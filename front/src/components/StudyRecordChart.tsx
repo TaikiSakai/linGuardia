@@ -1,58 +1,57 @@
 import { css } from '@emotion/react';
-import { Card, CardContent } from '@mui/material';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { Card } from '@mui/material';
+import { BarPlot, ChartsXAxis, ChartsLegend, ChartsYAxis, BarSeriesType } from '@mui/x-charts';
+import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import { StudyRecordData } from '@/types/StudyRecordType';
-
-const chartStyle = css({
-  '@media (max-width: 600px)': {
-    margin: '10px',
-  },
-});
 
 const cardStyle = css({
   '@media (max-width: 600px)': {
-    maxHeight: '180px',
+    height: '150px',
   },
   borderRadius: '12px',
-  alignItems: 'center',
-  justifyContent: 'center',
+  width: '100%',
+  height: '180px',
 });
 
-type chartData = {
-  data: number[];
-  label: string;
-  stack: string;
-}[];
-
 const StudyRecordChart = (props: StudyRecordData) => {
-  const data: chartData = [];
-
-  props.records.map((rec) => {
-    data.push({ data: rec.wordCounts, label: rec.title, stack: 'A' });
-  });
+  type ChartData = BarSeriesType[];
+  const data: ChartData = props.records.map((rec) => ({
+    type: 'bar',
+    data: rec.wordCounts,
+    label: rec.title,
+    stack: 'A',
+  }));
 
   console.log(data);
 
   return (
     <Card css={cardStyle}>
-      <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
-        <BarChart
-          css={chartStyle}
-          series={data}
-          xAxis={[{ scaleType: 'band', data: props.dateList }]}
-          width={550}
-          height={180}
-          borderRadius={10}
+      <ResponsiveChartContainer
+        series={data}
+        xAxis={[
+          {
+            data: props.dateList,
+            scaleType: 'band',
+            id: 'x-axis-id',
+          },
+        ]}
+        yAxis={[{ id: 'x-axis-id', scaleType: 'linear' }]}
+        margin={{ top: 40, bottom: 40, left: 40, right: 15 }}
+      >
+        <BarPlot borderRadius={10} />
+        <ChartsXAxis position="bottom" axisId="x-axis-id" />
+        <ChartsYAxis position="left" axisId="x-axis-id" />
+        <ChartsLegend
           slotProps={{
             legend: {
               direction: 'row',
               position: { vertical: 'bottom', horizontal: 'middle' },
               padding: -5,
-              hidden: false,
+              hidden: true,
             },
           }}
         />
-      </CardContent>
+      </ResponsiveChartContainer>
     </Card>
   );
 };
