@@ -5,17 +5,24 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
 
   def index
     date_range = Time.zone.today.beginning_of_week..Time.zone.today.end_of_week
-  
+
     records = current_user.study_records.where(
       date: date_range,
     ).includes(:card)
 
+    count_today_learned = records.where(date: Time.zone.today).pluck(:word_count).sum
+
     date_list = date_range.to_a
     serializer = StudyRecordService.new(records, date_list)
     records = serializer.prepare_response
-    date_list = date_list.map { |d| d.strftime("%a-%d")}
+    date_list = date_list.map {|d| d.strftime("%a-%d") }
 
-    render json: { records: records, date_list: date_list }, status: :ok
+    render json: {
+             records: records,
+             date_list: date_list,
+             count_today_learned: count_today_learned,
+           },
+           status: :ok
   end
 
   def create
