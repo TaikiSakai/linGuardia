@@ -36,9 +36,9 @@ const StudyRecordChart = (props: StudyRecordData) => {
           },
         ]}
         yAxis={[{ id: 'x-axis-id', scaleType: 'linear' }]}
-        margin={{ top: 40, bottom: 40, left: 40, right: 15 }}
+        margin={{ top: 30, bottom: 40, left: 45, right: 20 }}
       >
-        <BarPlot borderRadius={10} />
+        <BarPlot borderRadius={14} />
         <ChartsXAxis position="bottom" axisId="x-axis-id" />
         <ChartsYAxis position="left" axisId="x-axis-id" />
         <ChartsLegend
