@@ -2,6 +2,7 @@ import { Box, Container, Typography, Grid } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
+import DailyCounter from '@/components/DailyCounter';
 import RankedCard from '@/components/RankedCard';
 import StudyRecordChart from '@/components/StudyRecordChart';
 import { styles } from '@/styles';
@@ -49,7 +50,7 @@ const Index: NextPage = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            spacing={3}
+            spacing={2}
           >
             <Grid container item>
               <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
@@ -57,10 +58,10 @@ const Index: NextPage = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>今週の学習実績</Typography>
               </Box>
-              <Box sx={{ mb: 2 }}>
+              <Box sx={{ mb: 1 }}>
                 <StudyRecordChart
                   records={fetchedStudyRecs.records}
                   dateList={fetchedStudyRecs.dateList}
@@ -68,7 +69,15 @@ const Index: NextPage = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
+                <Typography css={styles.subTitle}>今日の実績</Typography>
+              </Box>
+              <Box sx={{ mb: 1 }}>
+                <DailyCounter />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>トレンド</Typography>
               </Box>
               {fetchedRankings.map((card: WordcardDetail, i: number) => (
