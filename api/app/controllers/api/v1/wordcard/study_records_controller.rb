@@ -6,21 +6,20 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
   def index
     date_range = Time.zone.today.beginning_of_week..Time.zone.today.end_of_week
 
-    records = current_user.study_records.where(
-      date: date_range,
-    ).includes(:card)
-
-    count_today_learned = records.where(date: Time.zone.today).pluck(:word_count).sum
+    records = current_user.study_records.where(date: date_range).includes(:card)
+    counts_today_learned = records.where(date: Time.zone.today).pluck(:word_count).sum
 
     date_list = date_range.to_a
     serializer = StudyRecordService.new(records, date_list)
-    records = serializer.prepare_response
+    serialized_records = serializer.prepare_response
+    ratio = serializer.calculate_yesterday_difference
     date_list = date_list.map {|d| d.strftime("%a-%d") }
 
     render json: {
-             records: records,
+             records: serialized_records,
              date_list: date_list,
-             count_today_learned: count_today_learned,
+             counts_today_learned: counts_today_learned,
+             ratio: ratio,
            },
            status: :ok
   end
