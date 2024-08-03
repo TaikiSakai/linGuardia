@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import { Gauge } from '@mui/x-charts';
+import {
+  GaugeContainer,
+  GaugeValueArc,
+  GaugeReferenceArc,
+  GaugeValueText,
+} from '@mui/x-charts/Gauge';
 
 const cardStyle = css({
   '@media (max-width: 600px)': {
@@ -24,11 +29,14 @@ const cardTextStyle = css({
 
 const gaugeStyle = css({
   '@media (max-width: 600px)': {
-    height: '80px',
+    fontSize: '20px',
+    height: '90px',
     width: '120px',
   },
+  fontSize: '25px',
+  color: '#000060',
   borderRadius: '12px',
-  height: '100px',
+  height: '110px',
   width: '150px',
 });
 
@@ -68,7 +76,21 @@ const DailyCounter = (props: DailyRecordData) => {
               justifyContent: 'left',
             }}
           >
-            <Gauge css={gaugeStyle} value={gaugeValue} startAngle={-100} endAngle={100} />
+            <GaugeContainer
+              css={gaugeStyle}
+              value={gaugeValue}
+              startAngle={-100}
+              endAngle={100}
+              valueMax={100}
+              valueMin={0}
+            >
+              <GaugeReferenceArc />
+              <GaugeValueArc />
+              <GaugeValueText
+                text={String(props.ratio) + '%'}
+                style={{ fill: '#000060', textAnchor: 'middle' }}
+              />
+            </GaugeContainer>
           </Grid>
           <Grid
             item
