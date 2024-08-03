@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { Gauge } from '@mui/x-charts';
 
 const cardStyle = css({
@@ -32,10 +32,31 @@ const gaugeStyle = css({
   width: '150px',
 });
 
-const DailyCounter = () => {
+type DailyRecordData = {
+  countsTodayLearned: number;
+  ratio: number;
+};
+
+const DailyCounter = (props: DailyRecordData) => {
+  let gaugeValue;
+
+  if (props.ratio < 0) {
+    gaugeValue = 0;
+  } else {
+    gaugeValue = props.ratio;
+  }
+
   return (
     <Card css={cardStyle}>
-      <CardContent sx={{ height: '100%', display: 'flex', alignItems: 'center', px: 3, pt: 3 }} >
+      <CardContent
+        sx={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          px: 3,
+          pt: 3,
+        }}
+      >
         <Grid container sx={{ alignItems: 'center' }}>
           <Grid
             item
@@ -44,10 +65,10 @@ const DailyCounter = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'left'
+              justifyContent: 'left',
             }}
           >
-            <Gauge css={gaugeStyle} value={34} startAngle={-100} endAngle={100} />
+            <Gauge css={gaugeStyle} value={gaugeValue} startAngle={-100} endAngle={100} />
           </Grid>
           <Grid
             item
@@ -65,14 +86,14 @@ const DailyCounter = () => {
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <Grid>
-                <Typography css={cardTextStyle}>0語</Typography>
+                  <Typography css={cardTextStyle}>{props.countsTodayLearned + '語'}</Typography>
                 </Grid>
               </Grid>
               <Grid
                 container
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <Typography>前日比: 0% +10</Typography>
+                <Typography>{'前日比: ' + props.ratio + '%'}</Typography>
               </Grid>
             </Grid>
           </Grid>
