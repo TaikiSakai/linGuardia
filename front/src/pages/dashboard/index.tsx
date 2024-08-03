@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import DailyCounter from '@/components/DailyCounter';
 import RankedCard from '@/components/RankedCard';
 import StudyRecordChart from '@/components/StudyRecordChart';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { AuthorData } from '@/types/AuthorType';
 import { LikeData } from '@/types/LikeType';
@@ -19,8 +20,9 @@ type WordcardDetail = {
 };
 
 const Index: NextPage = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
+  useRequireSignedIn();
 
+  const url = process.env.NEXT_PUBLIC_API_URL;
   const { data: cards, error: cardFetchError } = useSWR(url + '/wordcard/ranked_cards', fetcher);
   const { data: studyRecs, error: studyRecFetchError } = useSWR(
     url + '/wordcard/study_records',
@@ -73,7 +75,10 @@ const Index: NextPage = () => {
                 <Typography css={styles.subTitle}>今日の実績</Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
-                <DailyCounter />
+                <DailyCounter
+                  countsTodayLearned={fetchedStudyRecs.countsTodayLearned}
+                  ratio={fetchedStudyRecs.ratio}
+                />
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>

@@ -4,4 +4,6 @@ export type StudyRecordData = {
     wordCounts: number[];
   }[];
   dateList: string[];
+  countsTodayLearned: number;
+  ratio: number;
 };
