@@ -1,8 +1,18 @@
 import { css } from '@emotion/react';
-import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box, Card, CardContent, Container, Typography, Grid, IconButton, Stack } from '@mui/material';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Typography,
+  Grid,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -103,6 +113,9 @@ const Flashcard: NextPage = () => {
               <Stack direction="row" spacing={5}>
                 <IconButton onClick={returnCard} disabled={currentIndex === 0}>
                   <ArrowBackIosNewIcon sx={{ fontSize: 50 }} />
+                </IconButton>
+                <IconButton onClick={turnOver}>
+                  <AutorenewIcon sx={{ fontSize: 50 }} />
                 </IconButton>
                 <IconButton onClick={nextCard} disabled={currentIndex === cards.length - 1}>
                   <ArrowForwardIosIcon sx={{ fontSize: 50 }} />
