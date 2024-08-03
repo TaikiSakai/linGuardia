@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   Container,
+  Fab,
   Typography,
   Grid,
   IconButton,
@@ -16,8 +17,11 @@ import {
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import useSWR from 'swr';
+import ExitPageBoxForModal from '@/components/ExitPageBox';
+import ModalCard from '@/components/ModalCard';
+import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
@@ -33,16 +37,29 @@ const fontSizeCss = css({
 
 const Flashcard: NextPage = () => {
   useRequireSignedIn();
+
   const router = useRouter();
   const { uuid } = router.query;
 
   const [, setSnackbar] = useSnackbarState();
-
   const [cards, setCards] = useState<VocabularyData[]>([]);
+  const [open, handleOpen, handleClose] = useModal();
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [beTurnedOver, setBeTurnedOver] = useState<boolean>(false);
+
   const turnOver: () => void = () => {
     setBeTurnedOver(!beTurnedOver);
+  };
+
+  const handleOpenModal = (content: ReactNode) => {
+    setModalContent(content);
+    handleOpen();
+  };
+
+  const handleCloseModal = () => {
+    setModalContent(null);
+    handleClose();
   };
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
@@ -123,9 +140,32 @@ const Flashcard: NextPage = () => {
               </Stack>
             </Grid>
           </Grid>
+          <Box
+            sx={{
+              position: 'fixed',
+              bottom: 10,
+              left: 1130,
+              right: 0,
+              '@media (max-width: 600px)': {
+                left: 320,
+              },
+            }}
+          >
+            <Fab
+              color="primary"
+              onClick={() => {
+                handleOpenModal(<ExitPageBoxForModal />);
+              }}
+            >
+              <CloseIcon />
+            </Fab>
+          </Box>
         </Container>
       )}
       {!currentCard && <Box>{data.message}</Box>}
+      <ModalCard title="" open={open} handleClose={handleCloseModal}>
+        {modalContent}
+      </ModalCard>
     </Box>
   );
 };
