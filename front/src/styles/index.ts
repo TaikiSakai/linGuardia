@@ -64,4 +64,16 @@ export const styles = {
     transition: 'all 150ms ease',
     border: '1px solid #01015c',
   }),
+  styledDangerButton: css({
+    backgroundColor: '#f44336',
+    borderRadius: 8,
+    transition: 'all 150ms ease',
+    border: '1px solid #f44336',
+    '&:hover': {
+      background: '#aa2e25',
+    },
+    '&:active': {
+      background: '#f6685e',
+    },
+  }),
 };
