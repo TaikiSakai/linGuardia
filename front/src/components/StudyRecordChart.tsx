@@ -3,6 +3,8 @@ import { Card } from '@mui/material';
 import { BarPlot, ChartsXAxis, ChartsLegend, ChartsYAxis, BarSeriesType } from '@mui/x-charts';
 import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import { StudyRecordData } from '@/types/StudyRecordType';
+import { ChartsOnAxisClickHandler } from '@mui/x-charts/ChartsOnAxisClickHandler';
+import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
 
 const cardStyle = css({
   '@media (max-width: 600px)': {
@@ -15,11 +17,13 @@ const cardStyle = css({
 
 const StudyRecordChart = (props: StudyRecordData) => {
   type ChartData = BarSeriesType[];
+  
   const data: ChartData = props.records.map((rec) => ({
     type: 'bar',
     data: rec.wordCounts,
     label: rec.title,
     stack: 'A',
+
   }));
 
   console.log(data);
@@ -38,7 +42,7 @@ const StudyRecordChart = (props: StudyRecordData) => {
         yAxis={[{ id: 'x-axis-id', scaleType: 'linear' }]}
         margin={{ top: 30, bottom: 40, left: 45, right: 20 }}
       >
-        <BarPlot borderRadius={14} />
+        <BarPlot borderRadius={20} />
         <ChartsXAxis position="bottom" axisId="x-axis-id" />
         <ChartsYAxis position="left" axisId="x-axis-id" />
         <ChartsLegend
@@ -51,6 +55,7 @@ const StudyRecordChart = (props: StudyRecordData) => {
             },
           }}
         />
+        <ChartsTooltip />
       </ResponsiveChartContainer>
     </Card>
   );
