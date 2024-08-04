@@ -23,7 +23,7 @@ const ExitPageBoxForModal = () => {
         sx={{ width: '100%' }}
         onClick={router.back}
       >
-        投稿
+        終了
       </Button>
     </Stack>
   );
