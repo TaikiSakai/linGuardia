@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { Card } from '@mui/material';
 import { BarPlot, ChartsXAxis, ChartsLegend, ChartsYAxis, BarSeriesType } from '@mui/x-charts';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
-import { StudyRecordData } from '@/types/StudyRecordType';
-import { ChartsOnAxisClickHandler } from '@mui/x-charts/ChartsOnAxisClickHandler';
 import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
+import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
+import { styles } from '@/styles';
+import { StudyRecordData } from '@/types/StudyRecordType';
 
 const cardStyle = css({
   '@media (max-width: 600px)': {
@@ -17,13 +17,15 @@ const cardStyle = css({
 
 const StudyRecordChart = (props: StudyRecordData) => {
   type ChartData = BarSeriesType[];
-  
-  const data: ChartData = props.records.map((rec) => ({
+
+  const colors: string[] = styles.colorPalette;
+
+  const data: ChartData = props.records.map((rec, idx) => ({
     type: 'bar',
     data: rec.wordCounts,
     label: rec.title,
     stack: 'A',
-
+    color: colors[idx % colors.length],
   }));
 
   console.log(data);
