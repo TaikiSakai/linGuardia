@@ -5,18 +5,21 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
 
   def index
     date_range = Time.zone.today.beginning_of_week..Time.zone.today.end_of_week
-
     records = current_user.study_records.where(date: date_range).includes(:card)
-    counts_today_learned = records.where(date: Time.zone.today).pluck(:word_count).sum
 
     date_list = date_range.to_a
     serializer = StudyRecordService.new(records, date_list)
-    serialized_records = serializer.prepare_response
+
+    # 学習記録をタイトルでグループ化する -> 1週間分の学習記録が配列で返る
+    # 今日学習した単語の合計値を算出する
+    # 学習した単語数の前日比を算出する
+    grouped_records = serializer.group_records_by_title
+    counts_today_learned = serializer.calculate_today_learned
     ratio = serializer.calculate_yesterday_difference
     date_list = date_list.map {|d| d.strftime("%a-%d") }
 
     render json: {
-             records: serialized_records,
+             records: grouped_records,
              date_list: date_list,
              counts_today_learned: counts_today_learned,
              ratio: ratio,
