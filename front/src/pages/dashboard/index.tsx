@@ -19,6 +19,13 @@ type WordcardDetail = {
   like: LikeData;
 };
 
+type RecordsSummary = {
+  records: StudyRecordData[];
+  dateList: string[];
+  countsTodayLearned: number;
+  ratio: number;
+};
+
 const Index: NextPage = () => {
   useRequireSignedIn();
 
@@ -36,7 +43,7 @@ const Index: NextPage = () => {
     ? cards.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
     : null;
 
-  const fetchedStudyRecs: StudyRecordData = studyRecs
+  const fetchedStudyRecs: RecordsSummary = studyRecs
     ? camelcaseKeys(studyRecs, { deep: true })
     : null;
 

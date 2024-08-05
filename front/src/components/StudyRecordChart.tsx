@@ -15,20 +15,21 @@ const cardStyle = css({
   height: '180px',
 });
 
-const StudyRecordChart = (props: StudyRecordData) => {
-  type ChartData = BarSeriesType[];
+type ChartDatas = {
+  records: StudyRecordData[];
+  dateList: string[];
+};
 
+const StudyRecordChart = (props: ChartDatas) => {
   const colors: string[] = styles.colorPalette;
 
-  const data: ChartData = props.records.map((rec, idx) => ({
+  const data: BarSeriesType[] = props.records.map((rec, idx) => ({
     type: 'bar',
     data: rec.wordCounts,
     label: rec.title,
     stack: 'A',
     color: colors[idx % colors.length],
   }));
-
-  console.log(data);
 
   return (
     <Card css={cardStyle}>
