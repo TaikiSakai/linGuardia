@@ -67,9 +67,9 @@ const WordConjugation: NextPage = () => {
     setSnackbar({
       message: error.response.data.error,
       severity: 'error',
-      pathname: '/vocabularies/create/[uuid]',
+      pathname: '/wordcards/[uuid]',
     });
-    router.push('/vocabularies/create/' + uuid);
+    router.push('/wordcards/' + uuid);
   }
 
   if (!data) return <div>Loading...</div>;
