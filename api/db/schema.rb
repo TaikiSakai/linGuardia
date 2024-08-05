@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_23_153109) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_05_143521) do
   create_table "card_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id", null: false
     t.bigint "category_id", null: false
@@ -80,6 +80,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_153109) do
     t.index ["user_id"], name: "index_study_records_on_user_id"
   end
 
+  create_table "user_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "nickname", null: false
+    t.string "learning_language"
+    t.string "language_level"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_profiles_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -99,6 +110,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_153109) do
     t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "learing_language"
+    t.string "language_level"
+    t.integer "daily_aim", null: false
+    t.text "comment"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -135,6 +150,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_153109) do
   add_foreign_key "likes", "users"
   add_foreign_key "study_records", "cards"
   add_foreign_key "study_records", "users"
+  add_foreign_key "user_profiles", "users"
   add_foreign_key "vocabularies", "cards"
   add_foreign_key "word_roles", "roles"
   add_foreign_key "word_roles", "vocabularies"
