@@ -11,7 +11,7 @@ const modalCss = css({
   top: '50%',
   left: '50%',
   width: 390,
-  minHeight: 400,
+  minHeight: 100,
 });
 
 type modalProps = {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_30_081835) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_23_153109) do
   create_table "card_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "card_id", null: false
     t.bigint "category_id", null: false
@@ -68,6 +68,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_30_081835) do
     t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
+  create_table "study_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "card_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "word_count", null: false
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id", "user_id", "date"], name: "index_study_records_on_card_id_and_user_id_and_date", unique: true
+    t.index ["card_id"], name: "index_study_records_on_card_id"
+    t.index ["user_id"], name: "index_study_records_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -121,6 +133,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_30_081835) do
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "cards"
   add_foreign_key "likes", "users"
+  add_foreign_key "study_records", "cards"
+  add_foreign_key "study_records", "users"
   add_foreign_key "vocabularies", "cards"
   add_foreign_key "word_roles", "roles"
   add_foreign_key "word_roles", "vocabularies"

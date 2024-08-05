@@ -24,8 +24,10 @@ Rails.application.routes.draw do
 
           resource :like, only: [:create, :destroy]
           resources :comments, only: [:index, :create, :destroy]
+          resources :study_records, only: [:show, :create]
         end
         resources :ranked_cards, only: [:index]
+        resources :study_records, only: [:index]
       end
     end
   end

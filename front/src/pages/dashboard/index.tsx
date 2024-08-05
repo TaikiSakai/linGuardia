@@ -2,10 +2,14 @@ import { Box, Container, Typography, Grid } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import useSWR from 'swr';
+import DailyCounter from '@/components/DailyCounter';
 import RankedCard from '@/components/RankedCard';
+import StudyRecordChart from '@/components/StudyRecordChart';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { AuthorData } from '@/types/AuthorType';
 import { LikeData } from '@/types/LikeType';
+import { StudyRecordData } from '@/types/StudyRecordType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
 
@@ -15,17 +19,35 @@ type WordcardDetail = {
   like: LikeData;
 };
 
+type RecordsSummary = {
+  records: StudyRecordData[];
+  dateList: string[];
+  countsTodayLearned: number;
+  ratio: number;
+};
+
 const Index: NextPage = () => {
+  useRequireSignedIn();
+
   const url = process.env.NEXT_PUBLIC_API_URL;
-  console.log(url);
-  const { data, error } = useSWR(url + '/wordcard/ranked_cards', fetcher);
+  const { data: cards, error: cardFetchError } = useSWR(url + '/wordcard/ranked_cards', fetcher);
+  const { data: studyRecs, error: studyRecFetchError } = useSWR(
+    url + '/wordcard/study_records',
+    fetcher,
+  );
 
-  if (error) return <div>An error has occurred.</div>;
-  if (!data) return <div>Loading...</div>;
+  if (cardFetchError || studyRecFetchError) return <div>An error has occurred.</div>;
+  if (!cards || !studyRecs) return <div>Loading...</div>;
 
-  const fetchedRankings: WordcardDetail[] | null = data
-    ? data.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
+  const fetchedRankings: WordcardDetail[] = cards
+    ? cards.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
     : null;
+
+  const fetchedStudyRecs: RecordsSummary = studyRecs
+    ? camelcaseKeys(studyRecs, { deep: true })
+    : null;
+
+  console.log(fetchedStudyRecs);
 
   return (
     fetchedRankings && (
@@ -37,7 +59,7 @@ const Index: NextPage = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            spacing={3}
+            spacing={2}
           >
             <Grid container item>
               <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
@@ -45,21 +67,29 @@ const Index: NextPage = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.subTitle}>学習実績</Typography>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
+                <Typography css={styles.subTitle}>今週の学習実績</Typography>
               </Box>
-              <Box sx={{ mb: 2 }}>
-                <RankedCard
-                  uuid={''}
-                  title={'Title'}
-                  userName={'Username'}
-                  like={true}
-                  numberOfLikes={0}
+              <Box sx={{ mb: 1 }}>
+                <StudyRecordChart
+                  records={fetchedStudyRecs.records}
+                  dateList={fetchedStudyRecs.dateList}
                 />
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Box sx={{ mb: 2, justifyContent: 'left', textAlign: 'left' }}>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
+                <Typography css={styles.subTitle}>今日の実績</Typography>
+              </Box>
+              <Box sx={{ mb: 1 }}>
+                <DailyCounter
+                  countsTodayLearned={fetchedStudyRecs.countsTodayLearned}
+                  ratio={fetchedStudyRecs.ratio}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
                 <Typography css={styles.subTitle}>トレンド</Typography>
               </Box>
               {fetchedRankings.map((card: WordcardDetail, i: number) => (

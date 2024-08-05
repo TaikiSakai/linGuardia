@@ -6,7 +6,7 @@ import { mutate } from 'swr';
 import { styles } from '@/styles';
 import { CommentData } from '@/types/CommentType';
 
-type  modalHandler = {
+type modalHandler = {
   closeModal: () => void;
 };
 

@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.14.7",
     "@mui/lab": "^5.0.0-alpha.142",
     "@mui/material": "^5.14.7",
+    "@mui/x-charts": "^7.11.1",
     "@types/node": "20.12.4",
     "@types/react": "18.2.74",
     "@types/react-dom": "18.2.24",
