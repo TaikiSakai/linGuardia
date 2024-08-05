@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect, ReactNode } from 'react';
 import useSWR from 'swr';
 import ExitPageBoxForModal from '@/components/ExitPageBox';
+import FlashcardFinishedBoxForModal from '@/components/FlashCardCompletedBox';
 import ModalCard from '@/components/ModalCard';
 import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
@@ -59,6 +60,7 @@ const Flashcard: NextPage = () => {
 
   const handleCloseModal = () => {
     setModalContent(null);
+    setCurrentIndex(0);
     handleClose();
   };
 
@@ -71,6 +73,19 @@ const Flashcard: NextPage = () => {
       setCards(vocabularies);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      // card.lengthで判定するとデータフェッチ前に条件が満たされてしまうので
+      // data.lengthを使用する
+      if (currentIndex == data.length) {
+        handleOpenModal(
+          <FlashcardFinishedBoxForModal wordCount={data.length} closeModal={handleCloseModal} />,
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, data]);
 
   const nextCard = () => {
     setCurrentIndex(currentIndex + 1);
@@ -134,7 +149,7 @@ const Flashcard: NextPage = () => {
                 <IconButton onClick={turnOver}>
                   <AutorenewIcon sx={{ fontSize: 50 }} />
                 </IconButton>
-                <IconButton onClick={nextCard} disabled={currentIndex === cards.length - 1}>
+                <IconButton onClick={nextCard}>
                   <ArrowForwardIosIcon sx={{ fontSize: 50 }} />
                 </IconButton>
               </Stack>
