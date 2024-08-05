@@ -15,9 +15,9 @@ class StudyRecordService
 
   def calculate_yesterday_difference
     counts_today_learned = calculate_today_learned.to_f
-    counts_yesterday_learned = calculate_yessterday_learned.to_f
+    counts_yesterday_learned = calculate_yesterday_learned.to_f
 
-    if counts_today_learned == 0
+    if counts_yesterday_learned == 0
       0
     else
       (((counts_today_learned - counts_yesterday_learned) / counts_yesterday_learned) * 100).to_i
@@ -28,7 +28,7 @@ class StudyRecordService
     @records.where(date: Time.zone.today).pluck(:word_count).sum
   end
 
-  def calculate_yessterday_learned
+  def calculate_yesterday_learned
     @records.where(date: Time.zone.yesterday).pluck(:word_count).sum
   end
 
