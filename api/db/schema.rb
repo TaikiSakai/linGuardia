@@ -112,7 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_05_143521) do
     t.datetime "updated_at", null: false
     t.string "learing_language"
     t.string "language_level"
-    t.integer "daily_aim", null: false
+    t.integer "daily_aim"
     t.text "comment"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
