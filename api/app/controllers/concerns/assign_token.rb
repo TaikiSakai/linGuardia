@@ -3,7 +3,7 @@ module AssignToken
   extend ActiveSupport::Concern
 
   included do
-    prepend_after_action :assign_cookies_token, only: [:create]
+    prepend_after_action :assign_cookies_token, only: [:create, :update]
   end
 
   private

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         confirmations: "auth/confirmations",
         sessions: "auth/sessions",
+        registrations: "auth/registrations",
       }
 
       namespace :current do
