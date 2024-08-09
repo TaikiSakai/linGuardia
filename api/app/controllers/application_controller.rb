@@ -8,9 +8,10 @@ class ApplicationController < ActionController::API
 
   protected
 
-    # サインアップ時にnameの登録を許可する
+    # サインアップ、アカウント情報更新時に許可するパラメーターの設定
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :language_level, :learing_language, :daily_aim])
     end
 
   private
