@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -31,6 +32,8 @@ const Header = () => {
       position="sticky"
       sx={{
         backgroundColor: 'white',
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
         color: 'black',
         boxShadow: 1,
         py: '5px',
@@ -53,7 +56,7 @@ const Header = () => {
             <Box>
               {!user.isSignedIn && (
                 <Box>
-                  <Link href="/sign_in">
+                  <Link href="/user/sign_in">
                     <Button
                       color="primary"
                       variant="text"
@@ -94,8 +97,14 @@ const Header = () => {
                     onClose={handleClose}
                     onClick={handleClose}
                   >
-                    <Box sx={{ px: 2, py: 1 }}>
-                      <Link href={'/sign_out'}>
+                    <Box sx={{ px: 1, py: 1 }}>
+                      <Link href={'/user/profile'}>
+                        <MenuItem>
+                          <ListItemIcon>ユーザー設定</ListItemIcon>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link href={'/user/sign_out'}>
                         <MenuItem>
                           <ListItemIcon>サインアウト</ListItemIcon>
                         </MenuItem>

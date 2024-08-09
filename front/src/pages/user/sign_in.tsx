@@ -75,7 +75,7 @@ const SignIn: NextPage = () => {
       setSnackbar({
         message: 'ログインに失敗しました',
         severity: 'error',
-        pathname: '/sign_in',
+        pathname: '/user/sign_in',
       });
     }
     setIsLoading(false);
@@ -155,7 +155,7 @@ const SignIn: NextPage = () => {
               pt: 3,
             }}
           >
-            <Link href="/sign_up">
+            <Link href="/user/sign_up">
               <Button
                 color="primary"
                 variant="text"

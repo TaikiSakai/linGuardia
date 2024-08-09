@@ -78,17 +78,17 @@ const SignUp: NextPage = () => {
         setSnackbar({
           message: '入力したメールアドレスへ確認メールを送信しました',
           severity: 'info',
-          pathname: '/sign_in',
+          pathname: '/user/sign_in',
         });
-        router.push('/sign_in');
+        router.push('/user/sign_in');
       } catch (e) {
         console.log(e);
         setSnackbar({
           message: 'エラーが発生しました。しばらく経ってからやり直してください',
           severity: 'error',
-          pathname: '/sign_up',
+          pathname: '/user/sign_up',
         });
-        router.push('/sign_up');
+        router.push('/user/sign_up');
       }
       setIsLoading(false);
     };
@@ -200,7 +200,7 @@ const SignUp: NextPage = () => {
               pt: 3,
             }}
           >
-            <Link href="/sign_in">
+            <Link href="/user/sign_in">
               <Button
                 color="primary"
                 variant="text"
