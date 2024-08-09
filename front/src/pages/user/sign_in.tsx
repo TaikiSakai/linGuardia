@@ -27,9 +27,9 @@ const SignIn: NextPage = () => {
     setSnackbar({
       message: 'ログイン済みです',
       severity: 'info',
-      pathname: '/',
+      pathname: '/dashboard',
     });
-    router.push('/');
+    router.push('/dashboard');
   }
 
   const validationRules = {
@@ -67,9 +67,9 @@ const SignIn: NextPage = () => {
       setSnackbar({
         message: 'ログインしました',
         severity: 'success',
-        pathname: '/',
+        pathname: '/dashboard',
       });
-      router.push('/');
+      router.push('/dashboard');
     } catch (e) {
       console.log(e);
       setSnackbar({
