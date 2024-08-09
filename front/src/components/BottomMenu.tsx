@@ -2,7 +2,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import StyleIcon from '@mui/icons-material/Style';
-import { Grid, Button, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Link from 'next/link';
@@ -49,17 +49,6 @@ const BottomMenu = () => {
               href={'/user/profile'}
             />
           </BottomNavigation>
-        )}
-        {!user.isSignedIn && (
-          <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
-            <Grid item>
-              <Link href="/sign_in">
-                <Button variant="contained" sx={{ width: 100 }}>
-                  LogIn
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
         )}
       </Paper>
     </>
