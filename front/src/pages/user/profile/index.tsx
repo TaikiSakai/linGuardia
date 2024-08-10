@@ -11,13 +11,17 @@ import {
   ListItemText,
   Divider,
 } from '@mui/material';
+import camelcaseKeys from 'camelcase-keys';
+import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useState, ReactNode } from 'react';
-import ModalCard from '@/components/ModalCard';
-import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
-import type { NextPage } from 'next';
 import useSWR from 'swr';
+import LearningSettingsBoxForModal from '@/components/LearningSettingsBox';
+import ModalCard from '@/components/ModalCard';
+import PasswordSettingsBoxForModal from '@/components/PasswordSettingsBox';
+import UserSettingsBoxForModal from '@/components/userSettingsBox';
 import useModal from '@/hooks/ModalState';
+import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
 import { fetcher } from '@/utils';
 
@@ -30,11 +34,16 @@ const listTextCss = css({
   color: '#000060',
 });
 
+type LearningData = {
+  dailyAim: number;
+};
+
 const Index: NextPage = () => {
   useRequireSignedIn();
 
-  const url = process.env.NEXT_PUBLIC_API_URL + '/health_check';
+  const url = process.env.NEXT_PUBLIC_API_URL + '/current/learning_informations';
   const { data, error } = useSWR(url, fetcher);
+  const fetchedLearningData: LearningData = data ? camelcaseKeys(data) : null;
 
   const [open, handleOpen, handleClose] = useModal();
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
@@ -70,7 +79,16 @@ const Index: NextPage = () => {
           </Grid>
           <Grid item xs={12} md={8}>
             <List component={Card} sx={{ mb: 5, borderRadius: 3 }}>
-              <ListItemButton onClick={() => handleOpenModal(<></>)}>
+              <ListItemButton
+                onClick={() =>
+                  handleOpenModal(
+                    <LearningSettingsBoxForModal
+                      dailyAim={fetchedLearningData.dailyAim}
+                      closeModal={handleCloseModal}
+                    />,
+                  )
+                }
+              >
                 <ListItemText
                   primary={
                     <Typography component="h3" css={listTextCss}>
@@ -81,7 +99,11 @@ const Index: NextPage = () => {
               </ListItemButton>
             </List>
             <List component={Card} sx={{ mb: 5, borderRadius: 3 }}>
-              <ListItemButton onClick={() => handleOpenModal(<></>)}>
+              <ListItemButton
+                onClick={() =>
+                  handleOpenModal(<UserSettingsBoxForModal closeModal={handleCloseModal} />)
+                }
+              >
                 <ListItemText
                   primary={
                     <Typography component="h3" css={listTextCss}>
@@ -91,7 +113,11 @@ const Index: NextPage = () => {
                 />
               </ListItemButton>
               <Divider />
-              <ListItemButton onClick={() => handleOpenModal(<></>)}>
+              <ListItemButton
+                onClick={() =>
+                  handleOpenModal(<PasswordSettingsBoxForModal closeModal={handleCloseModal} />)
+                }
+              >
                 <ListItemText
                   primary={
                     <Typography component="h3" css={listTextCss}>
@@ -101,7 +127,7 @@ const Index: NextPage = () => {
                 />
               </ListItemButton>
               <Divider />
-              <ListItemButton onClick={() => handleOpenModal(<></>)}>
+              <ListItemButton disabled={true} onClick={() => handleOpenModal(<></>)}>
                 <ListItemText
                   primary={
                     <Typography component="h3" css={listTextCss}>
