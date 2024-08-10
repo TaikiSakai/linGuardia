@@ -8,21 +8,21 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
     records = current_user.study_records.where(date: date_range).includes(:card)
 
     date_list = date_range.to_a
-    serializer = StudyRecordService.new(records, date_list)
+    serializer = StudyRecordService.new(records, date_list)   
 
     # 学習記録をタイトルでグループ化する -> 1週間分の学習記録が配列で返る
     # 今日学習した単語の合計値を算出する
-    # 学習した単語数の前日比を算出する
+    # 学習達成率を目標値から算出する
     grouped_records = serializer.group_records_by_title
     counts_today_learned = serializer.calculate_today_learned
-    ratio = serializer.calculate_yesterday_difference
+    achievement_rate = serializer.calculate_daily_achievement(current_user.daily_aim)
     date_list = date_list.map {|d| d.strftime("%a-%d") }
-
+    
     render json: {
              records: grouped_records,
              date_list: date_list,
              counts_today_learned: counts_today_learned,
-             ratio: ratio,
+             achievement_rate: achievement_rate,
            },
            status: :ok
   end
