@@ -67,7 +67,7 @@ const Header = () => {
                         boxShadow: 'none',
                       }}
                     >
-                      LogIn
+                      ログイン
                     </Button>
                   </Link>
                 </Box>
@@ -106,7 +106,7 @@ const Header = () => {
                       <Divider />
                       <Link href={'/user/sign_out'}>
                         <MenuItem>
-                          <ListItemIcon>サインアウト</ListItemIcon>
+                          <ListItemIcon>ログアウト</ListItemIcon>
                         </MenuItem>
                       </Link>
                     </Box>
