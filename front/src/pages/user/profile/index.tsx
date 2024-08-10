@@ -137,7 +137,7 @@ const Index: NextPage = () => {
                 />
               </ListItemButton>
             </List>
-            <Link href={'/sign_out'}>
+            <Link href={'/user/sign_out'}>
               <Button css={styles.styledDangerButton} variant="contained" sx={{ width: '100%' }}>
                 ログアウト
               </Button>
