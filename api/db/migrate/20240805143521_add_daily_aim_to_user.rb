@@ -1,10 +1,7 @@
 class AddDailyAimToUser < ActiveRecord::Migration[7.0]
   def change
     change_table :users do |t|
-      t.string :learing_language
-      t.string :language_level
-      t.integer :daily_aim
-      t.text :comment
+      t.integer :daily_aim, null: false, default: 0
     end
   end
 end
