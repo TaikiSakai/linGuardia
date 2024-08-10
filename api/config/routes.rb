@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
       namespace :current do
         resource :user, only: [:show]
+        get "learning_informations", to: "learning_informations#show"
       end
 
       namespace :wordcard do
