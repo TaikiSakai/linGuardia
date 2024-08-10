@@ -16,13 +16,21 @@ const cardStyle = css({
   height: '120px',
 });
 
-const cardTextStyle = css({
+const cardTitleStyle = css({
   component: 'h4',
   fontSize: '30px',
   fontWeight: 'bold',
   '@media (max-width: 600px)': {
     fontSize: '25px',
   },
+  color: '#000060',
+  textAlign: 'center',
+});
+
+const cardSubTextStyle = css({
+  component: 'h4',
+  fontSize: '15px',
+  fontWeight: 'bold',
   color: '#000060',
   textAlign: 'center',
 });
@@ -42,18 +50,10 @@ const gaugeStyle = css({
 
 type DailyRecordData = {
   countsTodayLearned: number;
-  ratio: number;
+  achievementRate: number;
 };
 
 const DailyCounter = (props: DailyRecordData) => {
-  let gaugeValue;
-
-  if (props.ratio < 0) {
-    gaugeValue = 0;
-  } else {
-    gaugeValue = props.ratio;
-  }
-
   return (
     <Card css={cardStyle}>
       <CardContent
@@ -78,7 +78,7 @@ const DailyCounter = (props: DailyRecordData) => {
           >
             <GaugeContainer
               css={gaugeStyle}
-              value={gaugeValue}
+              value={props.achievementRate}
               startAngle={-100}
               endAngle={100}
               valueMax={100}
@@ -87,7 +87,7 @@ const DailyCounter = (props: DailyRecordData) => {
               <GaugeReferenceArc />
               <GaugeValueArc />
               <GaugeValueText
-                text={String(props.ratio) + '%'}
+                text={String(props.achievementRate) + '%'}
                 style={{ fill: '#000060', textAnchor: 'middle' }}
               />
             </GaugeContainer>
@@ -108,14 +108,16 @@ const DailyCounter = (props: DailyRecordData) => {
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <Grid>
-                  <Typography css={cardTextStyle}>{props.countsTodayLearned + '語'}</Typography>
+                  <Typography css={cardTitleStyle}>{props.countsTodayLearned + '語'}</Typography>
                 </Grid>
               </Grid>
               <Grid
                 container
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <Typography>{'前日比: ' + props.ratio + '%'}</Typography>
+                <Typography css={cardSubTextStyle} sx={{ pt: 1 }}>
+                  {'学習達成率: ' + props.achievementRate + '%'}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
