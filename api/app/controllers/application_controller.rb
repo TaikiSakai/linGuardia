@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :confirm_token
+  before_action :transform_params_to_snakecase, only: [:create, :update]
 
   protected
 
@@ -27,6 +28,10 @@ class ApplicationController < ActionController::API
 
       # レスポンスヘッダーから認証情報を削除する
       response.headers.delete_if {|key| auth_headers_data.include?(key) }
+    end
+
+    def transform_params_to_snakecase
+      params.deep_transform_keys!(&:underscore)
     end
 
     def auth_headers_data

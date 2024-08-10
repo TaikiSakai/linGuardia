@@ -40,7 +40,7 @@ class Api::V1::Wordcard::StudyRecordsController < Api::V1::BaseController
   private
 
     def study_record_params
-      params.deep_transform_keys(&:underscore).require(:new_study_record). \
+      params.require(:new_study_record). \
         permit(:word_count).merge(card_id: @card.id, date: Time.zone.today)
     end
 
