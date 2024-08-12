@@ -1,12 +1,14 @@
 class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card
+  before_action :set_card, only: [:create, :update, :destory]
 
   def index
+    card = Card.find_by(uuid: params[:card_uuid])
+    
     vocabularies = if (role_name = params[:role_name])
-                     @card.vocabularies.with_role(role_name)
+                     card.vocabularies.with_role(role_name)
                    else
-                     @card.vocabularies.includes(:roles)
+                     card.vocabularies.includes(:roles)
                    end
 
     if vocabularies.empty?
