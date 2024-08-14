@@ -1,4 +1,4 @@
-import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StyleIcon from '@mui/icons-material/Style';
@@ -25,8 +25,8 @@ const BottomMenu = () => {
         {user.isSignedIn && (
           <BottomNavigation showLabels>
             <BottomNavigationAction
-              label="ホーム"
-              icon={<HomeIcon />}
+              label="ダッシュボード"
+              icon={<DashboardIcon />}
               LinkComponent={Link}
               href={'/dashboard'}
             />
