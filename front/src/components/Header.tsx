@@ -13,6 +13,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useUserState } from '@/hooks/useGlobalState';
+import { styles } from '@/styles';
 
 const Header = () => {
   const [user] = useUserState();
@@ -31,7 +32,6 @@ const Header = () => {
       position="sticky"
       sx={{
         backgroundColor: 'white',
-        color: 'black',
         boxShadow: 1,
         py: '5px',
       }}
@@ -46,7 +46,7 @@ const Header = () => {
         >
           <Box>
             <Link href="/">
-              <Image src="/logo.png" width={133} height={40} alt="logo" />
+              <Image src="/logo.png" width={120} height={25} alt="logo" />
             </Link>
           </Box>
           {user.isFetched && (
@@ -54,16 +54,7 @@ const Header = () => {
               {!user.isSignedIn && (
                 <Box>
                   <Link href="/sign_in">
-                    <Button
-                      color="primary"
-                      variant="text"
-                      sx={{
-                        textTransform: 'none',
-                        fontSize: 16,
-                        borderRadius: 1,
-                        boxShadow: 'none',
-                      }}
-                    >
+                    <Button css={styles.styledButton} variant="contained">
                       LogIn
                     </Button>
                   </Link>
@@ -73,7 +64,7 @@ const Header = () => {
                 <Box>
                   <Stack direction="row">
                     <Box>
-                      <Button onClick={handleClick}>
+                      <Button sx={{ textTransform: 'None' }} onClick={handleClick}>
                         <Typography
                           variant="h5"
                           sx={{
