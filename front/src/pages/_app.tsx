@@ -10,6 +10,7 @@ import NotiSnackbar from '@/components/NotiSnackbar';
 import createEmotionCache from '@/styles/createEmotionCache';
 import theme from '@/styles/theme';
 import '@/styles/destyle.css';
+import '@/styles/scroll_settings.css';
 
 const clientSideEmotionCache = createEmotionCache();
 
