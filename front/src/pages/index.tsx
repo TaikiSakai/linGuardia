@@ -307,34 +307,31 @@ const Index: NextPage = () => {
                   <ConjugationGenerator />
                 </Box>
               </Stack>
-              <Stack direction="column" spacing={2} sx={{ pt: 5 }}>
-                <Card sx={{ borderRadius: 3, pt: 20 }}>
-                  <CardContent >
-                    <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Grid item>
-                        <Image src="/logo.png" width={210} height={45} alt="logo" />
-                      </Grid>
-                      <Grid item>
-                        <Box>
-                          <Link href={'https://github.com/TaikiSakai/langLog'}>
-                            <GitHubIcon sx={{ color: '#000060', mr: 1 }} />
-                          </Link>
-                          <Link href={'#'}>
-                            <XIcon sx={{ color: '#000060' }} />
-                          </Link>
-                        </Box>
-                      </Grid>
-                    </Grid>   
-                  </CardContent>
-                </Card>
+              <Stack direction="column" spacing={2} sx={{ pt: 10 }}>
+                <Box>
+                  <Link href={'#'}>
+                   <Typography sx={{ color: '#000060' }}>Términos y Condiciones de Uso</Typography>
+                  </Link>
+                  <Link href={'#'}>
+                    <Typography sx={{ color: '#000060' }}>Política de Privacidad</Typography>
+                  </Link>
+                  <Link href={'#'}>
+                    <Typography sx={{ color: '#000060' }}>Contacto</Typography>
+                  </Link>
+                </Box>
+                <Box>
+                  <Link href={'https://github.com/TaikiSakai/langLog'}>
+                    <GitHubIcon sx={{ color: '#000060', mr: 2 }} />
+                  </Link>
+                  <Link href={'#'}>
+                    <XIcon sx={{ color: '#000060' }} />
+                  </Link>
+                </Box>     
               </Stack>
             </Grid>
           </Grid>
         </Box>
       </Container>
-      <a href="https://www.freepik.com/free-vector/new-modern-realistic-front-view-black-iphone-mockup-isolated-white-mobile-template-vector_33632328.htm#query=iphone&position=1&from_view=keyword&track=ais_hybrid&uuid=fee37f0d-dabb-4215-8943-67a09698e822">
-        Image by svstudioart on Freepik
-      </a>
     </Box>
   );
 };
