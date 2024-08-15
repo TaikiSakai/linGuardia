@@ -50,6 +50,15 @@ export const styles = {
     fontWeight: 'bold',
     color: '#000040',
   }),
+  modalSubTitle: css({
+    component: 'h4',
+    fontSize: '15px',
+    '@media (max-width: 600px)': {
+      fontSize: '15px',
+    },
+    fontWeight: 'bold',
+    color: '#000040',
+  }),
   modalText: css({
     component: 'p',
     fontSize: '15px',

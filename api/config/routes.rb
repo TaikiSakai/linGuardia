@@ -8,10 +8,12 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         confirmations: "auth/confirmations",
         sessions: "auth/sessions",
+        registrations: "auth/registrations",
       }
 
       namespace :current do
         resource :user, only: [:show]
+        get "learning_informations", to: "learning_informations#show"
       end
 
       namespace :wordcard do

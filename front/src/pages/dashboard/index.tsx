@@ -23,7 +23,7 @@ type RecordsSummary = {
   records: StudyRecordData[];
   dateList: string[];
   countsTodayLearned: number;
-  ratio: number;
+  achievementRate: number;
 };
 
 const Index: NextPage = () => {
@@ -84,7 +84,7 @@ const Index: NextPage = () => {
               <Box sx={{ mb: 1 }}>
                 <DailyCounter
                   countsTodayLearned={fetchedStudyRecs.countsTodayLearned}
-                  ratio={fetchedStudyRecs.ratio}
+                  achievementRate={fetchedStudyRecs.achievementRate}
                 />
               </Box>
             </Grid>
