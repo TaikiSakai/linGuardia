@@ -42,8 +42,8 @@ const WordConjugation: NextPage = () => {
   const { uuid } = router.query;
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
-  const url_params = '/vocabularies?role_name=動詞';
-  const { data, error } = useSWR(uuid ? url + uuid + url_params : null, fetcher, {
+  // roleが”動詞”の単語を取得する
+  const { data, error } = useSWR(uuid ? url + uuid + '/conjugations' : null, fetcher, {
     revalidateOnFocus: false,
   });
 
@@ -115,8 +115,9 @@ const WordConjugation: NextPage = () => {
         withCredentials: true,
       });
 
-      console.log(res.data);
-      mutate(url + uuid + url_params);
+      mutate(url + uuid + '/vocabularies');
+      mutate(url + uuid + '/conjugations');
+
       setSnackbar({
         message: '単語を更新しました',
         severity: 'success',
