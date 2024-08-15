@@ -9,14 +9,13 @@ class StudyRecordService
     @date_list.map {|date| word_counts_by_date[date] || 0 }
   end
 
-  def calculate_yesterday_difference
-    counts_today_learned = calculate_today_learned.to_f
-    counts_yesterday_learned = calculate_yesterday_learned.to_f
-
-    if counts_yesterday_learned == 0
+  def calculate_daily_achievement(daily_aim)
+    counts_today_learned = calculate_today_learned  
+    
+    if  daily_aim == 0 || counts_today_learned == 0
       0
     else
-      (((counts_today_learned - counts_yesterday_learned) / counts_yesterday_learned) * 100).to_i
+      ((counts_today_learned / daily_aim.to_f) * 100).to_i
     end
   end
 

@@ -5,12 +5,14 @@ class ApplicationController < ActionController::API
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :confirm_token
+  before_action :transform_params_to_snakecase, only: [:create, :update]
 
   protected
 
-    # サインアップ時にnameの登録を許可する
+    # サインアップ、アカウント情報更新時に許可するパラメーターの設定
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :language_level, :learing_language, :daily_aim])
     end
 
   private
@@ -26,6 +28,10 @@ class ApplicationController < ActionController::API
 
       # レスポンスヘッダーから認証情報を削除する
       response.headers.delete_if {|key| auth_headers_data.include?(key) }
+    end
+
+    def transform_params_to_snakecase
+      params.deep_transform_keys!(&:underscore)
     end
 
     def auth_headers_data

@@ -5,24 +5,21 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useForm, SubmitHandler, Controller, FieldValues } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 
-type SignUpFormData = {
-  name: string;
+type SignInFormData = {
   email: string;
   password: string;
-  passwordConfirmation: string;
 };
 
-const SignUp: NextPage = () => {
+const SignIn: NextPage = () => {
   const router = useRouter();
-  const [user] = useUserState();
-
-  const [, setSnackbar] = useSnackbarState();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, control } = useForm<SignUpFormData>({
+  const [user, setUser] = useUserState();
+  const [, setSnackbar] = useSnackbarState();
+  const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
   });
 
@@ -30,15 +27,12 @@ const SignUp: NextPage = () => {
     setSnackbar({
       message: 'ログイン済みです',
       severity: 'info',
-      pathname: '/',
+      pathname: '/dashboard',
     });
-    router.push('/');
+    router.push('/dashboard');
   }
 
   const validationRules = {
-    name: {
-      required: 'ユーザー名を入力してください',
-    },
     email: {
       required: 'メールアドレスを入力してください',
       pattern: {
@@ -50,50 +44,41 @@ const SignUp: NextPage = () => {
     password: {
       required: 'パスワードを入力してください',
     },
-    passwordConfirmation: {
-      required: 'パスワードを確認してください',
-      validate: (value: string, context: FieldValues) => {
-        if (value !== context.password) {
-          return 'パスワードが一致しません';
-        }
-        return true;
-      },
-    },
   };
 
-  const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
-    const SignUp = async (data: SignUpFormData) => {
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+    const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_in';
+    const headers = { 'Content-Type': 'application/json' };
+
+    try {
       setIsLoading(true);
-      const url = process.env.NEXT_PUBLIC_API_URL + '/auth';
-      const headers = { 'Content-Type': 'application/json' };
-      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/sign_in';
-
-      try {
-        await axios({
-          method: 'POST',
-          url: url,
-          data: { ...data, confirm_success_url: confirmSuccessUrl },
-          headers: headers,
-        });
-        setSnackbar({
-          message: '入力したメールアドレスへ確認メールを送信しました',
-          severity: 'info',
-          pathname: '/sign_in',
-        });
-        router.push('/sign_in');
-      } catch (e) {
-        console.log(e);
-        setSnackbar({
-          message: 'エラーが発生しました。しばらく経ってからやり直してください',
-          severity: 'error',
-          pathname: '/sign_up',
-        });
-        router.push('/sign_up');
-      }
-      setIsLoading(false);
-    };
-
-    SignUp(data);
+      const res = await axios({
+        method: 'POST',
+        url: url,
+        data: data,
+        headers: headers,
+        withCredentials: true,
+      });
+      console.log(res);
+      setUser({
+        ...user,
+        isFetched: false,
+      });
+      setSnackbar({
+        message: 'ログインしました',
+        severity: 'success',
+        pathname: '/dashboard',
+      });
+      router.push('/dashboard');
+    } catch (e) {
+      console.log(e);
+      setSnackbar({
+        message: 'ログインに失敗しました',
+        severity: 'error',
+        pathname: '/user/sign_in',
+      });
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -104,7 +89,7 @@ const SignUp: NextPage = () => {
       }}
     >
       <Grid container columns={18}>
-        <Grid item xs={15} md={18} sx={{ margin: 'auto', pt: 15 }} style={{ maxWidth: '500px' }}>
+        <Grid item xs={12} md={18} sx={{ margin: 'auto', pt: 20 }} style={{ maxWidth: '500px' }}>
           <Card sx={{ p: 2 }}>
             <Typography
               component="h2"
@@ -115,24 +100,9 @@ const SignUp: NextPage = () => {
                 py: 3,
               }}
             >
-              新規ユーザー登録
+              ログイン
             </Typography>
             <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-              <Controller
-                name="name"
-                control={control}
-                rules={validationRules.name}
-                render={({ field, fieldState }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    label="ユーザー名"
-                    size="small"
-                    helperText={fieldState.error?.message}
-                    sx={{ backgroundColor: 'white' }}
-                  />
-                )}
-              />
               <Controller
                 name="email"
                 control={control}
@@ -163,21 +133,6 @@ const SignUp: NextPage = () => {
                   />
                 )}
               />
-              <Controller
-                name="passwordConfirmation"
-                control={control}
-                rules={validationRules.passwordConfirmation}
-                render={({ field, fieldState }) => (
-                  <TextField
-                    {...field}
-                    type="password"
-                    label="パスワード確認"
-                    size="small"
-                    helperText={fieldState.error?.message}
-                    sx={{ backgroundColor: 'white' }}
-                  />
-                )}
-              />
               <LoadingButton
                 variant="contained"
                 type="submit"
@@ -187,7 +142,7 @@ const SignUp: NextPage = () => {
                   color: 'white',
                 }}
               >
-                登録
+                ログイン
               </LoadingButton>
             </Stack>
           </Card>
@@ -200,7 +155,7 @@ const SignUp: NextPage = () => {
               pt: 3,
             }}
           >
-            <Link href="/sign_in">
+            <Link href="/user/sign_up">
               <Button
                 color="primary"
                 variant="text"
@@ -212,7 +167,7 @@ const SignUp: NextPage = () => {
                   ml: 2,
                 }}
               >
-                ログインはこちらから
+                新規ユーザー登録
               </Button>
             </Link>
           </Grid>
@@ -222,4 +177,4 @@ const SignUp: NextPage = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

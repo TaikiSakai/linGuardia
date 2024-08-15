@@ -1,13 +1,11 @@
 class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   before_action :authenticate_user!
-  before_action :set_card
+  before_action :set_card, only: [:create, :update, :destroy]
 
   def index
-    vocabularies = if (role_name = params[:role_name])
-                     @card.vocabularies.with_role(role_name)
-                   else
-                     @card.vocabularies.includes(:roles)
-                   end
+    # 公開された単語帳の単語を取得できるようにするため、Cardモデルから直接抽出しています
+    card = Card.find_by(uuid: params[:card_uuid])
+    vocabularies = card.vocabularies.includes(:roles)
 
     if vocabularies.empty?
       render json: { error: "単語が登録されていません" }, status: :not_found
@@ -17,7 +15,9 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
+    status, error_message = Vocabulary.save_vocabulary_with_roles( \
+      card: @card, vocabularies_params: vocabularies_params,
+    )
 
     if status
       render json: { message: "単語を登録しました" }, status: :ok
@@ -27,7 +27,9 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def update
-    status, error_message = Vocabulary.save_vocabulary_with_roles(card: @card, vocabularies_params: vocabularies_params)
+    status, error_message = Vocabulary.save_vocabulary_with_roles( \
+      card: @card, vocabularies_params: vocabularies_params,
+    )
 
     if status
       render json: { message: "単語を更新しました" }, status: :ok
@@ -41,7 +43,8 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     if vocabulary.destroy
       render json: { message: "単語を削除しました" }, statu: :ok
     else
-      render json: { message: vocabulary.errors.full_messages }, status: :unprocessable_entity
+      render json: { message: vocabulary.errors.full_messages }, \
+             status: :unprocessable_entity
     end
   end
 
