@@ -60,7 +60,9 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
 
   def search
     q = Card.ransack(search_params)
-    cards = q.result(distinct: true).includes(:user, :categories).order(created_at: :desc)
+    
+    cards = q.result(distinct: true).where(status: 'open') \
+      .includes(:user, :categories).order(created_at: :desc)
 
     if cards.empty?
       render json: { message: "単語帳が見つかりません" }, status: :not_found

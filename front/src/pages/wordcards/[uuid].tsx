@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import AddIcon from '@mui/icons-material/Add';
+import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,7 +48,7 @@ import { fetcher } from '@/utils';
 const buttonFontCss = css({
   fontSize: '25px',
   '@media (max-width: 600px)': {
-    fontSize: '16px',
+    fontSize: '15px',
   },
   color: '#000060',
 });
@@ -63,7 +65,7 @@ const cardTextCss = css({
   component: 'h4',
   fontSize: '20px',
   '@media (max-width: 600px)': {
-    fontSize: '16px',
+    fontSize: '15px',
   },
   color: '#000060',
 });
@@ -165,6 +167,7 @@ const WordcardDetail: NextPage = () => {
                 <Typography css={styles.pageTitle}>{fetchedCard.title}</Typography>
               </Box>
             </Grid>
+
             <Grid container item spacing={2} xs={12} md={8} justifyContent="center">
               <Grid container item sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <Grid item>
@@ -183,7 +186,11 @@ const WordcardDetail: NextPage = () => {
                   <LikeButton like={fetchedLike.like} numberOfLikes={fetchedLike.numberOfLikes} />
                 </Grid>
               </Grid>
-              <Grid item xs={4} md={4}>
+              <Grid
+                item
+                xs={user.id === fetchedAuthor.userId ? 4 : 6}
+                md={user.id === fetchedAuthor.userId ? 4 : 6}
+              >
                 <Link href={'/wordcards/flashcard/' + uuid}>
                   <Card sx={{ borderRadius: 3 }} elevation={3}>
                     <CardContent>
@@ -201,8 +208,12 @@ const WordcardDetail: NextPage = () => {
                   </Card>
                 </Link>
               </Grid>
-              <Grid item xs={4} md={4}>
-                <Link href={'/wordcards/flashcard/' + uuid}>
+              <Grid
+                item
+                xs={user.id === fetchedAuthor.userId ? 4 : 6}
+                md={user.id === fetchedAuthor.userId ? 4 : 6}
+              >
+                <Link aria-disabled={true} href={'#'}>
                   <Card sx={{ borderRadius: 3 }} elevation={3}>
                     <CardContent>
                       <Stack
@@ -219,26 +230,67 @@ const WordcardDetail: NextPage = () => {
                   </Card>
                 </Link>
               </Grid>
-              <Grid item xs={4} md={4}>
-                <Link href={'/wordcards/conjugation/' + uuid}>
-                  <Card sx={{ borderRadius: 3 }} elevation={3}>
-                    <CardContent>
-                      <Stack
-                        spacing={1}
-                        direction="column"
-                        sx={{ justifyContent: 'center', alignItems: 'center' }}
-                      >
-                        <SellIcon css={buttonIconCss} />
-                        <Typography component="h3" css={buttonFontCss} sx={{ fontSize: 15 }}>
-                          動詞生成
-                        </Typography>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </Grid>
+              {user.id === fetchedAuthor.userId && (
+                <Grid item xs={4} md={4}>
+                  <Link href={'/wordcards/conjugation/' + uuid}>
+                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                      <CardContent>
+                        <Stack
+                          spacing={1}
+                          direction="column"
+                          sx={{ justifyContent: 'center', alignItems: 'center' }}
+                        >
+                          <AutoFixNormalIcon css={buttonIconCss} />
+                          <Typography component="h3" css={buttonFontCss} sx={{ fontSize: 15 }}>
+                            動詞生成
+                          </Typography>
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+              )}
             </Grid>
-
+            {user.id === fetchedAuthor.userId && (
+              <Grid container item spacing={2} xs={12} md={8} justifyContent="center">
+                <Grid item xs={6} md={6}>
+                  <Link href={'/vocabularies/create/' + uuid}>
+                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                      <CardContent>
+                        <Stack
+                          spacing={1}
+                          direction="row"
+                          sx={{ justifyContent: 'center', alignItems: 'center' }}
+                        >
+                          <AddIcon css={buttonIconCss} />
+                          <Typography component="h3" css={buttonFontCss}>
+                            カードを追加
+                          </Typography>
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <Link href={'/vocabularies/edit/' + uuid}>
+                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                      <CardContent>
+                        <Stack
+                          spacing={1}
+                          direction="row"
+                          sx={{ justifyContent: 'center', alignItems: 'center' }}
+                        >
+                          <EditIcon css={buttonIconCss} />
+                          <Typography component="h3" css={buttonFontCss}>
+                            カードを編集
+                          </Typography>
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+              </Grid>
+            )}
             {fetchedCategories.name.length !== 0 && (
               <Grid item xs={12} md={8}>
                 <Grid container item>
@@ -419,18 +471,6 @@ const WordcardDetail: NextPage = () => {
                               </Box>
                             </Stack>
                           </ListItem>
-                          <Divider />
-                          <Link href={'/vocabularies/create/' + uuid}>
-                            <ListItem>
-                              <Typography>単語追加</Typography>
-                            </ListItem>
-                          </Link>
-                          <Divider />
-                          <Link href={'/vocabularies/edit/' + uuid}>
-                            <ListItem>
-                              <Typography>単語編集</Typography>
-                            </ListItem>
-                          </Link>
                           <Divider />
                         </List>
                         <Grid item>
