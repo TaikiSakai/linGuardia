@@ -1,5 +1,5 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import StyleIcon from '@mui/icons-material/Style';
 import { Paper } from '@mui/material';
@@ -44,7 +44,7 @@ const BottomMenu = () => {
             />
             <BottomNavigationAction
               label="設定"
-              icon={<AccountCircleIcon />}
+              icon={<SettingsIcon />}
               LinkComponent={Link}
               href={'/user/profile'}
             />
