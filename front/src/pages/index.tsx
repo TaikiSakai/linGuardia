@@ -101,7 +101,7 @@ const Index: NextPage = () => {
                 </Box>
                 {!user.isSignedIn ? (
                   <Box>
-                    <Link href={'/sign_in'}>
+                    <Link href={'/user/sign_in'}>
                       <Button
                         css={styles.styledButton}
                         variant="contained"
@@ -110,7 +110,7 @@ const Index: NextPage = () => {
                         Iniciar Sessión
                       </Button>
                     </Link>
-                    <Link href={'/sign_up'}>
+                    <Link href={'/user/sign_up'}>
                       <Button
                         css={styles.styledButton}
                         variant="contained"
