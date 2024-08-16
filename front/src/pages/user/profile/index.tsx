@@ -19,7 +19,7 @@ import useSWR from 'swr';
 import LearningSettingsBoxForModal from '@/components/LearningSettingsBox';
 import ModalCard from '@/components/ModalCard';
 import PasswordSettingsBoxForModal from '@/components/PasswordSettingsBox';
-import UserSettingsBoxForModal from '@/components/userSettingsBox';
+import UserSettingsBoxForModal from '@/components/UserSettingsBox';
 import useModal from '@/hooks/ModalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
