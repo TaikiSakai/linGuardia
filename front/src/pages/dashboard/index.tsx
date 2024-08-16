@@ -63,7 +63,7 @@ const Index: NextPage = () => {
           >
             <Grid container item>
               <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.pageTitle}>DashBoard</Typography>
+                <Typography css={styles.pageTitle}>Home</Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
@@ -90,7 +90,7 @@ const Index: NextPage = () => {
             </Grid>
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 1, justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.subTitle}>トレンド</Typography>
+                <Typography css={styles.subTitle}>アクセスの多い単語帳(TOP5)</Typography>
               </Box>
               {fetchedRankings.map((card: WordcardDetail, i: number) => (
                 <Box sx={{ mb: 2 }} key={i}>
