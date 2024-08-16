@@ -58,75 +58,73 @@ const Index: NextPage = () => {
   };
 
   return (
-    fetchedWordcards && (
-      <Box css={styles.baseLayout}>
-        <Container maxWidth="md">
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Grid container item>
-              <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
-                <Typography css={styles.pageTitle}>単語帳</Typography>
-              </Box>
-            </Grid>
-            {fetchedWordcards.length === 0 ? (
-              <Box sx={{ pt: 5 }}>
-                <Typography
-                  component="h3"
-                  sx={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: '#000040',
-                  }}
-                >
-                  単語帳が登録されていません
-                </Typography>
-              </Box>
-            ) : (
-              fetchedWordcards.map((wordcard: WordcardDetail, i: number) => (
-                <Grid item key={i} xs={12} md={8}>
-                  <Wordcard
-                    uuid={wordcard.card.uuid}
-                    title={wordcard.card.title}
-                    status={wordcard.card.status}
-                    createdAt={wordcard.card.createdAt}
-                  />
-                </Grid>
-              ))
-            )}
+    <Box css={styles.baseLayout}>
+      <Container maxWidth="md">
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Grid container item>
+            <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
+              <Typography css={styles.pageTitle}>単語帳</Typography>
+            </Box>
           </Grid>
-          <Box
-            sx={{
-              position: 'fixed',
-              bottom: 80,
-              left: 1100,
-              right: 0,
-              '@media (max-width: 600px)': {
-                left: 320,
-              },
+          {fetchedWordcards === null ? (
+            <Box sx={{ pt: 5 }}>
+              <Typography
+                component="h3"
+                sx={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  color: '#000040',
+                }}
+              >
+                単語帳が登録されていません
+              </Typography>
+            </Box>
+          ) : (
+            fetchedWordcards.map((wordcard: WordcardDetail, i: number) => (
+              <Grid item key={i} xs={12} md={8}>
+                <Wordcard
+                  uuid={wordcard.card.uuid}
+                  title={wordcard.card.title}
+                  status={wordcard.card.status}
+                  createdAt={wordcard.card.createdAt}
+                />
+              </Grid>
+            ))
+          )}
+        </Grid>
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 80,
+            left: 1100,
+            right: 0,
+            '@media (max-width: 600px)': {
+              left: 320,
+            },
+          }}
+        >
+          <Fab
+            color="primary"
+            onClick={() => {
+              handleOpenModal(<NewCardMenuForModal closeModal={handleClose} />);
             }}
           >
-            <Fab
-              color="primary"
-              onClick={() => {
-                handleOpenModal(<NewCardMenuForModal closeModal={handleClose} />);
-              }}
-            >
-              <AddIcon />
-            </Fab>
-          </Box>
-        </Container>
-        <ModalCard title="" open={open} handleClose={handleCloseModal}>
-          {modalContent}
-        </ModalCard>
-      </Box>
-    )
-  );
+            <AddIcon />
+          </Fab>
+        </Box>
+      </Container>
+      <ModalCard title="" open={open} handleClose={handleCloseModal}>
+        {modalContent}
+      </ModalCard>
+    </Box>
+  )
 };
 
 export default Index;
