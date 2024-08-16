@@ -149,7 +149,9 @@ const Index: NextPage = () => {
                         </Typography>
                       </Box>
                       <Divider />
-                      <Box>画像を挿入する</Box>
+                      <Box>
+                        <Image src="/preview/top_image.jpg" width={250} height={480} alt="topImage" />
+                      </Box>
                     </Stack>
                   </CardContent>
                 </Card>
@@ -188,7 +190,9 @@ const Index: NextPage = () => {
                         </Typography>
                       </Box>
                       <Divider />
-                      <Box>画像を挿入する</Box>
+                      <Box>
+                        <Image src="/preview/aim_image.jpg" width={250} height={480} alt="topImage" />
+                      </Box>
                     </Stack>
                   </CardContent>
                 </Card>
