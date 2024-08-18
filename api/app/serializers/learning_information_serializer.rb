@@ -1,4 +1,3 @@
 class LearningInformationSerializer < ActiveModel::Serializer
-    attributes :daily_aim
-  end
-  
+  attributes :daily_aim
+end

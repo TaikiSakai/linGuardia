@@ -10,9 +10,9 @@ class StudyRecordService
   end
 
   def calculate_daily_achievement(daily_aim)
-    counts_today_learned = calculate_today_learned  
-    
-    if  daily_aim == 0 || counts_today_learned == 0
+    counts_today_learned = calculate_today_learned
+
+    if daily_aim == 0 || counts_today_learned == 0
       0
     else
       ((counts_today_learned / daily_aim.to_f) * 100).to_i
