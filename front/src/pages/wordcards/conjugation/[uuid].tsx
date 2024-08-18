@@ -188,7 +188,7 @@ const WordConjugation: NextPage = () => {
                   </IconButton>
                 </Grid>
                 <TableContainer sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
-                  <Table sx={{ width: 600 }}>
+                  <Table sx={{ width: { xs: 300, md: 600 } }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>
