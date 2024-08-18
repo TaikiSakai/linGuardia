@@ -1,6 +1,6 @@
+import { css } from '@emotion/react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import XIcon from '@mui/icons-material/X';
-import { css } from '@emotion/react';
 import {
   Box,
   Button,
@@ -18,8 +18,8 @@ import {
   Grid,
   Stack,
 } from '@mui/material';
-import Image from 'next/image';
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import useSWR from 'swr';
 import ConjugationGenerator from '@/components/ConjugationGenerator';
@@ -128,7 +128,7 @@ const Index: NextPage = () => {
                         variant="contained"
                         sx={{ mx: 1, textTransform: 'None' }}
                       >
-                        ¡Vamos!
+                        ¡Empecemos aquí!
                       </Button>
                     </Link>
                   </Box>
@@ -150,7 +150,12 @@ const Index: NextPage = () => {
                       </Box>
                       <Divider />
                       <Box>
-                        <Image src="/preview/top_image.jpg" width={250} height={480} alt="topImage" />
+                        <Image
+                          src="/preview/top_image.jpg"
+                          width={250}
+                          height={480}
+                          alt="topImage"
+                        />
                       </Box>
                     </Stack>
                   </CardContent>
@@ -161,7 +166,7 @@ const Index: NextPage = () => {
                       <Box>
                         <Typography css={subTitletStyle}>AIで作る活用系</Typography>
                         <Typography css={translatedTitleStyle}>
-                          Generador de Conjugaciones de IA
+                          Generador de Conjugación de Verbos por IA
                         </Typography>
                       </Box>
                       <Box>
@@ -171,7 +176,14 @@ const Index: NextPage = () => {
                         </Typography>
                       </Box>
                       <Divider />
-                      <Box>画像を挿入する</Box>
+                      <Box>
+                        <Image
+                          src="/preview/conjugation_image.jpg"
+                          width={250}
+                          height={480}
+                          alt="topImage"
+                        />
+                      </Box>
                     </Stack>
                   </CardContent>
                 </Card>
@@ -191,7 +203,12 @@ const Index: NextPage = () => {
                       </Box>
                       <Divider />
                       <Box>
-                        <Image src="/preview/aim_image.jpg" width={250} height={480} alt="topImage" />
+                        <Image
+                          src="/preview/aim_image.jpg"
+                          width={250}
+                          height={480}
+                          alt="topImage"
+                        />
                       </Box>
                     </Stack>
                   </CardContent>
@@ -212,7 +229,7 @@ const Index: NextPage = () => {
                   >
                     <CardContent>
                       {/* <Stack direction="column" spacing={2} sx={{ pt: 2 }}> */}
-                        <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', px: 2 }}>
+                      <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', px: 2 }}>
                         <Box
                           sx={{
                             p: 2,
@@ -286,7 +303,9 @@ const Index: NextPage = () => {
                                   <TableCell css={tableTextStyle}>dabais</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                  <TableCell css={tableTextStyle}>ellos(as)(彼ら、彼女ら)</TableCell>
+                                  <TableCell css={tableTextStyle}>
+                                    ellos(as)(彼ら、彼女ら)
+                                  </TableCell>
                                   <TableCell css={tableTextStyle}>dan</TableCell>
                                   <TableCell css={tableTextStyle}>dieron</TableCell>
                                   <TableCell css={tableTextStyle}>daban</TableCell>
@@ -314,7 +333,7 @@ const Index: NextPage = () => {
               <Stack direction="column" spacing={2} sx={{ pt: 10 }}>
                 <Box>
                   <Link href={'#'}>
-                   <Typography sx={{ color: '#000060' }}>Términos y Condiciones de Uso</Typography>
+                    <Typography sx={{ color: '#000060' }}>Términos y Condiciones de Uso</Typography>
                   </Link>
                   <Link href={'#'}>
                     <Typography sx={{ color: '#000060' }}>Política de Privacidad</Typography>
@@ -330,7 +349,7 @@ const Index: NextPage = () => {
                   <Link href={'#'}>
                     <XIcon sx={{ color: '#000060' }} />
                   </Link>
-                </Box>     
+                </Box>
               </Stack>
             </Grid>
           </Grid>
