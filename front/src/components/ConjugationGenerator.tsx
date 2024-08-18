@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  Container,
   Typography,
   Table,
   TableBody,
@@ -91,7 +90,9 @@ const ConjugationGenerator = () => {
               justifyContent: 'center',
             }}
           >
-            <Typography css={textStyle}>linGuardiaでは、動詞として登録された単語を自動で抽出し、</Typography>
+            <Typography css={textStyle}>
+              linGuardiaでは、動詞として登録された単語を自動で抽出し、
+            </Typography>
             <Typography css={textStyle}>活用形を生成することができます</Typography>
             <Button
               css={styles.styledButton}

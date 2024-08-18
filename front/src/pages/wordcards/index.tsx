@@ -124,7 +124,7 @@ const Index: NextPage = () => {
         {modalContent}
       </ModalCard>
     </Box>
-  )
+  );
 };
 
 export default Index;

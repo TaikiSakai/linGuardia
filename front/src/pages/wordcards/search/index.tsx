@@ -127,6 +127,7 @@ const Index: NextPage = () => {
                     uuid={card.card.uuid}
                     title={card.card.title}
                     userName={card.user.userName}
+                    numberOfLikes={card.like.numberOfLikes}
                     like={card.like.like}
                   />
                 </Box>

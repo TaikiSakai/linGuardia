@@ -1,6 +1,6 @@
 import HomeIcon from '@mui/icons-material/Home';
-import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
 import StyleIcon from '@mui/icons-material/Style';
 import { Paper } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
