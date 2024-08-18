@@ -66,7 +66,7 @@ const SignUp: NextPage = () => {
       setIsLoading(true);
       const url = process.env.NEXT_PUBLIC_API_URL + '/auth';
       const headers = { 'Content-Type': 'application/json' };
-      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/sign_in';
+      const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_URL + '/user/sign_in';
 
       try {
         await axios({

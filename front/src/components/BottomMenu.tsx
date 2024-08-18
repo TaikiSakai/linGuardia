@@ -1,6 +1,6 @@
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
 import StyleIcon from '@mui/icons-material/Style';
 import { Paper } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -25,8 +25,8 @@ const BottomMenu = () => {
         {user.isSignedIn && (
           <BottomNavigation showLabels>
             <BottomNavigationAction
-              label="ダッシュボード"
-              icon={<DashboardIcon />}
+              label="ホーム"
+              icon={<HomeIcon />}
               LinkComponent={Link}
               href={'/dashboard'}
             />
@@ -44,7 +44,7 @@ const BottomMenu = () => {
             />
             <BottomNavigationAction
               label="設定"
-              icon={<AccountCircleIcon />}
+              icon={<SettingsIcon />}
               LinkComponent={Link}
               href={'/user/profile'}
             />

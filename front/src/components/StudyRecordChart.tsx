@@ -46,8 +46,8 @@ const StudyRecordChart = (props: ChartDatas) => {
         margin={{ top: 30, bottom: 40, left: 30, right: 15 }}
       >
         <BarPlot borderRadius={20} />
-        <ChartsXAxis position="bottom" axisId="x-axis-id" tickLabelStyle={{ fontSize: 10 }}/>
-        <ChartsYAxis position="left" axisId="x-axis-id" tickLabelStyle={{ fontSize: 10 }}/>
+        <ChartsXAxis position="bottom" axisId="x-axis-id" tickLabelStyle={{ fontSize: 10 }} />
+        <ChartsYAxis position="left" axisId="x-axis-id" tickLabelStyle={{ fontSize: 10 }} />
         <ChartsLegend
           slotProps={{
             legend: {
