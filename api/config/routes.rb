@@ -24,7 +24,7 @@ Rails.application.routes.draw do
           patch "vocabularies/update", to: "vocabularies#update"
 
           get "conjugations", to: "chat#index"
-          post "conjugation/create", to: "chat#create"
+          get "conjugations/create", to: "chat#get_conjugations"
 
           resource :like, only: [:create, :destroy]
           resources :comments, only: [:index, :create, :destroy]

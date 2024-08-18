@@ -12,7 +12,7 @@ class Api::V1::Wordcard::ChatController < Api::V1::BaseController
     end
   end
 
-  def create
+  def get_conjugations
     vocabularies = @card.vocabularies.with_role("動詞")
 
     openai = Openai::ConjugationService.new(vocabularies)
