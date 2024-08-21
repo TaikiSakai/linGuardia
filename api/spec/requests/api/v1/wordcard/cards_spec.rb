@@ -110,23 +110,23 @@ RSpec.describe "Api::V1::Wordcard::Cards", type: :request do
         end
       end
 
-      # 一次的に除外します
-      # context "カテゴリーを入力せずにcardを登録した場合" do
-      #   let(:params) do
-      #     {
-      #       card: attributes_for(:card),
-      #       categories: attributes_for(:category, name: []),
-      #     }
-      #   end
+      context "カテゴリーを入力せずにcardを登録した場合" do
+        let(:params) do
+          {
+            card: attributes_for(:card),
+            categories: attributes_for(:category, name: []),
+          }
+        end
 
-      #   it "カードを正常に作成できる" do
-      #     subject
-      #     res = JSON.parse(response.body)
-      #     expect(res.keys).to eq ["card", "message"]
-      #     expect(res["message"]).to eq "単語帳を作成しました"
-      #     expect(response).to have_http_status(:ok)
-      #   end
-      # end
+        it "カードを正常に作成できる" do         
+          subject
+          
+          res = JSON.parse(response.body)
+          expect(res.keys).to eq ["card", "message"]
+          expect(res["message"]).to eq "単語帳を作成しました"
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
   end
 end
