@@ -5,7 +5,7 @@ FactoryBot.define do
     status { :open }
 
     transient do
-      category_count { 1 }
+      category_count { 0 }
     end
 
     after(:build) do |card, evaluator|
