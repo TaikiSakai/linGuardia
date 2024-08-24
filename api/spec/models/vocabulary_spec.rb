@@ -2,10 +2,11 @@ require "rails_helper"
 
 RSpec.describe Vocabulary, type: :model do
   context "factoryのデフォルトに従い、単語を作成した場合" do
-    let(:role) { create(:role) }
     subject { create(:vocabulary) }
 
-    it "正常にレコードを新規作成できる" do      
+    let(:role) { create(:role) }
+
+    it "正常にレコードを新規作成できる" do
       expect { subject }.to change { Vocabulary.count }.by(1)
     end
   end
