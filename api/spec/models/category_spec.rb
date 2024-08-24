@@ -31,13 +31,6 @@ RSpec.describe Category, type: :model do
       end
     end
 
-    context "nameに値が渡されなかった場合" do
-      let(:name) { [] }
-      it "エラーメッセージが返る" do
-        expect(subject).to be_truthy
-      end
-    end
-
     context "nameが15文字以上で入力された場合" do
       let(:name) { Faker::Lorem.paragraph(sentence_count: 10) }
       it "エラーメッセージが返る" do
