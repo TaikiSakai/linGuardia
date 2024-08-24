@@ -1,0 +1,20 @@
+ja:
+  activerecord:
+    attributes:
+      card:
+        title: タイトル
+        status: ステータス
+      category:
+        name: カテゴリー名
+      card_category:
+        card_id: 単語帳
+        category_id: カテゴリー
+      
+      vocabulary: 
+        word: 単語
+        meaning: 意味
+      role:
+        name: 品詞
+      word_role:
+        vocabulary_id: 単語
+        role_id: 品詞
