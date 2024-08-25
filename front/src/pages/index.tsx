@@ -332,18 +332,18 @@ const Index: NextPage = () => {
               </Stack>
               <Stack direction="column" spacing={2} sx={{ pt: 10 }}>
                 <Box>
-                  <Link href={'#'}>
+                  <Link href={'/term_of_use'}>
                     <Typography sx={{ color: '#000060' }}>Términos y Condiciones de Uso</Typography>
                   </Link>
-                  <Link href={'#'}>
+                  <Link href={'/privacy_policy'}>
                     <Typography sx={{ color: '#000060' }}>Política de Privacidad</Typography>
                   </Link>
-                  <Link href={'#'}>
+                  <Link href={'https://forms.gle/3NckAAHvVdJjzfzw5'}>
                     <Typography sx={{ color: '#000060' }}>Contacto</Typography>
                   </Link>
                 </Box>
                 <Box>
-                  <Link href={'https://github.com/TaikiSakai/langLog'}>
+                  <Link href={'https://github.com/TaikiSakai'}>
                     <GitHubIcon sx={{ color: '#000060', mr: 2 }} />
                   </Link>
                   <Link href={'#'}>
