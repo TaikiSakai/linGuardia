@@ -61,6 +61,8 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   def search
     q = Card.ransack(search_params)
 
+    # これだと自分の単語帳でもcloseだと検索できない
+    # ひらがなとカタカナでタイトルが被ると登録できな
     cards = q.result(distinct: true).where(status: "open"). \
               includes(:user, :categories).order(created_at: :desc)
 
