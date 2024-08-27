@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
 import SellIcon from '@mui/icons-material/Sell';
