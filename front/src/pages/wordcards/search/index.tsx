@@ -49,7 +49,6 @@ const Index: NextPage = () => {
         value: /^.{1,20}$/,
         message: '20文字以内で入力してください',
       },
-      
     },
   };
 
