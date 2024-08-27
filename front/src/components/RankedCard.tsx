@@ -39,14 +39,6 @@ const RankedCard = (props: RankedCardData) => {
                 <Grid container>
                   <Grid
                     item
-                    xs={2}
-                    md={1}
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
-                  >
-                    <AccountCircleIcon />
-                  </Grid>
-                  <Grid
-                    item
                     xs={10}
                     md={11}
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
