@@ -173,11 +173,6 @@ const WordcardDetail: NextPage = () => {
                 <Grid item>
                   <Grid container item sx={{ alignItems: 'center' }} spacing={1}>
                     <Grid item>
-                      <IconButton sx={{ p: 0 }}>
-                        <AccountCircle sx={{ fontSize: '30px' }} />
-                      </IconButton>
-                    </Grid>
-                    <Grid item>
                       <Typography css={cardTextCss}>{fetchedAuthor.userName}</Typography>
                     </Grid>
                   </Grid>
@@ -188,15 +183,15 @@ const WordcardDetail: NextPage = () => {
               </Grid>
               <Grid
                 item
-                xs={user.id === fetchedAuthor.userId ? 4 : 6}
-                md={user.id === fetchedAuthor.userId ? 4 : 6}
+                xs={user.id === fetchedAuthor.userId ? 6 : 12}
+                md={user.id === fetchedAuthor.userId ? 6 : 12}
               >
                 <Link href={'/wordcards/flashcard/' + uuid}>
-                  <Card sx={{ borderRadius: 3 }} elevation={3}>
+                  <Card sx={{ borderRadius: 3 }} elevation={2}>
                     <CardContent>
                       <Stack
                         spacing={1}
-                        direction="column"
+                        direction="row"
                         sx={{ justifyContent: 'center', alignItems: 'center' }}
                       >
                         <SellIcon css={buttonIconCss} />
@@ -208,36 +203,14 @@ const WordcardDetail: NextPage = () => {
                   </Card>
                 </Link>
               </Grid>
-              <Grid
-                item
-                xs={user.id === fetchedAuthor.userId ? 4 : 6}
-                md={user.id === fetchedAuthor.userId ? 4 : 6}
-              >
-                <Link aria-disabled={true} href={'#'}>
-                  <Card sx={{ borderRadius: 3 }} elevation={3}>
-                    <CardContent>
-                      <Stack
-                        spacing={1}
-                        direction="column"
-                        sx={{ justifyContent: 'center', alignItems: 'center' }}
-                      >
-                        <BorderColorIcon css={buttonIconCss} />
-                        <Typography component="h3" css={buttonFontCss}>
-                          テスト
-                        </Typography>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </Grid>
               {user.id === fetchedAuthor.userId && (
-                <Grid item xs={4} md={4}>
+                <Grid item xs={6} md={6}>
                   <Link href={'/wordcards/conjugation/' + uuid}>
-                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                    <Card sx={{ borderRadius: 3 }} elevation={2}>
                       <CardContent>
                         <Stack
                           spacing={1}
-                          direction="column"
+                          direction="row"
                           sx={{ justifyContent: 'center', alignItems: 'center' }}
                         >
                           <AutoFixNormalIcon css={buttonIconCss} />
@@ -255,7 +228,7 @@ const WordcardDetail: NextPage = () => {
               <Grid container item spacing={2} xs={12} md={8} justifyContent="center">
                 <Grid item xs={6} md={6}>
                   <Link href={'/vocabularies/create/' + uuid}>
-                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                    <Card sx={{ borderRadius: 3 }} elevation={2}>
                       <CardContent>
                         <Stack
                           spacing={1}
@@ -273,7 +246,7 @@ const WordcardDetail: NextPage = () => {
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Link href={'/vocabularies/edit/' + uuid}>
-                    <Card sx={{ borderRadius: 3 }} elevation={3}>
+                    <Card sx={{ borderRadius: 3 }} elevation={2}>
                       <CardContent>
                         <Stack
                           spacing={1}
