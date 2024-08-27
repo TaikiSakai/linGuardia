@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
