@@ -90,6 +90,16 @@ const NewCardMenuForModal = (props: modalHandler) => {
       });
   };
 
+  const validationRule = {
+    titleValue: {
+      required: 'タイトルを入力してください',
+      pattern: {
+        value: /^.{1,20}$/,
+        message: '20文字以内で入力してください',
+      },
+    },
+  };
+
   return (
     <Box>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
@@ -99,17 +109,16 @@ const NewCardMenuForModal = (props: modalHandler) => {
         <Controller
           name={'title'}
           control={control}
+          rules={validationRule.titleValue}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
               type="text"
-              required
               error={fieldState.invalid}
               helperText={fieldState.error?.message}
               label="タイトル"
               fullWidth
               size="small"
-              multiline
               rows={1}
               sx={{ backgroundColor: 'white' }}
             />
