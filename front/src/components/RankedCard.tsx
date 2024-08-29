@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
@@ -37,14 +36,6 @@ const RankedCard = (props: RankedCardData) => {
             <Grid container>
               <Grid item xs={8} md={8} sx={{ alignItems: 'center', pt: 2 }}>
                 <Grid container>
-                  <Grid
-                    item
-                    xs={2}
-                    md={1}
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
-                  >
-                    <AccountCircleIcon />
-                  </Grid>
                   <Grid
                     item
                     xs={10}
