@@ -46,8 +46,8 @@ const Index: NextPage = () => {
     searchValue: {
       required: '検索ワードを入力してください',
       pattern: {
-        value: /^[0-9A-Za-z]{1,15}$/,
-        message: '15文字以内で入力してください',
+        value: /^.{1,20}$/,
+        message: '20文字以内で入力してください',
       },
     },
   };

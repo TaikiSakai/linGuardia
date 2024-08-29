@@ -49,7 +49,7 @@ const EditMenuForModal = (props: NewWordcardData) => {
     setCategories(categories.filter((_, idx: number) => idx !== valueId));
   };
 
-  const onSubmit = async (data: NewWordcardData) => {
+  const onClickButton = async (data: NewWordcardData) => {
     const newCardData = JSON.stringify({
       card: data.card,
       categories: { name: categories },
@@ -87,20 +87,30 @@ const EditMenuForModal = (props: NewWordcardData) => {
     }
   };
 
+  const validationRule = {
+    titleValue: {
+      required: 'タイトルを入力してください',
+      pattern: {
+        value: /^.{1,20}$/,
+        message: '20文字以内で入力してください',
+      },
+    },
+  };
+
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={3}>
+    <Stack component="form" onSubmit={handleSubmit(onClickButton)} spacing={3}>
       <Typography component="h3" css={styles.modalTitle}>
         カード設定
       </Typography>
       <Controller
         name={'card.title'}
         defaultValue={props.card.title}
+        rules={validationRule.titleValue}
         control={control}
         render={({ field, fieldState }) => (
           <TextField
             {...field}
             type="text"
-            required
             error={fieldState.invalid}
             helperText={fieldState.error?.message}
             label="タイトル"
@@ -164,7 +174,7 @@ const EditMenuForModal = (props: NewWordcardData) => {
           を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
         </Typography>
       </Box>
-      <Button variant="contained" type="submit">
+      <Button variant="contained" type="button">
         変更
       </Button>
     </Stack>

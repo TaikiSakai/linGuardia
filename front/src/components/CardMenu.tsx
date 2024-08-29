@@ -50,7 +50,7 @@ const NewCardMenuForModal = (props: modalHandler) => {
     setCategories(categories.filter((_, idx: number) => idx !== valueId));
   };
 
-  const onSubmit = (data: cardForm) => {
+  const onClickButton = (data: cardForm) => {
     const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
 
     const newCardData = JSON.stringify({
@@ -90,26 +90,35 @@ const NewCardMenuForModal = (props: modalHandler) => {
       });
   };
 
+  const validationRule = {
+    titleValue: {
+      required: 'タイトルを入力してください',
+      pattern: {
+        value: /^.{1,20}$/,
+        message: '20文字以内で入力してください',
+      },
+    },
+  };
+
   return (
     <Box>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+      <Stack component="form" onClick={handleSubmit(onClickButton)} spacing={4}>
         <Typography component="h3" css={styles.modalTitle}>
           単語帳を追加
         </Typography>
         <Controller
           name={'title'}
           control={control}
+          rules={validationRule.titleValue}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
               type="text"
-              required
               error={fieldState.invalid}
               helperText={fieldState.error?.message}
               label="タイトル"
               fullWidth
               size="small"
-              multiline
               rows={1}
               sx={{ backgroundColor: 'white' }}
             />
@@ -168,7 +177,7 @@ const NewCardMenuForModal = (props: modalHandler) => {
             を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
           </Typography>
         </Box>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="button">
           登録
         </Button>
       </Stack>
