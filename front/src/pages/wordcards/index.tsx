@@ -98,16 +98,17 @@ const Index: NextPage = () => {
               </Grid>
             ))
           )}
+          
         </Grid>
         <Box
           sx={{
+            alignItems: 'right',
             position: 'fixed',
             bottom: 80,
-            left: 1100,
-            right: 0,
-            '@media (max-width: 600px)': {
-              left: 320,
-            },
+            right: 'calc(100% - 85%)',
+            '@media (max-width: 900px)': {
+              right: 'calc(100% - 95%)',
+            },        
           }}
         >
           <Fab
