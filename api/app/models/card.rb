@@ -29,7 +29,7 @@ class Card < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       # frontから送信されたcategoryを上書きする・空欄の場合は何もしない
-      if categories.empty?
+      if categories.empty? || categories == [""]
         self.categories = []
       else
         new_categories = categories.map {|name| Category.find_or_initialize_by(name: name) }

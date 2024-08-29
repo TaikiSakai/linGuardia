@@ -16,9 +16,19 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     card = Card.find_by(uuid: params[:uuid])
 
     if card
-      # 所有者以外のユーザーがアクセスしたらアクセス数をカウントする
-      card.count_access_number unless card.user == current_user
-      render json: card, each_serializer: CardSerializer, status: :ok
+      # cardの所有者であれば、ステータスの状態に関わらずアクセスできる
+      if owner?(card)
+        render json: card, each_serializer: CardSerializer, status: :ok
+      # 所有者でない場合、ステータスがopenならアクセスできる
+      elsif card.status == "open"
+        # アクセス数をカウントする
+        card.count_access_number
+        render json: card, each_serializer: CardSerializer, status: :ok
+      else
+        render json: { error: "単語帳が見つかりません" }, status: :not_found
+      end
+    else
+      render json: { error: "単語帳が見つかりません" }, status: :not_found
     end
   end
 
@@ -93,5 +103,9 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     def set_card
       @card = current_user.cards.find_by(uuid: params[:uuid])
       render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
+    end
+
+    def owner?(card)
+      current_user == card.user
     end
 end

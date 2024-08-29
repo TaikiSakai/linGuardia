@@ -5,12 +5,22 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   def index
     # 公開された単語帳の単語を取得できるようにするため、Cardモデルから直接抽出しています
     card = Card.find_by(uuid: params[:card_uuid])
-    vocabularies = card.vocabularies.includes(:roles)
+    unless card
+      render json: { error: "単語帳が見つかりません" }, status: :not_found
+      return
+    end
 
-    if vocabularies.empty?
-      render json: { error: "単語が登録されていません" }, status: :not_found
+    if owner?(card) || card.status == "open"
+      vocabularies = card.vocabularies.includes(:roles)
+
+      if vocabularies.empty?
+        render json: { error: "単語が登録されていません" }, status: :not_found
+      else
+        render json: vocabularies, each_serializer: VocabularySerializer, status: :ok
+      end
+
     else
-      render json: vocabularies, each_serializer: VocabularySerializer, status: :ok
+      render json: { error: "単語帳が見つかりません" }, status: :not_found
     end
   end
 
@@ -61,5 +71,9 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
     def set_card
       @card = current_user.cards.find_by(uuid: params[:card_uuid])
       render json: { error: "単語帳が見つかりません" }, status: :not_found unless @card
+    end
+
+    def owner?(card)
+      current_user == card.user
     end
 end
