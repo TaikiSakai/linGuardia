@@ -54,17 +54,20 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     if @card.destroy
       render json: { message: "単語帳を削除しました" }, status: :ok
     else
-      render json: { error: @card.errors.full_messages }, status: :internal_server_error
+      render json: { error: @card.errors.full_messages }, \
+             status: :internal_server_error
     end
   end
 
   def search
     q = Card.ransack(search_params)
-
-    # これだと自分の単語帳でもcloseだと検索できない
-    # ひらがなとカタカナでタイトルが被ると登録できな
-    cards = q.result(distinct: true).where(status: "open"). \
+    cards = q.result(distinct: true).all. \
               includes(:user, :categories).order(created_at: :desc)
+
+    # 自分の単語帳とステータスがopenの単語帳だけに絞り込む
+    my_cards = cards.select {|card| card.user_id == current_user.id }
+    others_cards = cards.select {|card| card.status == "open" }
+    cards = my_cards + others_cards
 
     if cards.empty?
       render json: { message: "単語帳が見つかりません" }, status: :not_found
