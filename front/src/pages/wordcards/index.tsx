@@ -98,7 +98,6 @@ const Index: NextPage = () => {
               </Grid>
             ))
           )}
-          
         </Grid>
         <Box
           sx={{
@@ -108,7 +107,7 @@ const Index: NextPage = () => {
             right: 'calc(100% - 85%)',
             '@media (max-width: 900px)': {
               right: 'calc(100% - 95%)',
-            },        
+            },
           }}
         >
           <Fab
