@@ -67,10 +67,9 @@ const EditMenuForModal = (props: NewWordcardData) => {
         withCredentials: true,
       });
 
-      console.log(res.data);
       mutate(url + props.card.uuid);
       setSnackbar({
-        message: '更新しました',
+        message: res.data.message,
         severity: 'success',
         pathname: '/wordcards/[uuid]',
       });
@@ -98,7 +97,7 @@ const EditMenuForModal = (props: NewWordcardData) => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onClickButton)} spacing={3}>
+    <Stack component="form" spacing={3}>
       <Typography component="h3" css={styles.modalTitle}>
         カード設定
       </Typography>
@@ -174,7 +173,7 @@ const EditMenuForModal = (props: NewWordcardData) => {
           を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
         </Typography>
       </Box>
-      <Button variant="contained" type="button">
+      <Button variant="contained" type="button" onClick={handleSubmit(onClickButton)}>
         変更
       </Button>
     </Stack>
