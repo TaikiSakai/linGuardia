@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    </head>
+    <body>
+        <div
+            style="
+                background-color: e6f2ff;
+                justify-content: center;
+                align-items: center;
+                display: flex;
+                flex-direction: column;"
+        >
+            <div>
+                <h1 style="color: 000040; font-weight: bold; font-size: 40px;">
+                    ¡Bienvenido(a) a linGuardia!
+                </h1>
+                <h1>===========================</h1>
+            </div>
+            <div style="color: 000040; font-weight: bold; font-size: 20px;">
+                <p>Gracias por registrarte en linGuardia.</p>
+                <p>linGuardiaにご登録いただきありがとうございます</p>
+            </div>
+
+            <div style="color: 000040; font-weight: bold; font-size: 20px;">
+                <p>Haga clic en la URL abaja para completar tu registro.</p>
+                <p>登録を完了するには以下のURLをクリックしてください。</p>
+            </div>
+
+            <div style="color: 000040;">
+                <p><%= 
+                        link_to "Activar la cuenta. / アカウントを有効化する", confirmation_url(@resource, 
+                        {confirmation_token: @token, 
+                        config: message['client-config'].to_s,
+                        redirect_url: message['redirect-url']}).html_safe
+                    %>
+                    
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
