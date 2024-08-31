@@ -2,6 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Grid, Card, TextField, Typography, Stack, Box, Button } from '@mui/material';
 import axios from 'axios';
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -97,27 +98,17 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        backgroundColor: '#e6f2ff',
-      }}
-    >
-      <Grid container columns={18}>
-        <Grid item xs={15} md={18} sx={{ margin: 'auto', pt: 15 }} style={{ maxWidth: '500px' }}>
-          <Card sx={{ p: 2 }}>
-            <Typography
-              component="h2"
-              sx={{
-                fontSize: 28,
-                color: 'black',
-                fontWeight: 'bold',
-                py: 3,
-              }}
-            >
-              新規ユーザー登録
-            </Typography>
-            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+    <Box css={styles.baseLayout}>
+      <Grid container>
+        <Grid item xs={12} md={12} sx={{ margin: 'auto', pt: 15 }} style={{ maxWidth: '500px' }}>
+          <Card sx={{ p: 2, mx: 2, borderRadius: 3 }}>
+            <Box sx={{ py: 1, display: 'flex', justifyContent: 'center', justifyItems: 'item' }}>
+              <Image src="/logo.png" width={180} height={35} alt="logo" />
+            </Box>
+            <Box sx={{ py: 2, display: 'flex', justifyContent: 'center', justifyItems: 'item' }}>
+              <Typography css={styles.modalText}>新規ユーザー登録</Typography>
+            </Box>
+            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
               <Controller
                 name="name"
                 control={control}
@@ -180,12 +171,9 @@ const SignUp: NextPage = () => {
               />
               <LoadingButton
                 variant="contained"
+                css={styles.styledButton}
                 type="submit"
                 loading={isLoading}
-                sx={{
-                  fontWeight: 'bold',
-                  color: 'white',
-                }}
               >
                 登録
               </LoadingButton>
@@ -212,7 +200,7 @@ const SignUp: NextPage = () => {
                   ml: 2,
                 }}
               >
-                ログインはこちらから
+                ログイン
               </Button>
             </Link>
           </Grid>

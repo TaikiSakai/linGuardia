@@ -1,11 +1,15 @@
+import InfoIcon from '@mui/icons-material/Info';
 import { LoadingButton } from '@mui/lab';
 import { Grid, Card, TextField, Typography, Stack, Box, Button } from '@mui/material';
 import axios from 'axios';
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import ModalCard from '@/components/ModalCard';
+import useModal from '@/hooks/ModalState';
 import { useUserState, useSnackbarState } from '@/hooks/useGlobalState';
 import { styles } from '@/styles';
 
@@ -16,9 +20,12 @@ type SignInFormData = {
 
 const SignIn: NextPage = () => {
   const router = useRouter();
+  const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_in';
+
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useUserState();
   const [, setSnackbar] = useSnackbarState();
+  const [open, handleOpen, handleClose] = useModal();
   const { handleSubmit, control } = useForm<SignInFormData>({
     defaultValues: { email: '', password: '' },
   });
@@ -47,7 +54,6 @@ const SignIn: NextPage = () => {
   };
 
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    const url = process.env.NEXT_PUBLIC_API_URL + '/auth/sign_in';
     const headers = { 'Content-Type': 'application/json' };
 
     try {
@@ -82,27 +88,17 @@ const SignIn: NextPage = () => {
   };
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        backgroundColor: '#e6f2ff',
-      }}
-    >
-      <Grid container columns={18}>
-        <Grid item xs={12} md={18} sx={{ margin: 'auto', pt: 20 }} style={{ maxWidth: '500px' }}>
-          <Card sx={{ p: 2 }}>
-            <Typography
-              component="h2"
-              sx={{
-                fontSize: 28,
-                color: 'black',
-                fontWeight: 'bold',
-                py: 3,
-              }}
-            >
-              ログイン
-            </Typography>
-            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+    <Box css={styles.baseLayout}>
+      <Grid container>
+        <Grid item xs={12} md={12} sx={{ margin: 'auto', pt: 20 }} style={{ maxWidth: '500px' }}>
+          <Card sx={{ p: 2, mx: 2, borderRadius: 3 }}>
+            <Box sx={{ py: 1, display: 'flex', justifyContent: 'center', justifyItems: 'item' }}>
+              <Image src="/logo.png" width={180} height={35} alt="logo" />
+            </Box>
+            <Box sx={{ py: 2, display: 'flex', justifyContent: 'center', justifyItems: 'item' }}>
+              <Typography css={styles.modalText}>ログイン</Typography>
+            </Box>
+            <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
               <Controller
                 name="email"
                 control={control}
@@ -135,16 +131,21 @@ const SignIn: NextPage = () => {
               />
               <LoadingButton
                 variant="contained"
+                css={styles.styledButton}
                 type="submit"
                 loading={isLoading}
-                sx={{
-                  fontWeight: 'bold',
-                  color: 'white',
-                }}
               >
                 ログイン
               </LoadingButton>
             </Stack>
+            <Box sx={{ pt: 2, display: 'flex', justifyContent: 'center', justifyItems: 'item' }}>
+              <Button color="primary" sx={{ width: 'auto' }} variant="text" onClick={handleOpen}>
+                <Typography>
+                  <InfoIcon />
+                  登録確認メールが届かない方へ
+                </Typography>
+              </Button>
+            </Box>
           </Card>
           <Grid
             container
@@ -173,6 +174,18 @@ const SignIn: NextPage = () => {
           </Grid>
         </Grid>
       </Grid>
+      <ModalCard title="" open={open} handleClose={handleClose}>
+        <Stack direction="column" spacing={2} sx={{ px: 1 }}>
+          <Typography css={styles.modalText}>
+            アカウント登録時のメールアドレス宛に確認メールを送付しております。
+            メールが届かない場合は、迷惑メールに分類されていないかご確認ください。
+          </Typography>
+
+          <Typography css={styles.modalText}>
+            ”linguardia.info@gmail.com”からメールを受信できるように設定してください。
+          </Typography>
+        </Stack>
+      </ModalCard>
     </Box>
   );
 };
