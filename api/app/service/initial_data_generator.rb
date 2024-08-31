@@ -3,7 +3,7 @@ class InitialDataGenerator
     @user = User.find(user_id)
   end
 
-  def create_card    
+  def create_card
     card = @user.cards.new(card_params[:card])
     card.save_with_categories(category_params: card_params[:categories])
     card
@@ -11,7 +11,7 @@ class InitialDataGenerator
 
   def create_vocabularies(card)
     Vocabulary.create_vocabulary_with_roles( \
-       card: card, vocabularies_params: vocabularies_params[:vocabularies],
+      card: card, vocabularies_params: vocabularies_params[:vocabularies],
     )
   end
 
@@ -26,8 +26,7 @@ class InitialDataGenerator
     end
 
     def load_and_parse_json(file_name)
-      File.open(file_name) do |f|
-        parsed_datas = JSON.load(f, nil, create_additions: false, symbolize_names: true)
-      end
+      f = File.read(file_name)
+      JSON.parse(f, symbolize_names: true)
     end
 end
