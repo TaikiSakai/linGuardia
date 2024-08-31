@@ -18,18 +18,31 @@ class Auth::ConfirmationsController < DeviseTokenAuth::ConfirmationsController
 
         redirect_to_link = signed_in_resource.build_auth_url(redirect_url, redirect_headers)
       else
+        # create_initial_data
         redirect_to_link = DeviseTokenAuth::Url.generate(redirect_url, redirect_header_options)
       end
 
       # allow other host: trueで、onfirm success urlに設定したurlへの遷移を許可する
       redirect_to(redirect_to_link, allow_other_host: true)
     elsif redirect_url
+      create_initial_data
       redirect_to DeviseTokenAuth::Url.generate(redirect_url,
                                                 account_confirmation_success: false),
-                  allow_other_host: true
+                                                allow_other_host: true
 
     else
       raise ActionController::RoutingError, "Not Found"
     end
   end
+
+  private
+
+    def create_initial_data
+      generator = InitialDataGenerator.new(@resource.id)
+      card = generator.create_card
+      
+      binding.pry
+      
+      generator.create_vocabularies(card)
+    end
 end
