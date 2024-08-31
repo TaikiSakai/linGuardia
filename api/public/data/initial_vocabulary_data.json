@@ -1,0 +1,77 @@
+{
+  "vocabularies": [
+    {
+      "id": null,
+      "word": "ir",
+      "meaning": "〜に行く",
+      "roles": ["動詞"]
+    },
+    {
+      "id": null,
+      "word": "estar",
+      "meaning": "〜がある、である、の状態である",
+      "roles": ["動詞"]
+    },
+    {
+      "id": null,
+      "word": "tener",
+      "meaning": "〜を持っている",
+      "roles": ["動詞"]
+    },
+    {
+      "id": null,
+      "word": "la puerta",
+      "meaning": "ドア、扉",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "correr",
+      "meaning": "走る",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "el teclado",
+      "meaning": "キーボード",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "el ordenador",
+      "meaning": "コンピューター",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "programación informática",
+      "meaning": "プログラミング",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "el libro",
+      "meaning": "本",
+      "roles": ["名詞"]
+    },
+    {
+      "id": null,
+      "word": "enviar",
+      "meaning": "〜を送る、送信する",
+      "roles": ["動詞"]
+    },
+    {
+      "id": null,
+      "word": "ver",
+      "meaning": "〜を見る、に会う",
+      "roles": ["動詞"]
+    },
+    {
+      "id": null,
+      "word": "leer",
+      "meaning": "〜を読む",
+      "roles": ["動詞"]
+    }
+  ]
+}
+  
