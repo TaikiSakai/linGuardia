@@ -176,11 +176,11 @@ const SignIn: NextPage = () => {
       </Grid>
       <ModalCard title="" open={open} handleClose={handleClose}>
         <Stack direction="column" spacing={2} sx={{ px: 1 }}>
+          <Typography css={styles.modalSubTitle}>確認メールが届かない場合</Typography>
           <Typography css={styles.modalText}>
             アカウント登録時のメールアドレス宛に確認メールを送付しております。
             メールが届かない場合は、迷惑メールに分類されていないかご確認ください。
           </Typography>
-
           <Typography css={styles.modalText}>
             ”linguardia.info@gmail.com”からメールを受信できるように設定してください。
           </Typography>
