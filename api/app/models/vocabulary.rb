@@ -14,14 +14,16 @@ class Vocabulary < ApplicationRecord
   def self.save_vocabulary_with_roles(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
-        vocabulary = card.vocabularies.find_by(vocabulary_params.permit(:id))
-
         # vocabularyが見つからなかった場合は、新規作成する
         # 見つかった場合は、属性を更新する
-        if vocabulary.nil?
-          vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
+        if vocabulary_params[:id].nil?
+          vocabulary = card.vocabularies.new(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
         else
-          vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
+          
+          binding.pry
+          
+          vocabulary = card.vocabularies.find(vocabulary_params[:id])
+          vocabulary.assign_attributes(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
         end
 
         roles = vocabulary_params[:roles]
