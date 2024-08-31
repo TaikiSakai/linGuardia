@@ -16,12 +16,12 @@ class Vocabulary < ApplicationRecord
       vocabularies_params.each do |vocabulary_params|
         vocabulary = card.vocabularies.new(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
         roles = vocabulary_params[:roles]
-        
-        if roles.empty? || roles == [""]
-          vocabulary.roles = []
-        else
-          vocabulary.roles = roles.map {|name| Role.find_or_initialize_by(name: name) }
-        end
+
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
 
         vocabulary.save!
       end
@@ -38,11 +38,11 @@ class Vocabulary < ApplicationRecord
         vocabulary.assign_attributes(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
         roles = vocabulary_params[:roles]
 
-        if roles.empty? || roles == [""]
-          vocabulary.roles = []
-        else
-          vocabulary.roles = roles.map {|name| Role.find_or_initialize_by(name: name) }
-        end
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
 
         vocabulary.save!
       end
