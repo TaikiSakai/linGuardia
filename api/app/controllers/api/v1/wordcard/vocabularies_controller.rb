@@ -25,7 +25,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def create
-    status, error_message = Vocabulary.save_vocabulary_with_roles( \
+    status, error_message = Vocabulary.create_vocabulary_with_roles( \
       card: @card, vocabularies_params: vocabularies_params,
     )
 
@@ -37,7 +37,7 @@ class Api::V1::Wordcard::VocabulariesController < Api::V1::BaseController
   end
 
   def update
-    status, error_message = Vocabulary.save_vocabulary_with_roles( \
+    status, error_message = Vocabulary.update_vocabulary_with_roles( \
       card: @card, vocabularies_params: vocabularies_params,
     )
 

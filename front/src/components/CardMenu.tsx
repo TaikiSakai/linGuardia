@@ -102,7 +102,7 @@ const NewCardMenuForModal = (props: modalHandler) => {
 
   return (
     <Box>
-      <Stack component="form" onClick={handleSubmit(onClickButton)} spacing={4}>
+      <Stack component="form" spacing={4}>
         <Typography component="h3" css={styles.modalTitle}>
           単語帳を追加
         </Typography>
@@ -177,7 +177,7 @@ const NewCardMenuForModal = (props: modalHandler) => {
             を選択すると、他のユーザーがこの単語帳を閲覧することができるようになります。
           </Typography>
         </Box>
-        <Button variant="contained" type="button">
+        <Button variant="contained" type="button" onClick={handleSubmit(onClickButton)}>
           登録
         </Button>
       </Stack>

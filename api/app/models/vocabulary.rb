@@ -11,21 +11,38 @@ class Vocabulary < ApplicationRecord
 
   scope :with_role, ->(role_name) { joins(:roles).where(roles: { name: role_name }) }
 
-  def self.save_vocabulary_with_roles(card:, vocabularies_params:)
+  def self.create_vocabulary_with_roles(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
-        vocabulary = card.vocabularies.find_by(vocabulary_params.permit(:id))
-
-        # vocabularyが見つからなかった場合は、新規作成する
-        # 見つかった場合は、属性を更新する
-        if vocabulary.nil?
-          vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
-        else
-          vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
-        end
-
+        vocabulary = card.vocabularies.new(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
         roles = vocabulary_params[:roles]
-        vocabulary.roles = roles.empty? ? [] : roles.map {|name| Role.find_or_initialize_by(name: name) }
+
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
+
+        vocabulary.save!
+      end
+      [true, ""]
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    [false, e.record.errors.full_messages]
+  end
+
+  def self.update_vocabulary_with_roles(card:, vocabularies_params:)
+    ActiveRecord::Base.transaction do
+      vocabularies_params.each do |vocabulary_params|
+        vocabulary = card.vocabularies.find_by!(id: vocabulary_params[:id])
+        vocabulary.assign_attributes(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
+        roles = vocabulary_params[:roles]
+
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
 
         vocabulary.save!
       end
@@ -42,14 +59,6 @@ class Vocabulary < ApplicationRecord
         vocabulary.assign_attributes(vocabulary_params.permit(:word))
         vocabulary.save!
       end
-    end
-  end
-
-  def self.assign_roles(roles)
-    if roles.empty?
-      []
-    else
-      roles.map {|name| Role.find_or_initialize_by(name: name) }
     end
   end
 end
