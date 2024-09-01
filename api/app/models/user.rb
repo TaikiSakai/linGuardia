@@ -14,9 +14,4 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { minimum: 1, maximum: 10 }
   validates :email, presence: true, uniqueness: true
   validates :daily_aim, presence: true
-
-  # cardに対していいねしているかを確認するメソッド
-  def like?(object)
-    liked_cards.include?(object)
-  end
 end

@@ -4,7 +4,7 @@ class CardSerializer < ActiveModel::Serializer
       uuid: object.uuid,
       title: object.title,
       status: object.status,
-      created_at: created_at,
+      created_at: object.created_at.strftime("%Y/%m/%d"),
     }
   end
 
@@ -16,29 +16,14 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   attribute :like do
+    liked_card_ids = instance_options[:liked_card_ids] || []
     {
-      like: like,
-      number_of_likes: number_of_likes,
+      like: liked_card_ids.include?(object.id),
+      number_of_likes: object.likes.size,
     }
   end
 
   attribute :categories do
     { name: object.categories.map(&:name) }
-  end
-
-  def user_name
-    object.user.name
-  end
-
-  def like
-    current_user.like?(object)
-  end
-
-  def number_of_likes
-    object.how_many_likes
-  end
-
-  def created_at
-    object.created_at.strftime("%Y/%m/%d")
   end
 end
