@@ -30,10 +30,13 @@ const Index: NextPage = () => {
   useRequireSignedIn();
 
   const url = process.env.NEXT_PUBLIC_API_URL;
-  const { data: cards, error: cardFetchError } = useSWR(url + '/wordcard/ranked_cards', fetcher);
+  const { data: cards, error: cardFetchError } = useSWR(url + '/wordcard/ranked_cards', fetcher, {
+    revalidateOnFocus: false,
+  });
   const { data: studyRecs, error: studyRecFetchError } = useSWR(
     url + '/wordcard/study_records',
     fetcher,
+    { revalidateOnFocus: false },
   );
 
   if (cardFetchError || studyRecFetchError) return <div>An error has occurred.</div>;

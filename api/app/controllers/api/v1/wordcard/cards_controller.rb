@@ -3,27 +3,31 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
   before_action :set_card, only: [:update, :destroy]
 
   def index
-    cards = current_user.cards.all.order(created_at: :desc)
+    cards = current_user.cards.includes(:user, :likes, :categories).order(created_at: :desc)
+    liked_card_ids = current_user.likes.pluck(:card_id)
 
     if cards.empty?
       render json: { error: "単語帳が登録されていません" }, status: :not_found
     else
-      render json: cards, each_serializer: CardSerializer, status: :ok
+      render json: cards, each_serializer: CardSerializer, liked_card_ids: liked_card_ids
     end
   end
 
   def show
     card = Card.find_by(uuid: params[:uuid])
+    liked_card_ids = current_user.likes.pluck(:card_id)
 
     if card
       # cardの所有者であれば、ステータスの状態に関わらずアクセスできる
       if owner?(card)
-        render json: card, each_serializer: CardSerializer, status: :ok
-      # 所有者でない場合、ステータスがopenならアクセスできる
+        render json: card, each_serializer: CardSerializer,
+               status: :ok, liked_card_ids: liked_card_ids
+
+      # 所有者でない場合、ステータスがopenならアクセスできる、アクセス数をカウントする
       elsif card.status == "open"
-        # アクセス数をカウントする
         card.count_access_number
-        render json: card, each_serializer: CardSerializer, status: :ok
+        render json: card, each_serializer: CardSerializer,
+               status: :ok, liked_card_ids: liked_card_ids
       else
         render json: { error: "単語帳が見つかりません" }, status: :not_found
       end
@@ -64,7 +68,7 @@ class Api::V1::Wordcard::CardsController < Api::V1::BaseController
     if @card.destroy
       render json: { message: "単語帳を削除しました" }, status: :ok
     else
-      render json: { error: @card.errors.full_messages }, \
+      render json: { error: @card.errors.full_messages },
              status: :internal_server_error
     end
   end
