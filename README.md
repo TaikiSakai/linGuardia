@@ -51,39 +51,32 @@ https://lin-guardia.com
 しかしスペイン語の場合は、表のように主語によって動詞の語形を変化させる必要があり、また不規則なものも多いので
 初心者には非常に負担になります。
 
-下記の表は英語のgiveに相当する単語の活用形をまとめたものです。
+下記の表は英語のgiveに相当する単語の活用形の一例です。
 
 例)  
 (dar: 英語のgiveに相当する単語)
-| 主語 | 活用形 |
-| :------: | :------------ |
-| yo(私) | doy |
-| tú(君) | das |
-| usted(あなた、彼、彼女) | da |
-| nosotros(私たち) | damos |
-| vosotros(君たち) | dais  |
-| ustedes(あなた達、彼、彼女ら) | dan |
+| 主語 | 直説法現在形 | 直説法点過去形 | 直説法線過去形 |
+| :------: | :------------: | :------------: | :------: |
+| yo(私) | doy | di | daba |
+| tú(君) | das | diste | dabas |
+| usted(あなた、彼、彼女) | da | dio | daba |
+| nosotros(私たち) | damos | dimos | dábamos |
+| vosotros(君たち) | dais | dieron | dabais |
+| ustedes(あなた達、彼、彼女ら) | dan | dieron | daban |
 
 以上に加え、過去形や未来形など多数の活用形が存在しており、動詞1つにつき80個ほどの活用形があることになります。
 ある程度のパターンは決まっていますが、不規則なものは1つずつ覚えていくしかありません。
 
-
-## 主要機能
-- ログイン機能(MVP)
-- 学習記録(MVP)  
-- 単語帳機能(動詞活用機能付き)(MVP)  
-- 単語検索機能
-
 ## 使用技術
 ### バックエンド  
-- ruby: 3.1.2 (APIモード)
-- rails: 7.0.4
+- Ruby: 3.1.2 (APIモード)
+- Ruby on Rails: 7.0.4
 
 ### フロントエンド
 - TypeScript: 5.2.2
 - React: 18.2.0
-- Next.js: 13.4.19
-- CSS: Material UI
+- Next.JS: 13.4.19
+- CSS: MUI
 
 ### データベース  
 - MySQL
@@ -94,13 +87,6 @@ https://lin-guardia.com
 
 ### 外部API
 - ChatGPT API
-
-## アプリ名候補
-- langLog
-- linGuardia(リンガァルディア)
-
-## 画面遷移
-https://www.figma.com/file/AkuP1xU2fpiiZX6FebbsEo/langLog?type=design&node-id=0%3A1&mode=design&t=cHvINarqMNxJkVAC-1
 
 ## ER図
 ![table](https://github.com/TaikiSakai/langLog/assets/135448782/9c692b53-91f9-4e5e-9aad-123bd0bba231)
