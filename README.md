@@ -1,20 +1,26 @@
 # langLog(仮名)スペイン語学習記録アプリ
 
-![Captura de pantalla 2024-03-17 a las 0 57 41 a  m](https://github.com/TaikiSakai/langLog/assets/135448782/a461fc1e-5c4a-496d-a3bc-2adc85504e6e)
-## サービス概要
-langLogはスペイン語学習者のための学習記録アプリです。
-スペイン語学習における最大の難所は動詞の活用形ではないでしょうか？  
-活用形がパッと出てこず会話が続かない、長文を読んでいて活用形がわからず止まってしまう、などといったことはよくあると思います。  
-langLogでは、ユーザーが登録した単語をフラッシュカード形式で表示し、通常の単語学習はもちろん、動詞の自動活用機能により様々な活用形を効率的に学習することができます。
-日々の学習記録は目標に対する達成率で記録をすることができます。(学習時間も記録できます)
+<img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/d7bfb7ad-e437-4434-ae58-085f45c81b3f">
 
+## サービス概要
+linGuardiaは、スペイン語を効率よく学ぶための単語帳です。
+スペイン語学習における最大の難所は動詞の活用形ではないでしょうか？
+すでに単語帳のアプリはたくさんありますが、大量の活用形を1つずつ入力していたら効率が悪いです。
+linGuardiaでは、AIを用いて様々な動詞の活用形を自動で生成することができます。
 
 ▼サービスURL
-http://linguardia.com  
+https://lin-guardia.com  
 
 ## 利用対象
-スペイン語学習初心者の方  
-学習状況を見える化したい方
+- スペイン語学習初心者の方
+- スペイン語の学習を効率化したい方
+- 学習状況を見える化したい方
+
+## 機能
+| 単語カード | AIで作る活用形 | 学習記録 |
+| :------: | :------: | :------------: |
+| <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/8c262296-6c19-4a09-b6c1-2985ec0e3755"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/4f21d1de-772a-403f-8e13-573b6e194346"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/a520a17c-ac6f-4702-a5ea-7c6b89a70050"> |
+| 覚えたい単語を登録して自分だけの単語帳を作りましょう! 作成した単語帳は他のユーザーに公開することができます。 | 単語帳に登録された動詞からボタン1つで活用形を生成することができます。 | 学習が完了すると自動で記録が保存され、1週間分の学習をみえる化することができます。 学習目標を設定して学習を習慣化しましょう! |
 
 ## 開発背景
 - 単語帳
