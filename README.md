@@ -68,25 +68,27 @@ https://lin-guardia.com
 ある程度のパターンは決まっていますが、不規則なものは1つずつ覚えていくしかありません。
 
 ## 使用技術
-### バックエンド  
+> バックエンド  
 - Ruby: 3.1.2 (APIモード)
 - Ruby on Rails: 7.0.4
 
-### フロントエンド
+> フロントエンド
 - TypeScript: 5.2.2
 - React: 18.2.0
 - Next.JS: 13.4.19
 - CSS: MUI
 
-### データベース  
+> データベース  
 - MySQL
 
-### インフラ(Amazon Web Service)
+> インフラ(Amazon Web Service)
 - ECS
 - Route53
 
-### 外部API
+> 外部API
 - ChatGPT API
 
+## インフラ構成図
+
 ## ER図
-![table](https://github.com/TaikiSakai/langLog/assets/135448782/9c692b53-91f9-4e5e-9aad-123bd0bba231)
+<img width="550" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/812048eb-59b0-4ac2-8c90-2889d91892db">
