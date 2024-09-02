@@ -6,21 +6,32 @@ Rails.application.routes.draw do
       get "health_check", to: "health_check#index"
 
       mount_devise_token_auth_for "User", at: "auth", controllers: {
-        # registrations: 'auth/registrations',
-        confirmations: "auth/confirmations"
+        confirmations: "auth/confirmations",
+        sessions: "auth/sessions",
+        registrations: "auth/registrations",
       }
 
       namespace :current do
         resource :user, only: [:show]
+        get "learning_informations", to: "learning_informations#show"
       end
 
       namespace :wordcard do
         resources :cards, param: :uuid, only: [:index, :show, :create, :update, :destroy] do
+          get "search", on: :collection
+
           resources :vocabularies, only: [:index, :create, :destroy]
           patch "vocabularies/update", to: "vocabularies#update"
-          patch "vocabularies/update_conjugation", to: "vocabularies#update_conjugation"
-          post "conjugation/create", to: "chat#create"
+
+          get "conjugations", to: "chat#index"
+          get "conjugations/create", to: "chat#generate_conjugations"
+
+          resource :like, only: [:create, :destroy]
+          resources :comments, only: [:index, :create, :destroy]
+          resources :study_records, only: [:show, :create]
         end
+        resources :ranked_cards, only: [:index]
+        resources :study_records, only: [:index]
       end
     end
   end

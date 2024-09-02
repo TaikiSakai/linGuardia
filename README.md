@@ -1,4 +1,4 @@
-# langLog(仮名)スペイン語学習記録アプリ
+# linGuardia スペイン語を効率的に学ぶための単語帳
 
 <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/d7bfb7ad-e437-4434-ae58-085f45c81b3f">
 
@@ -26,7 +26,7 @@ https://lin-guardia.com
 > 単語帳 / AIで作る活用形
 
 私は趣味でスペイン語の学習を始めましたが、初心者の時に最も苦労したところは単語の管理です。
-動詞の活用形を暗記するために、全ての活用形をノートにまとめていましたが、非常に時間がかかり非効率なものでした。  
+動詞の活用形を暗記するために、全ての活用形をノートにまとめていました。  
 単語帳アプリなども活用しましたが、大量の活用形を入力するのに非常に時間がかかっていたので、非常に非効率なものでした。
 また、登録された単語しか表示することができなかったので、様々なパターンの活用形を暗記するには適したものではありませんでした。 
 ボタン1つで様々な活用形を生成できれば、効率的に学習できると思いました。  
@@ -68,25 +68,28 @@ https://lin-guardia.com
 ある程度のパターンは決まっていますが、不規則なものは1つずつ覚えていくしかありません。
 
 ## 使用技術
-### バックエンド  
+> バックエンド  
+
 - Ruby: 3.1.2 (APIモード)
 - Ruby on Rails: 7.0.4
 
-### フロントエンド
+> フロントエンド
 - TypeScript: 5.2.2
 - React: 18.2.0
 - Next.JS: 13.4.19
 - CSS: MUI
 
-### データベース  
+> データベース  
 - MySQL
 
-### インフラ(Amazon Web Service)
+> インフラ(Amazon Web Service)
 - ECS
 - Route53
 
-### 外部API
+> 外部API
 - ChatGPT API
 
+## インフラ構成図
+
 ## ER図
-![table](https://github.com/TaikiSakai/langLog/assets/135448782/9c692b53-91f9-4e5e-9aad-123bd0bba231)
+<img width="550" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/812048eb-59b0-4ac2-8c90-2889d91892db">

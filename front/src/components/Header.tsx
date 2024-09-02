@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -13,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useUserState } from '@/hooks/useGlobalState';
+import { styles } from '@/styles';
 
 const Header = () => {
   const [user] = useUserState();
@@ -31,6 +33,8 @@ const Header = () => {
       position="sticky"
       sx={{
         backgroundColor: 'white',
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
         color: 'black',
         boxShadow: 1,
         py: '5px',
@@ -46,25 +50,16 @@ const Header = () => {
         >
           <Box>
             <Link href="/">
-              <Image src="/logo.png" width={133} height={40} alt="logo" />
+              <Image src="/logo.png" width={120} height={25} alt="logo" />
             </Link>
           </Box>
           {user.isFetched && (
             <Box>
               {!user.isSignedIn && (
                 <Box>
-                  <Link href="/sign_in">
-                    <Button
-                      color="primary"
-                      variant="text"
-                      sx={{
-                        textTransform: 'none',
-                        fontSize: 16,
-                        borderRadius: 1,
-                        boxShadow: 'none',
-                      }}
-                    >
-                      LogIn
+                  <Link href="/user/sign_in">
+                    <Button css={styles.styledButton} variant="contained">
+                      ログイン
                     </Button>
                   </Link>
                 </Box>
@@ -73,7 +68,7 @@ const Header = () => {
                 <Box>
                   <Stack direction="row">
                     <Box>
-                      <Button onClick={handleClick}>
+                      <Button sx={{ textTransform: 'None' }} onClick={handleClick}>
                         <Typography
                           variant="h5"
                           sx={{
@@ -94,10 +89,16 @@ const Header = () => {
                     onClose={handleClose}
                     onClick={handleClose}
                   >
-                    <Box sx={{ px: 2, py: 1 }}>
-                      <Link href={'/sign_out'}>
+                    <Box sx={{ px: 1, py: 1 }}>
+                      <Link href={'/user/profile'}>
                         <MenuItem>
-                          <ListItemIcon>サインアウト</ListItemIcon>
+                          <ListItemIcon>ユーザー設定</ListItemIcon>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link href={'/user/sign_out'}>
+                        <MenuItem>
+                          <ListItemIcon>ログアウト</ListItemIcon>
                         </MenuItem>
                       </Link>
                     </Box>

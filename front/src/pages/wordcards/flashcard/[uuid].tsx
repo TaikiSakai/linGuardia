@@ -1,11 +1,28 @@
 import { css } from '@emotion/react';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, Card, CardContent, Container, Typography, Grid } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Fab,
+  Typography,
+  Grid,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import useSWR from 'swr';
+import ExitPageBoxForModal from '@/components/ExitPageBox';
+import FlashcardFinishedBoxForModal from '@/components/FlashCardCompletedBox';
+import ModalCard from '@/components/ModalCard';
+import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
@@ -21,16 +38,30 @@ const fontSizeCss = css({
 
 const Flashcard: NextPage = () => {
   useRequireSignedIn();
+
   const router = useRouter();
   const { uuid } = router.query;
 
   const [, setSnackbar] = useSnackbarState();
-
   const [cards, setCards] = useState<VocabularyData[]>([]);
+  const [open, handleOpen, handleClose] = useModal();
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [beTurnedOver, setBeTurnedOver] = useState<boolean>(false);
+
   const turnOver: () => void = () => {
     setBeTurnedOver(!beTurnedOver);
+  };
+
+  const handleOpenModal = (content: ReactNode) => {
+    setModalContent(content);
+    handleOpen();
+  };
+
+  const handleCloseModal = () => {
+    setModalContent(null);
+    setCurrentIndex(0);
+    handleClose();
   };
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards/';
@@ -42,6 +73,19 @@ const Flashcard: NextPage = () => {
       setCards(vocabularies);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      // card.lengthで判定するとデータフェッチ前に条件が満たされてしまうので
+      // data.lengthを使用する
+      if (currentIndex == data.length) {
+        handleOpenModal(
+          <FlashcardFinishedBoxForModal wordCount={data.length} closeModal={handleCloseModal} />,
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, data]);
 
   const nextCard = () => {
     setCurrentIndex(currentIndex + 1);
@@ -68,48 +112,23 @@ const Flashcard: NextPage = () => {
   const currentCard = cards[currentIndex] || null;
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        backgroundColor: '#e6f2ff',
-      }}
-    >
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button onClick={router.back}>
-          <CloseIcon />
-        </Button>
-      </Box>
+    <Box css={styles.baseLayout}>
       {currentCard && (
-        <Container
-          maxWidth="md"
-          sx={{
-            pt: 2,
-            pb: 10,
-          }}
-        >
-          <Grid
-            container
-            sx={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Grid item xs={11} md={12}>
-              <Card sx={{ borderRadius: 5, height: 400 }} onClick={turnOver}>
-                <CardContent>
+        <Container maxWidth="md" sx={{ height: '100%' }}>
+          <Grid container sx={{ alignItems: 'center', height: '100%', pt: 10 }}>
+            <Grid item xs={12} md={12}>
+              <Card sx={{ borderRadius: 3, height: 400 }} onClick={turnOver}>
+                <CardContent sx={{ height: '100%' }}>
                   <Grid
                     container
-                    sx={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
+                    sx={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}
                   >
                     <Grid item>
                       <Typography
                         component="h3"
                         css={fontSizeCss}
                         sx={{
-                          color: '#000040',
+                          color: '#000060',
                           fontWeight: 'bold',
                         }}
                       >
@@ -121,28 +140,47 @@ const Flashcard: NextPage = () => {
               </Card>
             </Grid>
           </Grid>
-          <Grid
-            container
-            sx={{
-              pt: 5,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Grid container sx={{ alignItems: 'center', justifyContent: 'center', pt: 10 }}>
             <Grid item>
-              <Box>
-                <Button onClick={returnCard} disabled={currentIndex === 0}>
-                  return
-                </Button>
-                <Button onClick={nextCard} disabled={currentIndex === cards.length - 1}>
-                  next
-                </Button>
-              </Box>
+              <Stack direction="row" spacing={5}>
+                <IconButton onClick={returnCard} disabled={currentIndex === 0}>
+                  <ArrowBackIosNewIcon sx={{ fontSize: 50 }} />
+                </IconButton>
+                <IconButton onClick={turnOver}>
+                  <AutorenewIcon sx={{ fontSize: 50 }} />
+                </IconButton>
+                <IconButton onClick={nextCard}>
+                  <ArrowForwardIosIcon sx={{ fontSize: 50 }} />
+                </IconButton>
+              </Stack>
             </Grid>
           </Grid>
+          <Box
+            sx={{
+              position: 'fixed',
+              bottom: 10,
+              left: 1130,
+              right: 0,
+              '@media (max-width: 600px)': {
+                left: 320,
+              },
+            }}
+          >
+            <Fab
+              color="primary"
+              onClick={() => {
+                handleOpenModal(<ExitPageBoxForModal />);
+              }}
+            >
+              <CloseIcon />
+            </Fab>
+          </Box>
         </Container>
       )}
       {!currentCard && <Box>{data.message}</Box>}
+      <ModalCard title="" open={open} handleClose={handleCloseModal}>
+        {modalContent}
+      </ModalCard>
     </Box>
   );
 };

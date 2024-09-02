@@ -11,39 +11,45 @@ class Vocabulary < ApplicationRecord
 
   scope :with_role, ->(role_name) { joins(:roles).where(roles: { name: role_name }) }
 
-  def self.save_vocabulary_with_roles!(card:, vocabularies_params:)
+  def self.create_vocabulary_with_roles(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
-        vocabulary = card.vocabularies.new(vocabulary_params.permit(:word, :meaning))
+        vocabulary = card.vocabularies.new(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
+        roles = vocabulary_params[:roles]
 
-        role_names = vocabulary_params[:roles]
-        vocabulary.roles = role_names.map {|name| Role.find_or_initialize_by(name: name) }
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
 
         vocabulary.save!
       end
+      [true, ""]
     end
-  rescue ActiveRecord::Rollback
-    false
+  rescue ActiveRecord::RecordInvalid => e
+    [false, e.record.errors.full_messages]
   end
 
-  def self.update_vocabulary_with_roles!(card:, vocabularies_params:)
+  def self.update_vocabulary_with_roles(card:, vocabularies_params:)
     ActiveRecord::Base.transaction do
       vocabularies_params.each do |vocabulary_params|
-        vocabulary = card.vocabularies.find_by!(vocabulary_params.permit(:id))
-        vocabulary.assign_attributes(vocabulary_params.permit(:word, :meaning))
+        vocabulary = card.vocabularies.find_by!(id: vocabulary_params[:id])
+        vocabulary.assign_attributes(word: vocabulary_params[:word], meaning: vocabulary_params[:meaning])
+        roles = vocabulary_params[:roles]
 
-        role_names = vocabulary_params[:roles]
-
-        unless role_names.nil?
-          vocabulary.roles.clear
-          vocabulary.roles = role_names.map {|name| Role.find_or_initialize_by(name: name) }
-        end
+        vocabulary.roles = if roles.empty? || roles == [""]
+                             []
+                           else
+                             roles.map {|name| Role.find_or_initialize_by(name: name) }
+                           end
 
         vocabulary.save!
       end
+      [true, ""]
     end
-  rescue ActiveRecord::Rollback
-    false
+  rescue ActiveRecord::RecordInvalid => e
+    [false, e.record.errors.full_messages]
   end
 
   def self.update_verb_conjugation!(card:, vocabularies_params:)

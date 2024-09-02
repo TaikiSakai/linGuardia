@@ -1,22 +1,34 @@
-import { Grid, Container, Box, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Grid, Container, Box, Typography, Fab } from '@mui/material';
 import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import useSWR from 'swr';
-import CardMenu from '@/components/CardMenu';
+import NewCardMenuForModal from '@/components/CardMenu';
+import ModalCard from '@/components/ModalCard';
 import Wordcard from '@/components/Wordcard';
+import useModal from '@/hooks/ModalState';
 import { useSnackbarState } from '@/hooks/useGlobalState';
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn';
 import { styles } from '@/styles';
+import { AuthorData } from '@/types/AuthorType';
+import { LikeData } from '@/types/LikeType';
 import { WordcardData } from '@/types/WordcardType';
 import { fetcher } from '@/utils';
+
+type WordcardDetail = {
+  card: WordcardData;
+  user: AuthorData;
+  like: LikeData;
+};
 
 const Index: NextPage = () => {
   useRequireSignedIn();
 
   const url = process.env.NEXT_PUBLIC_API_URL + '/wordcard/cards';
   const { data, error } = useSWR(url ? url : null, fetcher, { revalidateOnFocus: false });
-  const [wordcards, setWordcard] = useState<WordcardData[]>([]);
+  const [open, handleOpen, handleClose] = useModal();
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [, setSnackbar] = useSnackbarState();
 
   useEffect(() => {
@@ -31,31 +43,23 @@ const Index: NextPage = () => {
 
   if (!data && !error) return <div>Loading...</div>;
 
-  const fetchedCards: WordcardData[] = camelcaseKeys(data);
+  const fetchedWordcards: WordcardDetail[] | null = data
+    ? data.map((cardData: WordcardDetail) => camelcaseKeys(cardData, { deep: true }))
+    : null;
 
-  // dataがないとエラーになる?
-  if (data && wordcards.length === 0) {
-    setWordcard(fetchedCards);
-  }
-
-  // データの登録に成功したら、wordcard一覧を更新する
-  const addToIndex = (newWordcard: WordcardData) => {
-    const fetchedCards: WordcardData = camelcaseKeys(newWordcard);
-    setWordcard((prevWordcards) => [fetchedCards, ...prevWordcards]);
+  const handleOpenModal = (content: ReactNode) => {
+    setModalContent(content);
+    handleOpen();
   };
 
-  console.log(wordcards);
+  const handleCloseModal = () => {
+    setModalContent(null);
+    handleClose();
+  };
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        backgroundColor: '#e6f2ff',
-        pb: 7,
-      }}
-    >
-      <Container maxWidth="md" sx={{ pt: 6, pb: 6 }}>
-        <CardMenu uuid="" title="" status="" createdAt="" addValue={addToIndex} />
+    <Box css={styles.baseLayout}>
+      <Container maxWidth="md">
         <Grid
           container
           spacing={3}
@@ -64,7 +68,12 @@ const Index: NextPage = () => {
             alignItems: 'center',
           }}
         >
-          {wordcards.length === 0 ? (
+          <Grid container item>
+            <Box sx={{ justifyContent: 'left', textAlign: 'left' }}>
+              <Typography css={styles.pageTitle}>単語帳</Typography>
+            </Box>
+          </Grid>
+          {fetchedWordcards === null ? (
             <Box sx={{ pt: 5 }}>
               <Typography
                 component="h3"
@@ -78,19 +87,42 @@ const Index: NextPage = () => {
               </Typography>
             </Box>
           ) : (
-            wordcards.map((wordcard: WordcardData, i: number) => (
-              <Grid item key={i} xs={10} md={10}>
+            fetchedWordcards.map((wordcard: WordcardDetail, i: number) => (
+              <Grid item key={i} xs={12} md={8}>
                 <Wordcard
-                  uuid={wordcard.uuid}
-                  title={wordcard.title}
-                  status={wordcard.status}
-                  createdAt={wordcard.createdAt}
+                  uuid={wordcard.card.uuid}
+                  title={wordcard.card.title}
+                  status={wordcard.card.status}
+                  createdAt={wordcard.card.createdAt}
                 />
               </Grid>
             ))
           )}
         </Grid>
+        <Box
+          sx={{
+            alignItems: 'right',
+            position: 'fixed',
+            bottom: 80,
+            right: 'calc(100% - 85%)',
+            '@media (max-width: 900px)': {
+              right: 'calc(100% - 95%)',
+            },
+          }}
+        >
+          <Fab
+            color="primary"
+            onClick={() => {
+              handleOpenModal(<NewCardMenuForModal closeModal={handleClose} />);
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Box>
       </Container>
+      <ModalCard title="" open={open} handleClose={handleCloseModal}>
+        {modalContent}
+      </ModalCard>
     </Box>
   );
 };
