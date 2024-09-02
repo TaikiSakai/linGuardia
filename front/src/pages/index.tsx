@@ -151,7 +151,7 @@ const Index: NextPage = () => {
                       <Divider />
                       <Box>
                         <Image
-                          src="/preview/top_image.jpg"
+                          src="/preview/flashcard_image.jpg"
                           width={250}
                           height={480}
                           alt="topImage"
@@ -204,7 +204,7 @@ const Index: NextPage = () => {
                       <Divider />
                       <Box>
                         <Image
-                          src="/preview/aim_image.jpg"
+                          src="/preview/top_image.jpg"
                           width={250}
                           height={480}
                           alt="topImage"
@@ -228,7 +228,6 @@ const Index: NextPage = () => {
                     }}
                   >
                     <CardContent>
-                      {/* <Stack direction="column" spacing={2} sx={{ pt: 2 }}> */}
                       <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', px: 2 }}>
                         <Box
                           sx={{
