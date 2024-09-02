@@ -69,6 +69,7 @@ https://lin-guardia.com
 
 ## 使用技術
 > バックエンド  
+
 - Ruby: 3.1.2 (APIモード)
 - Ruby on Rails: 7.0.4
 
