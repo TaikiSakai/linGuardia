@@ -1,12 +1,14 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import { GoogleTagManager } from '@next/third-parties/google';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
 import BottomMenu from '@/components/BottomMenu';
 import CurrentUserFetcher from '@/components/currentUserFetcher';
 import Header from '@/components/Header';
 import NotiSnackbar from '@/components/NotiSnackbar';
+import { GA_MEASUREMENT_ID } from '@/lib/gtag';
 import createEmotionCache from '@/styles/createEmotionCache';
 import theme from '@/styles/theme';
 import '@/styles/destyle.css';
@@ -24,6 +26,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <GoogleTagManager gtmId={`${GA_MEASUREMENT_ID}`} />
         <CurrentUserFetcher />
         <Header />
         <Component {...pageProps} />
