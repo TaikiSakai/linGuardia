@@ -17,10 +17,11 @@ https://lin-guardia.com
 - 学習状況を見える化したい方
 
 ## 機能
-| 単語カード | AIで作る活用形 | 学習記録 |
-| :------: | :------: | :------------: |
-| <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/8c262296-6c19-4a09-b6c1-2985ec0e3755"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/4f21d1de-772a-403f-8e13-573b6e194346"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/a520a17c-ac6f-4702-a5ea-7c6b89a70050"> |
-| 覚えたい単語を登録して自分だけの単語帳を作りましょう! 作成した単語帳は他のユーザーに公開することができます。 | 単語帳に登録された動詞からボタン1つで活用形を生成することができます。 | 学習が完了すると自動で記録が保存され、1週間分の学習をみえる化することができます。 学習目標を設定して学習を習慣化しましょう! |
+| トップページ | 単語カード | AIで作る活用形 | 学習記録 |
+| :------: | :------: | :------: | :------------: |
+| <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/8c262296-6c19-4a09-b6c1-2985ec0e3755"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/26e99893-b664-4701-a4d0-c08ea19e1214"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/4f21d1de-772a-403f-8e13-573b6e194346"> | <img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/a520a17c-ac6f-4702-a5ea-7c6b89a70050"> |
+| 1週間分の学習記録や学習目標の達成度を確認することができます | 覚えたい単語を登録して自分だけの単語帳を作りましょう! 作成した単語帳は他のユーザーに公開することができます。 | 単語帳に登録された動詞からボタン1つで活用形を生成することができます。 | 学習が完了すると自動で記録が保存され、1週間分の学習をみえる化することができます。 学習目標を設定して学習を習慣化しましょう! |
+
 
 ## 開発背景
 > 単語帳 / AIで作る活用形
@@ -42,13 +43,14 @@ https://lin-guardia.com
 | 機能 | 他のアプリ | linGuardia |
 | :------: | :------: | :------------: |
 | 単語帳 | 登録した単語を表示するだけ | ChatGPTを利用し、様々な活用形を表示 |
-| 学習記録 | 学習時間、内容を細かく記録 | 語数・目標に対する達成率を記録 |
+| 学習記録 | 学習時間、内容を細かく記録 | 語数・目標に対する達成率を自動で記録 |
 
 
 ## スペイン語を知らない方、これから学ぶ方へ...
 スペイン語には動詞の活用というものがあります。  
 英語で言う三人称単数現在の語尾に(s)をつけるやつです。
-しかしスペイン語の場合は、表のように主語によって動詞の語形を変化させる必要があり、また不規則なものも多いので
+しかしスペイン語の場合は、表のように主語によって動詞の語形を変化させる必要が
+あり、また不規則なものも多いので
 初心者には非常に負担になります。
 
 下記の表は英語のgiveに相当する単語の活用形の一例です。
@@ -90,6 +92,8 @@ https://lin-guardia.com
 - ChatGPT API
 
 ## インフラ構成図
+<img width="938" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/93c1b653-7a37-40e4-913c-b7491f5f7cbd"> 
+
 
 ## ER図
 <img width="550" alt="Captura de pantalla 2024-09-01 a las 10 28 40 p  m" src="https://github.com/user-attachments/assets/812048eb-59b0-4ac2-8c90-2889d91892db">
