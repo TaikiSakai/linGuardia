@@ -163,7 +163,16 @@ const EditVocabPage: NextPage = () => {
           ))}
         </Grid>
       </Container>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+      <Paper
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          pb: 'env(safe-area-inset-bottom)',
+          transition: '100px',
+        }}
+      >
         <Grid container justifyContent="center" alignItems="center" sx={{ height: 55 }}>
           <Grid item>
             <Link href="/wordcards">

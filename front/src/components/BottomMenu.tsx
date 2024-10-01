@@ -21,7 +21,16 @@ const BottomMenu = () => {
 
   return (
     <>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+      <Paper
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          pb: 'env(safe-area-inset-bottom)',
+          transition: '100px',
+        }}
+      >
         {user.isSignedIn && (
           <BottomNavigation showLabels>
             <BottomNavigationAction
